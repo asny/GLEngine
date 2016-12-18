@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4954F23B1E06EF8D005B5739 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4954F23A1E06EF8D005B5739 /* main.cpp */; };
+		4954F2431E06F459005B5739 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4954F2421E06F459005B5739 /* OpenGL.framework */; };
+		4954F2451E06F47C005B5739 /* libglfw.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4954F2441E06F47C005B5739 /* libglfw.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,8 @@
 /* Begin PBXFileReference section */
 		4954F2371E06EF8D005B5739 /* GLEngineExample1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GLEngineExample1; sourceTree = BUILT_PRODUCTS_DIR; };
 		4954F23A1E06EF8D005B5739 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		4954F2421E06F459005B5739 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		4954F2441E06F47C005B5739 /* libglfw.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.dylib; path = ../../../../../opt/local/lib/libglfw.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +36,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4954F2451E06F47C005B5739 /* libglfw.dylib in Frameworks */,
+				4954F2431E06F459005B5739 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,8 +47,10 @@
 		4954F22E1E06EF8D005B5739 = {
 			isa = PBXGroup;
 			children = (
+				4954F2441E06F47C005B5739 /* libglfw.dylib */,
 				4954F2391E06EF8D005B5739 /* GLEngineExample1 */,
 				4954F2381E06EF8D005B5739 /* Products */,
+				4954F2411E06F459005B5739 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,6 +68,14 @@
 				4954F23A1E06EF8D005B5739 /* main.cpp */,
 			);
 			path = GLEngineExample1;
+			sourceTree = "<group>";
+		};
+		4954F2411E06F459005B5739 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4954F2421E06F459005B5739 /* OpenGL.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -97,7 +113,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4954F2321E06EF8D005B5739 /* Build configuration list for PBXProject "GLEngineExample1" */;
+			buildConfigurationList = 4954F2321E06EF8D005B5739 /* Build configuration list for PBXProject "GLEngineExamples" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -216,21 +232,33 @@
 		4954F23F1E06EF8D005B5739 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib,
+					/opt/local/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/include/glm /opt/local/include/GLFW ./../../Mesh/include/ ./../include/";
 			};
 			name = Debug;
 		};
 		4954F2401E06EF8D005B5739 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib,
+					/opt/local/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/include/glm /opt/local/include/GLFW ./../../Mesh/include/ ./../include/";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4954F2321E06EF8D005B5739 /* Build configuration list for PBXProject "GLEngineExample1" */ = {
+		4954F2321E06EF8D005B5739 /* Build configuration list for PBXProject "GLEngineExamples" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4954F23C1E06EF8D005B5739 /* Debug */,
@@ -246,6 +274,7 @@
 				4954F2401E06EF8D005B5739 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
