@@ -20,6 +20,8 @@ using namespace geogo;
 
 GLFWwindow* gWindow = NULL;
 
+shared_ptr<mat4> cube_rotation = make_shared<mat4>(1.);
+
 void on_error(int errorCode, const char* msg)
 {
     throw std::runtime_error(msg);
@@ -39,6 +41,27 @@ void print_fps(double elapsedTime)
     }
 }
 
+void update()
+{
+    static float last_time = glfwGetTime();
+    float time = glfwGetTime();
+    float elapsed_time = time - last_time;
+    
+    print_fps(elapsed_time);
+    *cube_rotation = rotate(*cube_rotation, elapsed_time, vec3(0., 0., 1.));
+    
+    last_time = time;
+}
+
+void create_cube(GLScene& scene)
+{
+    auto geometry = MeshCreator::create_box(false);
+    auto material = shared_ptr<GLMaterial>(new GLFlatMaterial({0.3, 0.3, 0.3}, {0.4, 0.6, 0.4}, {0.3, 0.1, 0.1}, 1.));
+    auto cube = make_shared<GLObject>(geometry, material);
+    cube->set_model_matrix(cube_rotation);
+    scene.add(cube);
+}
+
 int main(int argc, const char * argv[])
 {
     int WIN_SIZE_X = 1200;
@@ -55,7 +78,7 @@ int main(int argc, const char * argv[])
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-    gWindow = glfwCreateWindow(WIN_SIZE_X, WIN_SIZE_Y, "Spider game", NULL, NULL);
+    gWindow = glfwCreateWindow(WIN_SIZE_X, WIN_SIZE_Y, "GLEngine example 1", NULL, NULL);
     if(!gWindow)
         throw std::runtime_error("glfwCreateWindow failed. Can your hardware handle OpenGL 3.2?");
     
@@ -63,29 +86,27 @@ int main(int argc, const char * argv[])
     glfwSetInputMode(gWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPos(gWindow, 0, 0);
     glfwMakeContextCurrent(gWindow);
-    
     glfwGetFramebufferSize(gWindow, &WIN_SIZE_X, &WIN_SIZE_Y);
     
     // Create camera
-    auto camera = std::shared_ptr<GLCamera>(new GLCamera());
+    auto camera = make_shared<GLCamera>();
     camera->set_screen_size(WIN_SIZE_X, WIN_SIZE_Y);
+    camera->set_view(vec3(5.,5.,5.), vec3(-1., -1., -1.));
     
     // Create scene
     auto scene = unique_ptr<GLScene>(new GLScene(camera));
     
     // Create object
-    
-    
-    // Update
+    create_cube(*scene);
     
     // run while the window is open
-    double lastTime = glfwGetTime();
     while(!glfwWindowShouldClose(gWindow))
     {
         // process pending events
         glfwPollEvents();
         
         // update the scene based on the time elapsed since last update
+        update();
         
         // draw one frame
         scene->draw();
