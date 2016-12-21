@@ -8,6 +8,7 @@
 
 #include "GLScene.h"
 #include "MeshCreator.h"
+#include "materials/GLFlatMaterial.h"
 #include "gtx/rotate_vector.hpp"
 
 #define GLFW_INCLUDE_NONE
