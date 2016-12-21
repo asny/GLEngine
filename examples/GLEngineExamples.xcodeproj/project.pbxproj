@@ -25,6 +25,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4900D17E1E0A72D000F92EBD /* GLCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLCamera.h; path = ../include/GLCamera.h; sourceTree = "<group>"; };
+		4900D17F1E0A72D000F92EBD /* GLMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLMaterial.h; path = ../include/GLMaterial.h; sourceTree = "<group>"; };
+		4900D1801E0A72D000F92EBD /* GLObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLObject.h; path = ../include/GLObject.h; sourceTree = "<group>"; };
+		4900D1811E0A72D000F92EBD /* GLScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLScene.h; path = ../include/GLScene.h; sourceTree = "<group>"; };
+		4900D1821E0A72D000F92EBD /* GLShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLShader.h; path = ../include/GLShader.h; sourceTree = "<group>"; };
+		4900D1831E0A72D000F92EBD /* GLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLTexture.h; path = ../include/GLTexture.h; sourceTree = "<group>"; };
+		4900D1841E0A72D000F92EBD /* GLUniform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLUniform.h; path = ../include/GLUniform.h; sourceTree = "<group>"; };
+		4900D1851E0A72D000F92EBD /* GLUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLUtility.h; path = ../include/GLUtility.h; sourceTree = "<group>"; };
+		4900D1861E0A72D000F92EBD /* GLVertexAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLVertexAttribute.h; path = ../include/GLVertexAttribute.h; sourceTree = "<group>"; };
 		4954F2371E06EF8D005B5739 /* GLEngineExample1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GLEngineExample1; sourceTree = BUILT_PRODUCTS_DIR; };
 		4954F23A1E06EF8D005B5739 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4954F2421E06F459005B5739 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -44,10 +53,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4900D17D1E0A72A600F92EBD /* GLEngine */ = {
+			isa = PBXGroup;
+			children = (
+				4900D17E1E0A72D000F92EBD /* GLCamera.h */,
+				4900D17F1E0A72D000F92EBD /* GLMaterial.h */,
+				4900D1801E0A72D000F92EBD /* GLObject.h */,
+				4900D1811E0A72D000F92EBD /* GLScene.h */,
+				4900D1821E0A72D000F92EBD /* GLShader.h */,
+				4900D1831E0A72D000F92EBD /* GLTexture.h */,
+				4900D1841E0A72D000F92EBD /* GLUniform.h */,
+				4900D1851E0A72D000F92EBD /* GLUtility.h */,
+				4900D1861E0A72D000F92EBD /* GLVertexAttribute.h */,
+			);
+			name = GLEngine;
+			sourceTree = "<group>";
+		};
 		4954F22E1E06EF8D005B5739 = {
 			isa = PBXGroup;
 			children = (
 				4954F2441E06F47C005B5739 /* libglfw.dylib */,
+				4900D17D1E0A72A600F92EBD /* GLEngine */,
 				4954F2391E06EF8D005B5739 /* GLEngineExample1 */,
 				4954F2381E06EF8D005B5739 /* Products */,
 				4954F2411E06F459005B5739 /* Frameworks */,
