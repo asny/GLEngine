@@ -19,7 +19,7 @@ namespace oogl
         
         GLFlatMaterial(const glm::vec3& _ambient, const glm::vec3& _diffuse, const glm::vec3& _specular, double _opacity)
         {
-            shader = GLShader::create_or_get("shaders/pre_geom.vert",  "shaders/phong.frag", "shaders/flat.geom");
+            shader = GLShader::create_or_get("../GLEngine/shaders/pre_geom.vert",  "../GLEngine/shaders/phong.frag", "../GLEngine/shaders/flat.geom");
             use_uniform("ambientMat", _ambient);
             use_uniform("diffuseMat", _diffuse);
             use_uniform("specMat", _specular);

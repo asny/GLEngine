@@ -225,7 +225,7 @@ namespace oogl
         
         GLTextureMaterial(std::shared_ptr<GLTexture> _texture, std::shared_ptr<geogo::Attribute<geogo::VertexID, glm::vec2>> _uv_coordinates) : texture(_texture), uv_coordinates(_uv_coordinates)
         {
-            shader = GLShader::create_or_get("shaders/texture.vert",  "shaders/texture.frag");
+            shader = GLShader::create_or_get("../GLEngine/shaders/texture.vert",  "../GLEngine/shaders/texture.frag");
             
             use_uniform_int("texture0", texture_id);
         }
@@ -251,7 +251,7 @@ namespace oogl
         
         GLSkyboxMaterial(std::shared_ptr<GLTexture3D> _texture) : texture(_texture)
         {
-            shader = GLShader::create_or_get("shaders/skybox.vert",  "shaders/skybox.frag");
+            shader = GLShader::create_or_get("../GLEngine/shaders/skybox.vert",  "../GLEngine/shaders/skybox.frag");
             
             use_uniform_int("texture0", texture_id);
         }
@@ -269,7 +269,7 @@ namespace oogl
         
         GLGrassMaterial(const std::shared_ptr<glm::vec3> spiderPosition, const std::shared_ptr<glm::vec3> wind, const glm::vec3& _ambient, const glm::vec3& _diffuse, double _opacity)
         {
-            shader = GLShader::create_or_get("shaders/pre_geom.vert",  "shaders/grass.frag", "shaders/grass.geom");
+            shader = GLShader::create_or_get("../GLEngine/shaders/pre_geom.vert",  "shaders/grass.frag", "shaders/grass.geom");
             
             use_uniform("spiderPosition", spiderPosition);
             use_uniform("wind", wind);
@@ -288,7 +288,7 @@ namespace oogl
         
         GLSpiderLegsMaterial(const glm::vec3& _ambient, const glm::vec3& _diffuse, const glm::vec3& _specular, double _opacity)
         {
-            shader = GLShader::create_or_get("shaders/pre_geom.vert",  "shaders/phong.frag", "shaders/spider_legs.geom");
+            shader = GLShader::create_or_get("../GLEngine/shaders/pre_geom.vert",  "../GLEngine/shaders/phong.frag", "shaders/spider_legs.geom");
             
             use_uniform("ambientMat", _ambient);
             use_uniform("diffuseMat", _diffuse);
@@ -306,7 +306,7 @@ namespace oogl
     public:
         GLFogMaterial(const std::shared_ptr<geogo::Attribute<geogo::VertexID, glm::vec3>> _normals, const std::shared_ptr<float> time, float radius) : normals(_normals)
         {
-            shader = GLShader::create_or_get("shaders/fog.vert",  "shaders/fog.frag", "shaders/particle.geom");
+            shader = GLShader::create_or_get("shaders/fog.vert",  "shaders/fog.frag", "../GLEngine/shaders/particle.geom");
             
             use_uniform("radius", radius);
             use_uniform("time", time);
