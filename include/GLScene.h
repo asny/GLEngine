@@ -37,7 +37,7 @@ namespace oogl {
         void add(std::shared_ptr<GLObject> object)
         {
             objects.push_back(object);
-            object->get_material()->setup_camera(modelView, inverseModelView, camera->get_projection(), modelViewProjection, camera->get_position());
+            object->get_material()->setup_camera(camera->get_view(), modelView, inverseModelView, camera->get_projection(), modelViewProjection, camera->get_position());
             object->get_material()->setup_light(light_pos);
         }
         

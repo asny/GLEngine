@@ -199,8 +199,9 @@ namespace oogl
             }
         }
         
-        void setup_camera(const std::shared_ptr<glm::mat4> modelView, const std::shared_ptr<glm::mat4> inverseModelView, const std::shared_ptr<glm::mat4> projection, const std::shared_ptr<glm::mat4> modelViewProjection, const std::shared_ptr<glm::vec3> position)
+        void setup_camera(const std::shared_ptr<glm::mat4> view, const std::shared_ptr<glm::mat4> modelView, const std::shared_ptr<glm::mat4> inverseModelView, const std::shared_ptr<glm::mat4> projection, const std::shared_ptr<glm::mat4> modelViewProjection, const std::shared_ptr<glm::vec3> position)
         {
+            use_uniform("MVMatrix", view);
             use_uniform("MVMatrix", modelView);
             use_uniform("NMatrix", inverseModelView);
             use_uniform("PMatrix", projection);
