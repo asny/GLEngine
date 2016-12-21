@@ -36,6 +36,7 @@
 		4900D1861E0A72D000F92EBD /* GLVertexAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLVertexAttribute.h; path = ../include/GLVertexAttribute.h; sourceTree = "<group>"; };
 		4900D1881E0AD89200F92EBD /* GLStandardMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLStandardMaterial.h; path = ../include/materials/GLStandardMaterial.h; sourceTree = "<group>"; };
 		4900D1891E0AD92900F92EBD /* GLFlatMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLFlatMaterial.h; path = ../include/materials/GLFlatMaterial.h; sourceTree = "<group>"; };
+		4900D18A1E0B224700F92EBD /* GLTextureMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLTextureMaterial.h; path = ../include/materials/GLTextureMaterial.h; sourceTree = "<group>"; };
 		4954F2371E06EF8D005B5739 /* GLEngineExample1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GLEngineExample1; sourceTree = BUILT_PRODUCTS_DIR; };
 		4954F23A1E06EF8D005B5739 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4954F2421E06F459005B5739 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -76,6 +77,7 @@
 			children = (
 				4900D1881E0AD89200F92EBD /* GLStandardMaterial.h */,
 				4900D1891E0AD92900F92EBD /* GLFlatMaterial.h */,
+				4900D18A1E0B224700F92EBD /* GLTextureMaterial.h */,
 			);
 			name = Materials;
 			sourceTree = "<group>";
