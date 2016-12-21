@@ -20,7 +20,8 @@ using namespace geogo;
 
 GLFWwindow* gWindow = NULL;
 
-shared_ptr<mat4> cube_rotation = make_shared<mat4>(1.);
+shared_ptr<mat4> cube1_rotation = make_shared<mat4>(1.);
+shared_ptr<mat4> cube2_rotation = make_shared<mat4>(1.);
 
 void on_error(int errorCode, const char* msg)
 {
@@ -48,18 +49,30 @@ void update()
     float elapsed_time = time - last_time;
     
     print_fps(elapsed_time);
-    *cube_rotation = rotate(*cube_rotation, elapsed_time, vec3(0., 0., 1.));
+    *cube1_rotation = rotate(rotate(*cube1_rotation, elapsed_time, vec3(0., 1., 0.)), elapsed_time, vec3(1., 0., 0.));
+    *cube2_rotation = rotate(rotate(*cube2_rotation, elapsed_time, vec3(0., 1., 0.)), elapsed_time, vec3(1., 0., 0.));
     
     last_time = time;
 }
 
-void create_cube(GLScene& scene)
+void create_cubes(GLScene& scene)
 {
-    auto geometry = MeshCreator::create_box(false);
-    auto material = shared_ptr<GLMaterial>(new GLFlatMaterial({0.3, 0.3, 0.3}, {0.4, 0.6, 0.4}, {0.3, 0.1, 0.1}, 1.));
-    auto cube = make_shared<GLObject>(geometry, material);
-    cube->set_model_matrix(cube_rotation);
-    scene.add(cube);
+    {
+        auto geometry = MeshCreator::create_box(false);
+        auto material = shared_ptr<GLMaterial>(new GLFlatMaterial({0.5, 0.5, 0.5}, {0., 0.5, 0.}, {0.5, 0., 0.}, 1.));
+        auto object = make_shared<GLObject>(geometry, material);
+        *cube1_rotation = translate(vec3(-1., 0., 1.));
+        object->set_model_matrix(cube1_rotation);
+        scene.add(object);
+    }
+    {
+        auto geometry = MeshCreator::create_box(false);
+        auto material = shared_ptr<GLMaterial>(new GLFlatMaterial({0.5, 0.5, 0.5}, {0., 0.5, 0.}, {0.5, 0., 0.}, 1.));
+        auto object = make_shared<GLObject>(geometry, material);
+        *cube2_rotation = translate(vec3(1., 0., -1.));
+        object->set_model_matrix(cube2_rotation);
+        scene.add(object);
+    }
 }
 
 int main(int argc, const char * argv[])
@@ -91,13 +104,13 @@ int main(int argc, const char * argv[])
     // Create camera
     auto camera = make_shared<GLCamera>();
     camera->set_screen_size(WIN_SIZE_X, WIN_SIZE_Y);
-    camera->set_view(vec3(5.,5.,5.), vec3(-1., -1., -1.));
+    camera->set_view(vec3(5.,0.,5.), vec3(-1., 0., -1.));
     
     // Create scene
     auto scene = unique_ptr<GLScene>(new GLScene(camera));
     
     // Create object
-    create_cube(*scene);
+    create_cubes(*scene);
     
     // run while the window is open
     while(!glfwWindowShouldClose(gWindow))
