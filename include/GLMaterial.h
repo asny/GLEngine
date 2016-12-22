@@ -21,6 +21,13 @@ namespace oogl
         std::vector<GLUniform<glm::vec4>> vec4_uniforms;
         std::vector<GLUniform<glm::mat4>> mat4_uniforms;
         
+        std::shared_ptr<glm::mat4> view = std::make_shared<glm::mat4>(1.);
+        std::shared_ptr<glm::mat4> modelView = std::make_shared<glm::mat4>(1.);
+        std::shared_ptr<glm::mat4> inverseModelView = std::make_shared<glm::mat4>(1.);
+        std::shared_ptr<glm::mat4> projection = std::make_shared<glm::mat4>(1.);
+        std::shared_ptr<glm::mat4> modelViewProjection = std::make_shared<glm::mat4>(1.);
+        std::shared_ptr<glm::vec3> position = std::make_shared<glm::vec3>(1.);
+        
     protected:
         
         bool cull_back_faces = true;
@@ -113,6 +120,16 @@ namespace oogl
             return glAttribute;
         }
         
+        void use_standard_uniforms()
+        {
+            use_uniform("MVMatrix", view);
+            use_uniform("MVMatrix", modelView);
+            use_uniform("NMatrix", inverseModelView);
+            use_uniform("PMatrix", projection);
+            use_uniform("MVPMatrix", modelViewProjection);
+            use_uniform("eyePosition", position);
+        }
+        
     public:
         
         std::shared_ptr<GLVertexAttribute<glm::vec3>> create_attribute(std::string name, std::shared_ptr<geogo::Attribute<geogo::VertexID, glm::vec3>> attribute)
@@ -199,14 +216,14 @@ namespace oogl
             }
         }
         
-        void setup_camera(const std::shared_ptr<glm::mat4> view, const std::shared_ptr<glm::mat4> modelView, const std::shared_ptr<glm::mat4> inverseModelView, const std::shared_ptr<glm::mat4> projection, const std::shared_ptr<glm::mat4> modelViewProjection, const std::shared_ptr<glm::vec3> position)
+        void setup_camera(const glm::vec3& camera_position, const glm::mat4& model_matrix, const glm::mat4& view_matrix, const glm::mat4& projection_matrix)
         {
-            use_uniform("MVMatrix", view);
-            use_uniform("MVMatrix", modelView);
-            use_uniform("NMatrix", inverseModelView);
-            use_uniform("PMatrix", projection);
-            use_uniform("MVPMatrix", modelViewProjection);
-            use_uniform("eyePosition", position);
+            *view = view_matrix;
+            *modelView = view_matrix * model_matrix;
+            *inverseModelView = inverseTranspose(*modelView);
+            *projection = projection_matrix;
+            *modelViewProjection = projection_matrix * (*modelView);
+            *position = camera_position;
         }
         
         void setup_light(const std::shared_ptr<glm::vec3> light_position)

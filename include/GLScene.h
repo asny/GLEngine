@@ -11,9 +11,6 @@
 namespace oogl {
     class GLScene
     {
-        std::shared_ptr<glm::mat4> modelView = std::make_shared<glm::mat4>(1.);
-        std::shared_ptr<glm::mat4> inverseModelView = std::make_shared<glm::mat4>(1.);
-        std::shared_ptr<glm::mat4> modelViewProjection = std::make_shared<glm::mat4>(1.);
         
         std::shared_ptr<glm::vec3> light_pos = std::make_shared<glm::vec3>(0., 2000., 2.);
         
@@ -37,7 +34,6 @@ namespace oogl {
         void add(std::shared_ptr<GLObject> object)
         {
             objects.push_back(object);
-            object->get_material()->setup_camera(camera->get_view(), modelView, inverseModelView, camera->get_projection(), modelViewProjection, camera->get_position());
             object->get_material()->setup_light(light_pos);
         }
         
@@ -47,11 +43,7 @@ namespace oogl {
             
             for (std::shared_ptr<GLObject> object : objects)
             {
-                *modelView = *camera->get_view() * object->get_model();
-                *inverseModelView = inverseTranspose(*modelView);
-                *modelViewProjection = *camera->get_projection() * (*modelView);
-                
-                object->draw();
+                object->draw(*camera->get_position(), object->get_model(), *camera->get_view(), *camera->get_projection());
             }
             
             check_gl_error();
