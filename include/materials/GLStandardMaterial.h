@@ -25,6 +25,7 @@ namespace oogl
             use_uniform("MVMatrix", modelView);
             use_uniform("NMatrix", inverseModelView);
             use_uniform("MVPMatrix", modelViewProjection);
+            use_uniform("lightPos", light_position);
             use_uniform("ambientMat", _ambient);
             use_uniform("diffuseMat", _diffuse);
             use_uniform("specMat", _specular);

@@ -74,7 +74,7 @@ namespace oogl
         /**
          Draws the object.
          */
-        void draw(const glm::vec3& camera_position, const glm::mat4& model_matrix, const glm::mat4& view_matrix, const glm::mat4& projection_matrix)
+        void draw(const glm::vec3& light_position, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
         {
             // Infer draw mode
             GLenum drawmode;
@@ -111,7 +111,7 @@ namespace oogl
             }
             
             // Use material specific uniforms and states
-            material->pre_draw(camera_position, model_matrix, view_matrix, projection_matrix);
+            material->pre_draw(light_position, camera_position, model, view, projection);
             
             // Bind vertex array and draw
             glBindVertexArray(array_id);
@@ -139,11 +139,6 @@ namespace oogl
         const glm::mat4& get_model()
         {
             return *modelMatrix;
-        }
-        
-        const std::shared_ptr<GLMaterial> get_material()
-        {
-            return material;
         }
     };
 }

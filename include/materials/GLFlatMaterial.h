@@ -24,6 +24,7 @@ namespace oogl
             use_uniform("VMatrix", view);
             use_uniform("MVMatrix", modelView);
             use_uniform("PMatrix", projection);
+            use_uniform("lightPos", light_position);
             use_uniform("ambientMat", _ambient);
             use_uniform("diffuseMat", _diffuse);
             use_uniform("specMat", _specular);

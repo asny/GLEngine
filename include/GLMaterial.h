@@ -28,7 +28,9 @@ namespace oogl
         std::shared_ptr<glm::mat4> inverseModelView = std::make_shared<glm::mat4>(1.);
         std::shared_ptr<glm::mat4> projection = std::make_shared<glm::mat4>(1.);
         std::shared_ptr<glm::mat4> modelViewProjection = std::make_shared<glm::mat4>(1.);
-        std::shared_ptr<glm::vec3> eye_position = std::make_shared<glm::vec3>(1.);
+        
+        std::shared_ptr<glm::vec3> camera_position = std::make_shared<glm::vec3>(0.);
+        std::shared_ptr<glm::vec3> light_position = std::make_shared<glm::vec3>(0.);
         
         bool cull_back_faces = true;
         bool test_depth = true;
@@ -141,7 +143,7 @@ namespace oogl
             
         }
         
-        virtual void pre_draw(const glm::vec3& camera_position, const glm::mat4& model_matrix, const glm::mat4& view_matrix, const glm::mat4& projection_matrix)
+        virtual void pre_draw(const glm::vec3& _light_position, const glm::vec3& _camera_position, const glm::mat4& _model, const glm::mat4& _view, const glm::mat4& _projection)
         {
             shader->use();
             
@@ -175,13 +177,14 @@ namespace oogl
                 currently_test_depth = test_depth;
             }
             
-            // Update standard uniforms
-            *view = view_matrix;
-            *modelView = view_matrix * model_matrix;
+            // Update standard uniforms related to object, camera and light.
+            *view = _view;
+            *modelView = _view * _model;
             *inverseModelView = inverseTranspose(*modelView);
-            *projection = projection_matrix;
-            *modelViewProjection = projection_matrix * (*modelView);
-            *eye_position = camera_position;
+            *projection = _projection;
+            *modelViewProjection = _projection * (*modelView);
+            *camera_position = _camera_position;
+            *light_position = _light_position;
             
             // Use uniforms
             for (auto glUniform : int_uniforms)
@@ -213,11 +216,6 @@ namespace oogl
             {
                 glUniform.use();
             }
-        }
-        
-        void setup_light(const std::shared_ptr<glm::vec3> light_position)
-        {
-            use_uniform("lightPos", light_position);
         }
         
     };

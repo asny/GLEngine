@@ -34,7 +34,6 @@ namespace oogl {
         void add(std::shared_ptr<GLObject> object)
         {
             objects.push_back(object);
-            object->get_material()->setup_light(light_pos);
         }
         
         void draw()
@@ -43,7 +42,7 @@ namespace oogl {
             
             for (std::shared_ptr<GLObject> object : objects)
             {
-                object->draw(*camera->get_position(), object->get_model(), *camera->get_view(), *camera->get_projection());
+                object->draw(light_pos, *camera->get_position(), object->get_model(), *camera->get_view(), *camera->get_projection());
             }
             
             check_gl_error();
