@@ -23,7 +23,7 @@ namespace oogl {
         
     public:
         
-        GLCamera()
+        GLCamera(int screen_width, int screen_height)
         {
             // Enable states
             glEnable(GL_DEPTH_TEST);
@@ -31,6 +31,8 @@ namespace oogl {
             
             glEnable(GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            
+            set_screen_size(screen_width, screen_height);
         }
         
         /**
@@ -44,12 +46,12 @@ namespace oogl {
         }
         
         /**
-         Set the camera/eye.
+         Set the camera position and direction.
          */
-        void set_view(const glm::vec3& eyePosition, const glm::vec3& eyeDirection)
+        void set_view(const glm::vec3& _position, const glm::vec3& _direction)
         {
-            position = eyePosition;
-            view = lookAt(eyePosition, eyePosition + eyeDirection, glm::vec3(0., 1., 0.));
+            position = _position;
+            view = lookAt(position, _position + _direction, glm::vec3(0., 1., 0.));
         }
         
         void wireframe(bool on)

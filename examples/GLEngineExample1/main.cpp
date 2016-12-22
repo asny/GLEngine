@@ -103,8 +103,7 @@ int main(int argc, const char * argv[])
     glfwGetFramebufferSize(gWindow, &WIN_SIZE_X, &WIN_SIZE_Y);
     
     // Create camera
-    auto camera = GLCamera();
-    camera.set_screen_size(WIN_SIZE_X, WIN_SIZE_Y);
+    auto camera = GLCamera(WIN_SIZE_X, WIN_SIZE_Y);
     camera.set_view(vec3(5.,0.,5.), vec3(-1., 0., -1.));
     
     // Create scene
