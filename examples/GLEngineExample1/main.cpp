@@ -103,15 +103,15 @@ int main(int argc, const char * argv[])
     glfwGetFramebufferSize(gWindow, &WIN_SIZE_X, &WIN_SIZE_Y);
     
     // Create camera
-    auto camera = make_shared<GLCamera>();
-    camera->set_screen_size(WIN_SIZE_X, WIN_SIZE_Y);
-    camera->set_view(vec3(5.,0.,5.), vec3(-1., 0., -1.));
+    auto camera = GLCamera();
+    camera.set_screen_size(WIN_SIZE_X, WIN_SIZE_Y);
+    camera.set_view(vec3(5.,0.,5.), vec3(-1., 0., -1.));
     
     // Create scene
-    auto scene = unique_ptr<GLScene>(new GLScene());
+    auto scene = GLScene();
     
     // Create object
-    create_cubes(*scene);
+    create_cubes(scene);
     
     // run while the window is open
     while(!glfwWindowShouldClose(gWindow))
@@ -123,7 +123,7 @@ int main(int argc, const char * argv[])
         update();
         
         // draw one frame
-        camera->draw(*scene);
+        camera.draw(scene);
         
         glfwSwapBuffers(gWindow);
         
