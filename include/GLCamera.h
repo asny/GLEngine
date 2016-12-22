@@ -18,6 +18,9 @@ namespace oogl {
         glm::mat4 view = glm::mat4(1.);
         glm::mat4 projection = glm::mat4(1.);
         
+        int width;
+        int height;
+        
     public:
         
         GLCamera()
@@ -33,9 +36,10 @@ namespace oogl {
         /**
          Reshape the window.
          */
-        void set_screen_size(int width, int height)
+        void set_screen_size(int _width, int _height)
         {
-            glViewport(0, 0, width, height);
+            width = _width;
+            height = _height;
             projection = glm::perspective(45.f, width/float(height), 0.1f, 100.f);
         }
         
@@ -59,15 +63,17 @@ namespace oogl {
             }
         }
         
-        void draw(const GLScene& scene)
+        static void clear_screen()
         {
-            glDepthMask(GL_TRUE);
-            
+            glDepthMask(GL_TRUE); // If it is not possible to write to the depth buffer, we are not able to clear it.
             glClearColor(1., 1., 1., 0.);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            
+        }
+        
+        void draw(const GLScene& scene)
+        {
+            glViewport(0, 0, width, height);
             scene.draw(position, view, projection);
-            
             check_gl_error();
         }
     };
