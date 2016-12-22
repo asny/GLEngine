@@ -111,8 +111,7 @@ namespace oogl
             }
             
             // Use material specific uniforms and states
-            material->setup_camera(camera_position, model_matrix, view_matrix, projection_matrix);
-            material->pre_draw();
+            material->pre_draw(camera_position, model_matrix, view_matrix, projection_matrix);
             
             // Bind vertex array and draw
             glBindVertexArray(array_id);

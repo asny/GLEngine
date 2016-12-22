@@ -141,7 +141,7 @@ namespace oogl
             
         }
         
-        virtual void pre_draw()
+        virtual void pre_draw(const glm::vec3& camera_position, const glm::mat4& model_matrix, const glm::mat4& view_matrix, const glm::mat4& projection_matrix)
         {
             shader->use();
             
@@ -175,6 +175,15 @@ namespace oogl
                 currently_test_depth = test_depth;
             }
             
+            // Update standard uniforms
+            *view = view_matrix;
+            *modelView = view_matrix * model_matrix;
+            *inverseModelView = inverseTranspose(*modelView);
+            *projection = projection_matrix;
+            *modelViewProjection = projection_matrix * (*modelView);
+            *eye_position = camera_position;
+            
+            // Use uniforms
             for (auto glUniform : int_uniforms)
             {
                 glUniform.use();
@@ -204,16 +213,6 @@ namespace oogl
             {
                 glUniform.use();
             }
-        }
-        
-        void setup_camera(const glm::vec3& camera_position, const glm::mat4& model_matrix, const glm::mat4& view_matrix, const glm::mat4& projection_matrix)
-        {
-            *view = view_matrix;
-            *modelView = view_matrix * model_matrix;
-            *inverseModelView = inverseTranspose(*modelView);
-            *projection = projection_matrix;
-            *modelViewProjection = projection_matrix * (*modelView);
-            *eye_position = camera_position;
         }
         
         void setup_light(const std::shared_ptr<glm::vec3> light_position)
