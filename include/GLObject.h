@@ -28,7 +28,7 @@ namespace oogl
         std::shared_ptr<glm::mat4> modelMatrix = std::make_shared<glm::mat4>(1.);
         
         template<class T>
-        void update_attribute(std::shared_ptr<GLVertexAttribute<T>> attribute)
+        void update_attribute(std::shared_ptr<GLVertexAttribute<T>> attribute) const
         {
             if(attribute->is_up_to_date())
                 return;
@@ -74,7 +74,7 @@ namespace oogl
         /**
          Draws the object.
          */
-        void draw(const glm::vec3& light_position, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
+        void draw(const glm::vec3& light_position, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
         {
             // Infer draw mode
             GLenum drawmode;

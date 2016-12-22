@@ -6,7 +6,7 @@
 //  Copyright © 2016 Asger Nyman Christiansen. All rights reserved.
 //
 
-#include "GLScene.h"
+#include "GLCamera.h"
 #include "MeshCreator.h"
 #include "materials/GLFlatMaterial.h"
 #include "gtx/rotate_vector.hpp"
@@ -108,7 +108,7 @@ int main(int argc, const char * argv[])
     camera->set_view(vec3(5.,0.,5.), vec3(-1., 0., -1.));
     
     // Create scene
-    auto scene = unique_ptr<GLScene>(new GLScene(camera));
+    auto scene = unique_ptr<GLScene>(new GLScene());
     
     // Create object
     create_cubes(*scene);
@@ -123,7 +123,7 @@ int main(int argc, const char * argv[])
         update();
         
         // draw one frame
-        scene->draw();
+        camera->draw(*scene);
         
         glfwSwapBuffers(gWindow);
         

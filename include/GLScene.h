@@ -6,7 +6,6 @@
 #pragma once
 
 #include "GLObject.h"
-#include "GLCamera.h"
 
 namespace oogl {
     class GLScene
@@ -15,7 +14,7 @@ namespace oogl {
         std::shared_ptr<glm::vec3> light_pos = std::make_shared<glm::vec3>(0., 2000., 2.);
         
     public:
-        GLScene(std::shared_ptr<GLCamera> _camera) : camera(_camera)
+        GLScene()
         {
             
         }
@@ -36,13 +35,11 @@ namespace oogl {
             objects.push_back(object);
         }
         
-        void draw()
+        void draw(const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection) const
         {
-            camera->pre_draw();
-            
             for (std::shared_ptr<GLObject> object : objects)
             {
-                object->draw(light_pos, *camera->get_position(), object->get_model(), *camera->get_view(), *camera->get_projection());
+                object->draw(light_pos, camera_position, object->get_model(), view, projection);
             }
             
             check_gl_error();
@@ -50,6 +47,5 @@ namespace oogl {
         
     private:
         std::vector<std::shared_ptr<GLObject>> objects = std::vector<std::shared_ptr<GLObject>>();
-        std::shared_ptr<GLCamera> camera;
     };
 }

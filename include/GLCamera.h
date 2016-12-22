@@ -5,8 +5,7 @@
 
 #pragma once
 
-#include "GLUtility.h"
-#include "GLObject.h"
+#include "GLScene.h"
 
 namespace oogl {
     
@@ -49,12 +48,14 @@ namespace oogl {
             *view = lookAt(eyePosition, eyePosition + eyeDirection, glm::vec3(0., 1., 0.));
         }
         
-        void pre_draw()
+        void draw(const GLScene& scene)
         {
             glDepthMask(GL_TRUE);
             
             glClearColor(1., 1., 1., 0.);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            
+            scene.draw(*position, *view, *projection);
         }
         
         const std::shared_ptr<glm::mat4> get_view()
