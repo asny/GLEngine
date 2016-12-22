@@ -20,6 +20,8 @@ namespace oogl {
         
         int width;
         int height;
+        int x = 0;
+        int y = 0;
         
     public:
         
@@ -43,6 +45,12 @@ namespace oogl {
             width = _width;
             height = _height;
             projection = glm::perspective(45.f, width/float(height), 0.1f, 100.f);
+        }
+        
+        void set_screen_position(int _x, int _y)
+        {
+            x = _x;
+            y = _y;
         }
         
         /**
@@ -74,7 +82,7 @@ namespace oogl {
         
         void draw(const GLScene& scene)
         {
-            glViewport(0, 0, width, height);
+            glViewport(x, y, width, height);
             scene.draw(position, view, projection);
             check_gl_error();
         }
