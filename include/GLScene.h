@@ -11,23 +11,12 @@ namespace oogl {
     class GLScene
     {
         
-        std::shared_ptr<glm::vec3> light_pos = std::make_shared<glm::vec3>(0., 2000., 2.);
+        glm::vec3 light_pos = glm::vec3(5., 5., 5.);
         
     public:
         GLScene()
         {
             
-        }
-        
-        void wireframe(bool on)
-        {
-            if(on)
-            {
-                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            }
-            else {
-                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            }
         }
         
         void add(std::shared_ptr<GLObject> object)
@@ -41,8 +30,6 @@ namespace oogl {
             {
                 object->draw(light_pos, camera_position, object->get_model(), view, projection);
             }
-            
-            check_gl_error();
         }
         
     private:

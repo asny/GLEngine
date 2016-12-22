@@ -14,9 +14,9 @@ namespace oogl {
      */
     class GLCamera
     {
-        std::shared_ptr<glm::vec3> position = std::make_shared<glm::vec3>();
-        std::shared_ptr<glm::mat4> view = std::make_shared<glm::mat4>(1.);
-        std::shared_ptr<glm::mat4> projection = std::make_shared<glm::mat4>(1.);
+        glm::vec3 position = glm::vec3(0.);
+        glm::mat4 view = glm::mat4(1.);
+        glm::mat4 projection = glm::mat4(1.);
         
     public:
         
@@ -36,7 +36,7 @@ namespace oogl {
         void set_screen_size(int width, int height)
         {
             glViewport(0, 0, width, height);
-            *projection = glm::perspective(45.f, width/float(height), 0.1f, 100.f);
+            projection = glm::perspective(45.f, width/float(height), 0.1f, 100.f);
         }
         
         /**
@@ -44,8 +44,19 @@ namespace oogl {
          */
         void set_view(const glm::vec3& eyePosition, const glm::vec3& eyeDirection)
         {
-            *position = eyePosition;
-            *view = lookAt(eyePosition, eyePosition + eyeDirection, glm::vec3(0., 1., 0.));
+            position = eyePosition;
+            view = lookAt(eyePosition, eyePosition + eyeDirection, glm::vec3(0., 1., 0.));
+        }
+        
+        void wireframe(bool on)
+        {
+            if(on)
+            {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            }
+            else {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            }
         }
         
         void draw(const GLScene& scene)
@@ -55,23 +66,9 @@ namespace oogl {
             glClearColor(1., 1., 1., 0.);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             
-            scene.draw(*position, *view, *projection);
+            scene.draw(position, view, projection);
+            
+            check_gl_error();
         }
-        
-        const std::shared_ptr<glm::mat4> get_view()
-        {
-            return view;
-        }
-        
-        const std::shared_ptr<glm::mat4> get_projection()
-        {
-            return projection;
-        }
-        
-        const std::shared_ptr<glm::vec3> get_position()
-        {
-            return position;
-        }
-        
     };
 }
