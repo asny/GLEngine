@@ -38,6 +38,17 @@
 		4900D1891E0AD92900F92EBD /* GLFlatMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLFlatMaterial.h; path = ../include/materials/GLFlatMaterial.h; sourceTree = "<group>"; };
 		4900D18A1E0B224700F92EBD /* GLTextureMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLTextureMaterial.h; path = ../include/materials/GLTextureMaterial.h; sourceTree = "<group>"; };
 		4900D18B1E0B22DE00F92EBD /* GLSkyboxMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLSkyboxMaterial.h; path = ../include/materials/GLSkyboxMaterial.h; sourceTree = "<group>"; };
+		4900D18F1E0C57BF00F92EBD /* flat.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = flat.geom; path = ../shaders/flat.geom; sourceTree = "<group>"; };
+		4900D1901E0C57BF00F92EBD /* gouraud.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = gouraud.frag; path = ../shaders/gouraud.frag; sourceTree = "<group>"; };
+		4900D1911E0C57BF00F92EBD /* gouraud.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = gouraud.vert; path = ../shaders/gouraud.vert; sourceTree = "<group>"; };
+		4900D1921E0C57BF00F92EBD /* particle.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = particle.geom; path = ../shaders/particle.geom; sourceTree = "<group>"; };
+		4900D1931E0C57BF00F92EBD /* phong.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = phong.frag; path = ../shaders/phong.frag; sourceTree = "<group>"; };
+		4900D1941E0C57BF00F92EBD /* phong.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = phong.vert; path = ../shaders/phong.vert; sourceTree = "<group>"; };
+		4900D1951E0C57BF00F92EBD /* pre_geom.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = pre_geom.vert; path = ../shaders/pre_geom.vert; sourceTree = "<group>"; };
+		4900D1961E0C57BF00F92EBD /* skybox.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = skybox.frag; path = ../shaders/skybox.frag; sourceTree = "<group>"; };
+		4900D1971E0C57BF00F92EBD /* skybox.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = skybox.vert; path = ../shaders/skybox.vert; sourceTree = "<group>"; };
+		4900D1981E0C57BF00F92EBD /* texture.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = texture.frag; path = ../shaders/texture.frag; sourceTree = "<group>"; };
+		4900D1991E0C57BF00F92EBD /* texture.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = texture.vert; path = ../shaders/texture.vert; sourceTree = "<group>"; };
 		4954F2371E06EF8D005B5739 /* GLEngineExample1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GLEngineExample1; sourceTree = BUILT_PRODUCTS_DIR; };
 		4954F23A1E06EF8D005B5739 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4954F2421E06F459005B5739 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -84,11 +95,30 @@
 			name = Materials;
 			sourceTree = "<group>";
 		};
+		4900D18E1E0C57A600F92EBD /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				4900D18F1E0C57BF00F92EBD /* flat.geom */,
+				4900D1901E0C57BF00F92EBD /* gouraud.frag */,
+				4900D1911E0C57BF00F92EBD /* gouraud.vert */,
+				4900D1921E0C57BF00F92EBD /* particle.geom */,
+				4900D1931E0C57BF00F92EBD /* phong.frag */,
+				4900D1941E0C57BF00F92EBD /* phong.vert */,
+				4900D1951E0C57BF00F92EBD /* pre_geom.vert */,
+				4900D1961E0C57BF00F92EBD /* skybox.frag */,
+				4900D1971E0C57BF00F92EBD /* skybox.vert */,
+				4900D1981E0C57BF00F92EBD /* texture.frag */,
+				4900D1991E0C57BF00F92EBD /* texture.vert */,
+			);
+			name = Shaders;
+			sourceTree = "<group>";
+		};
 		4954F22E1E06EF8D005B5739 = {
 			isa = PBXGroup;
 			children = (
 				4954F2441E06F47C005B5739 /* libglfw.dylib */,
 				4900D17D1E0A72A600F92EBD /* GLEngine */,
+				4900D18E1E0C57A600F92EBD /* Shaders */,
 				4900D1871E0AD83800F92EBD /* Materials */,
 				4954F2391E06EF8D005B5739 /* GLEngineExample1 */,
 				4954F2381E06EF8D005B5739 /* Products */,
