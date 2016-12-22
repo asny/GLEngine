@@ -23,7 +23,7 @@ namespace oogl
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/texture.vert",  "../GLEngine/shaders/texture.frag");
             
-            use_standard_uniforms();
+            use_uniform("MVPMatrix", modelViewProjection);
             use_uniform_int("texture0", texture_id);
         }
         

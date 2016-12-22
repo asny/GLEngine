@@ -20,7 +20,11 @@ namespace oogl
         GLStandardMaterial(const std::shared_ptr<geogo::Attribute<geogo::VertexID, glm::vec3>> _normals, const glm::vec3& _ambient, const glm::vec3& _diffuse, const glm::vec3& _specular, double _opacity) : normals(_normals)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/phong.vert",  "../GLEngine/shaders/phong.frag");
-            use_standard_uniforms();
+            
+            use_uniform("VMatrix", view);
+            use_uniform("MVMatrix", modelView);
+            use_uniform("NMatrix", inverseModelView);
+            use_uniform("MVPMatrix", modelViewProjection);
             use_uniform("ambientMat", _ambient);
             use_uniform("diffuseMat", _diffuse);
             use_uniform("specMat", _specular);

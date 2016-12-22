@@ -21,14 +21,14 @@ namespace oogl
         std::vector<GLUniform<glm::vec4>> vec4_uniforms;
         std::vector<GLUniform<glm::mat4>> mat4_uniforms;
         
+    protected:
+        
         std::shared_ptr<glm::mat4> view = std::make_shared<glm::mat4>(1.);
         std::shared_ptr<glm::mat4> modelView = std::make_shared<glm::mat4>(1.);
         std::shared_ptr<glm::mat4> inverseModelView = std::make_shared<glm::mat4>(1.);
         std::shared_ptr<glm::mat4> projection = std::make_shared<glm::mat4>(1.);
         std::shared_ptr<glm::mat4> modelViewProjection = std::make_shared<glm::mat4>(1.);
-        std::shared_ptr<glm::vec3> position = std::make_shared<glm::vec3>(1.);
-        
-    protected:
+        std::shared_ptr<glm::vec3> eye_position = std::make_shared<glm::vec3>(1.);
         
         bool cull_back_faces = true;
         bool test_depth = true;
@@ -118,16 +118,6 @@ namespace oogl
             check_gl_error();
             
             return glAttribute;
-        }
-        
-        void use_standard_uniforms()
-        {
-            use_uniform("MVMatrix", view);
-            use_uniform("MVMatrix", modelView);
-            use_uniform("NMatrix", inverseModelView);
-            use_uniform("PMatrix", projection);
-            use_uniform("MVPMatrix", modelViewProjection);
-            use_uniform("eyePosition", position);
         }
         
     public:
@@ -223,7 +213,7 @@ namespace oogl
             *inverseModelView = inverseTranspose(*modelView);
             *projection = projection_matrix;
             *modelViewProjection = projection_matrix * (*modelView);
-            *position = camera_position;
+            *eye_position = camera_position;
         }
         
         void setup_light(const std::shared_ptr<glm::vec3> light_position)

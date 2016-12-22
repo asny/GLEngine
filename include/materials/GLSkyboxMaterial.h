@@ -22,7 +22,8 @@ namespace oogl
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/skybox.vert",  "../GLEngine/shaders/skybox.frag");
             
-            use_standard_uniforms();
+            use_uniform("MVMatrix", modelView);
+            use_uniform("PMatrix", projection);
             use_uniform_int("texture0", texture_id);
         }
         
