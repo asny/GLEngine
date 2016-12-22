@@ -27,10 +27,10 @@ namespace oogl
             use_uniform_int("texture0", texture_id);
         }
         
-        void pre_draw()
+        void pre_draw(const glm::vec3& light_position, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
         {
             *texture_id = texture->use();
-            GLMaterial::pre_draw();
+            GLMaterial::pre_draw(light_position, camera_position, model, view, projection);
         }
     };
 }
