@@ -21,8 +21,7 @@ using namespace geogo;
 
 GLFWwindow* gWindow = NULL;
 
-shared_ptr<mat4> cube1_rotation = make_shared<mat4>(1.);
-shared_ptr<mat4> cube2_rotation = make_shared<mat4>(1.);
+shared_ptr<mat4> cube_rotation = make_shared<mat4>(1.);
 
 void on_error(int errorCode, const char* msg)
 {
@@ -50,29 +49,31 @@ void update()
     float elapsed_time = time - last_time;
     
     print_fps(elapsed_time);
-    *cube1_rotation = rotate(rotate(*cube1_rotation, elapsed_time, vec3(0., 1., 0.)), elapsed_time, vec3(1., 0., 0.));
-    *cube2_rotation = rotate(rotate(*cube2_rotation, elapsed_time, vec3(0., 1., 0.)), elapsed_time, vec3(1., 0., 0.));
+    *cube_rotation = rotate(rotate(*cube_rotation, elapsed_time, vec3(0., 1., 0.)), elapsed_time, vec3(1., 0., 0.));
     
     last_time = time;
 }
 
-void create_cubes(GLScene& scene)
+void create_cubes(GLNode& root)
 {
+    auto rotation_node = std::make_shared<GLTransformationNode>(cube_rotation);
+    root.add_child(rotation_node);
+    
     {
+        auto translation_node = std::make_shared<GLTransformationNode>(translate(vec3(-1., 0., 1.)));
+        rotation_node->add_child(translation_node);
+        
         auto geometry = MeshCreator::create_box(false);
         auto material = shared_ptr<GLMaterial>(new GLFlatMaterial({0.5, 0.5, 0.5}, {0., 0.5, 0.}, {0.5, 0., 0.}, 1.));
-        auto object = make_shared<GLObject>(geometry, material);
-        *cube1_rotation = translate(vec3(-1., 0., 1.));
-        object->set_model_matrix(cube1_rotation);
-        scene.add(object);
+        translation_node->add_leaf(geometry, material);
     }
     {
+        auto translation_node = std::make_shared<GLTransformationNode>(translate(vec3(1., 0., -1.)));
+        rotation_node->add_child(translation_node);
+        
         auto geometry = MeshCreator::create_box(false);
         auto material = shared_ptr<GLMaterial>(new GLFlatMaterial({0.5, 0.5, 0.5}, {0., 0.5, 0.}, {0.5, 0., 0.}, 1.));
-        auto object = make_shared<GLObject>(geometry, material);
-        *cube2_rotation = translate(vec3(1., 0., -1.));
-        object->set_model_matrix(cube2_rotation);
-        scene.add(object);
+        translation_node->add_leaf(geometry, material);
     }
 }
 
