@@ -25,21 +25,33 @@ namespace oogl
         }
         
     protected:
-        std::vector<const GLObject> objects = std::vector<const GLObject>();
-        std::vector<std::shared_ptr<GLNode>> nodes = std::vector<std::shared_ptr<GLNode>>();
-        
         virtual void draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
         {
             for (const GLObject& object : objects)
             {
                 object.draw(light_pos, camera_position, model, view, projection);
             }
-            for (std::shared_ptr<GLNode> node : nodes)
+            for (std::shared_ptr<const GLNode> node : nodes)
             {
                 node->draw(camera_position, model, view, projection);
             }
         }
+        
+    private:
         glm::vec3 light_pos = glm::vec3(5., 5., 5.);
+        std::vector<const GLObject> objects = std::vector<const GLObject>();
+        std::vector<std::shared_ptr<GLNode>> nodes = std::vector<std::shared_ptr<GLNode>>();
+    };
+    
+    class GLScene : public GLNode
+    {
+    public:
+        
+        void draw(const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection) const
+        {
+            auto model = glm::mat4(1.);
+            GLNode::draw(camera_position, model, view, projection);
+        }
     };
     
     class GLTransformationNode : public GLNode
@@ -50,35 +62,18 @@ namespace oogl
             transformation = std::make_shared<glm::mat4>(_transformation);
         }
         
-        GLTransformationNode(const std::shared_ptr<glm::mat4> _transformation)
+        GLTransformationNode(const std::shared_ptr<const glm::mat4> _transformation)
         {
             transformation = _transformation;
         }
         
     private:
-        std::shared_ptr<glm::mat4> transformation;
+        std::shared_ptr<const glm::mat4> transformation;
         
         void draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
         {
             GLNode::draw(camera_position, (*transformation) * model, view, projection);
         }
-    };
-
-    class GLScene : public GLNode
-    {
-    public:
-        GLScene()
-        {
-            
-        }
-        
-        void draw(const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection) const
-        {
-            auto model = glm::mat4(1.);
-            GLNode::draw(camera_position, model, view, projection);
-        }
-        
-    private:
     };
 
 }
