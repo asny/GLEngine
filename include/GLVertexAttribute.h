@@ -14,7 +14,7 @@ namespace oogl
     class GLVertexAttribute
     {
     public:
-        GLVertexAttribute(std::shared_ptr<geogo::Attribute<geogo::VertexID, ValueType>> _attribute) : attribute(_attribute)
+        GLVertexAttribute(std::shared_ptr<mesh::Attribute<mesh::VertexID, ValueType>> _attribute) : attribute(_attribute)
         {
             // Generate and bind buffer
             glGenBuffers(1, &buffer_id);
@@ -26,7 +26,7 @@ namespace oogl
             _attribute->listen_to(on_attribute_changed);
         }
         
-        static std::shared_ptr<GLVertexAttribute<ValueType>> create_or_get(std::shared_ptr<geogo::Attribute<geogo::VertexID, ValueType>> _attribute)
+        static std::shared_ptr<GLVertexAttribute<ValueType>> create_or_get(std::shared_ptr<mesh::Attribute<mesh::VertexID, ValueType>> _attribute)
         {
             auto iterator = dictionary.find(_attribute);
             if (iterator == dictionary.end())
@@ -42,7 +42,7 @@ namespace oogl
             return up_to_date;
         }
         
-        void add_data_at(const geogo::VertexID& id)
+        void add_data_at(const mesh::VertexID& id)
         {
             ValueType vec = attribute->at(id);
             for(int j = 0; j < size; j++)
@@ -69,15 +69,15 @@ namespace oogl
             up_to_date = false;
         }
         
-        static std::map<std::shared_ptr<geogo::Attribute<geogo::VertexID, ValueType>>, std::shared_ptr<GLVertexAttribute<ValueType>>> dictionary;
+        static std::map<std::shared_ptr<mesh::Attribute<mesh::VertexID, ValueType>>, std::shared_ptr<GLVertexAttribute<ValueType>>> dictionary;
         bool up_to_date = false;
-        std::shared_ptr<const geogo::Attribute<geogo::VertexID, ValueType>> attribute;
+        std::shared_ptr<const mesh::Attribute<mesh::VertexID, ValueType>> attribute;
         GLuint buffer_id;
         int size;
         std::vector<float> data;
     };
     
     template<class ValueType>
-    std::map<std::shared_ptr<geogo::Attribute<geogo::VertexID, ValueType>>, std::shared_ptr<GLVertexAttribute<ValueType>>> GLVertexAttribute<ValueType>::dictionary
-    = std::map<std::shared_ptr<geogo::Attribute<geogo::VertexID, ValueType>>, std::shared_ptr<GLVertexAttribute<ValueType>>>();
+    std::map<std::shared_ptr<mesh::Attribute<mesh::VertexID, ValueType>>, std::shared_ptr<GLVertexAttribute<ValueType>>> GLVertexAttribute<ValueType>::dictionary
+    = std::map<std::shared_ptr<mesh::Attribute<mesh::VertexID, ValueType>>, std::shared_ptr<GLVertexAttribute<ValueType>>>();
 }

@@ -17,7 +17,7 @@
 using namespace std;
 using namespace glm;
 using namespace oogl;
-using namespace geogo;
+using namespace mesh;
 
 GLFWwindow* gWindow = NULL;
 

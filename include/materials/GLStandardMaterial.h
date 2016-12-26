@@ -14,10 +14,10 @@ namespace oogl
 {
     class GLStandardMaterial : public GLMaterial
     {
-        const std::shared_ptr<geogo::Attribute<geogo::VertexID, glm::vec3>> normals;
+        const std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec3>> normals;
     public:
         
-        GLStandardMaterial(const std::shared_ptr<geogo::Attribute<geogo::VertexID, glm::vec3>> _normals, const glm::vec3& _ambient, const glm::vec3& _diffuse, const glm::vec3& _specular, double _opacity) : normals(_normals)
+        GLStandardMaterial(const std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec3>> _normals, const glm::vec3& _ambient, const glm::vec3& _diffuse, const glm::vec3& _specular, double _opacity) : normals(_normals)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/phong.vert",  "../GLEngine/shaders/phong.frag");
             

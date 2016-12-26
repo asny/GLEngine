@@ -109,7 +109,7 @@ namespace oogl
             use_uniform(name, std::make_shared<glm::mat4>(value));
         }
         
-        std::shared_ptr<GLVertexAttribute<glm::vec2>> create_attribute(std::string name, std::shared_ptr<geogo::Attribute<geogo::VertexID, glm::vec2>> attribute)
+        std::shared_ptr<GLVertexAttribute<glm::vec2>> create_attribute(std::string name, std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> attribute)
         {
             auto glAttribute = GLVertexAttribute<glm::vec2>::create_or_get(attribute);
             
@@ -124,7 +124,7 @@ namespace oogl
         
     public:
         
-        std::shared_ptr<GLVertexAttribute<glm::vec3>> create_attribute(std::string name, std::shared_ptr<geogo::Attribute<geogo::VertexID, glm::vec3>> attribute)
+        std::shared_ptr<GLVertexAttribute<glm::vec3>> create_attribute(std::string name, std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec3>> attribute)
         {
             auto glAttribute = GLVertexAttribute<glm::vec3>::create_or_get(attribute);
             

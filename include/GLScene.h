@@ -13,7 +13,7 @@ namespace oogl
     {
     public:
         
-        void add_leaf(std::shared_ptr<geogo::Mesh> geometry, std::shared_ptr<GLMaterial> material)
+        void add_leaf(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLMaterial> material)
         {
             auto object = GLObject(geometry, material);
             objects.push_back(object);

@@ -17,7 +17,7 @@ namespace oogl
      */
     class GLObject
     {
-        std::shared_ptr<geogo::Mesh> geometry;
+        std::shared_ptr<mesh::Mesh> geometry;
         std::shared_ptr<GLMaterial> material;
         
         GLuint array_id;
@@ -61,7 +61,7 @@ namespace oogl
         
     public:
         
-        GLObject(std::shared_ptr<geogo::Mesh> geometry, std::shared_ptr<GLMaterial> material) : material(material), geometry(geometry)
+        GLObject(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLMaterial> material) : material(material), geometry(geometry)
         {
             // Generate and bind array
             glGenVertexArrays(1, &array_id);

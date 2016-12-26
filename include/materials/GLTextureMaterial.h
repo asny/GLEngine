@@ -15,11 +15,11 @@ namespace oogl
     class GLTextureMaterial : public GLMaterial
     {
         std::shared_ptr<GLTexture> texture;
-        std::shared_ptr<geogo::Attribute<geogo::VertexID, glm::vec2>> uv_coordinates;
+        std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> uv_coordinates;
         std::shared_ptr<int> texture_id = std::make_shared<int>(0);
     public:
         
-        GLTextureMaterial(std::shared_ptr<GLTexture> _texture, std::shared_ptr<geogo::Attribute<geogo::VertexID, glm::vec2>> _uv_coordinates) : texture(_texture), uv_coordinates(_uv_coordinates)
+        GLTextureMaterial(std::shared_ptr<GLTexture> _texture, std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> _uv_coordinates) : texture(_texture), uv_coordinates(_uv_coordinates)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/texture.vert",  "../GLEngine/shaders/texture.frag");
             
