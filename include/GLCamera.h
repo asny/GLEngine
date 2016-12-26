@@ -7,7 +7,7 @@
 
 #include "GLScene.h"
 
-namespace oogl {
+namespace gle {
     
     /**
      Represents a camera.

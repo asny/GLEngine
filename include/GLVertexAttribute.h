@@ -8,7 +8,7 @@
 #include "GLUtility.h"
 #include "Mesh.h"
 
-namespace oogl
+namespace gle
 {   
     template<class ValueType>
     class GLVertexAttribute

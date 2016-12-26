@@ -7,7 +7,7 @@
 
 #include "GLObject.h"
 
-namespace oogl
+namespace gle
 {
     class GLNode
     {

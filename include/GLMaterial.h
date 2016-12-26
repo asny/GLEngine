@@ -10,7 +10,7 @@
 #include "GLUniform.h"
 #include "GLVertexAttribute.h"
 
-namespace oogl
+namespace gle
 {
     class GLMaterial
     {

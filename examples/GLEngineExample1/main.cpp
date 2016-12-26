@@ -16,7 +16,7 @@
 
 using namespace std;
 using namespace glm;
-using namespace oogl;
+using namespace gle;
 using namespace mesh;
 
 GLFWwindow* gWindow = NULL;

@@ -10,7 +10,7 @@
 #include "GLVertexAttribute.h"
 #include "GLUniform.h"
 
-namespace oogl
+namespace gle
 {
     /**
      Represents an object to draw.

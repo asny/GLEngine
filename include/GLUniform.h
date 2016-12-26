@@ -7,7 +7,7 @@
 
 #include "GLUtility.h"
 
-namespace oogl
+namespace gle
 {
     template <class ValueType>
     class GLUniform

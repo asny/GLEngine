@@ -10,7 +10,7 @@
 
 #include "GLMaterial.h"
 
-namespace oogl
+namespace gle
 {
     class GLSkyboxMaterial : public GLMaterial
     {

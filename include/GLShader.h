@@ -7,7 +7,7 @@
 
 #include "GLUtility.h"
 
-namespace oogl {
+namespace gle {
     /**
      Represents a shader used to draw a GLObject.
      */

@@ -7,7 +7,7 @@
 
 #include "GLUtility.h"
 
-namespace oogl
+namespace gle
 {
     /**
      Represents an OpenGL texture
