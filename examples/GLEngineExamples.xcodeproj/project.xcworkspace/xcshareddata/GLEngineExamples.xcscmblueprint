@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "1C19B601C1D3323BBAB18D15FBAD92AB145EC458",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "5C90B2209D2DAB95601B2B50EEF3562D98E0927F" : 9223372036854775807,
+    "1C19B601C1D3323BBAB18D15FBAD92AB145EC458" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "C0230E54-EE8A-45BA-A7A8-1C488CD51F9F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "5C90B2209D2DAB95601B2B50EEF3562D98E0927F" : "Mesh\/",
+    "1C19B601C1D3323BBAB18D15FBAD92AB145EC458" : "GLEngine\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "GLEngineExamples",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "examples\/GLEngineExamples.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/asny\/GLEngine.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1C19B601C1D3323BBAB18D15FBAD92AB145EC458"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/asny\/Mesh.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5C90B2209D2DAB95601B2B50EEF3562D98E0927F"
+    }
+  ]
+}
