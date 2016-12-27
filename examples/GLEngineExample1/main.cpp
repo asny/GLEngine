@@ -9,6 +9,7 @@
 #include "GLCamera.h"
 #include "MeshCreator.h"
 #include "materials/GLFlatMaterial.h"
+#include "materials/GLStandardMaterial.h"
 #include "gtx/rotate_vector.hpp"
 
 #define GLFW_INCLUDE_NONE
@@ -72,7 +73,7 @@ void create_cubes(GLNode& root)
         rotation_node->add_child(translation_node);
         
         auto geometry = MeshCreator::create_box(false);
-        auto material = shared_ptr<GLMaterial>(new GLFlatMaterial({0.5, 0.5, 0.5}, {0., 0.5, 0.}, {0.5, 0., 0.}, 1.));
+        auto material = shared_ptr<GLMaterial>(new GLStandardMaterial(geometry->normal(), {0.5, 0.5, 0.5}, {0., 0.5, 0.}, {0.5, 0., 0.}, 1.));
         translation_node->add_leaf(geometry, material);
     }
 }
