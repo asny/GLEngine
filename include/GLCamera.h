@@ -8,6 +8,9 @@
 #include "GLScene.h"
 #include "GLBuffer.h"
 
+#include "materials/GLDeferredMaterial.h"
+#include "MeshCreator.h"
+
 namespace gle {
     
     /**
@@ -25,10 +28,11 @@ namespace gle {
         int y = 0;
         
         GBuffer buffer;
+        GLObject screen_quad_object;
         
     public:
         
-        GLCamera(int screen_width, int screen_height)
+        GLCamera(int screen_width, int screen_height) : screen_quad_object(MeshCreator::create_quad(), std::make_shared<GLLightMaterial>())
         {
             // Enable states
             glEnable(GL_DEPTH_TEST);
@@ -36,8 +40,6 @@ namespace gle {
             
             glEnable(GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            
-            glClearColor(1., 1., 1., 0.);
             
             set_screen_size(screen_width, screen_height);
             
@@ -83,6 +85,7 @@ namespace gle {
         static void clear_screen()
         {
             glDepthMask(GL_TRUE); // If it is not possible to write to the depth buffer, we are not able to clear it.
+            glClearColor(1., 1., 1., 0.);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
         
@@ -95,6 +98,37 @@ namespace gle {
         
         void draw_deferred(const GLScene& scene)
         {
+            // Geometry pass
+            glViewport(x, y, width, height);
+            
+            buffer.BindForWriting();
+            clear_screen();
+            glEnable(GL_DEPTH_TEST);
+            glDisable(GL_BLEND);
+            
+            scene.draw(position, view, projection);
+            
+            glDepthMask(GL_FALSE);
+            glDisable(GL_DEPTH_TEST);
+            
+            // Light pass
+            glEnable(GL_BLEND);
+            glBlendEquation(GL_FUNC_ADD);
+            glBlendFunc(GL_ONE, GL_ONE);
+            
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+            
+            buffer.BindForReading();
+            glClearColor(0., 0., 0., 0.);
+            glClear(GL_COLOR_BUFFER_BIT);
+            
+            screen_quad_object.draw(glm::vec3(0.), position, glm::mat4(1.), glm::mat4(1.), glm::mat4(1.));
+            
+            check_gl_error();
+        }
+        
+        void draw_deferred_debug(const GLScene& scene)
+        {
             glViewport(x, y, width, height);
             
             buffer.BindForWriting();
@@ -104,7 +138,7 @@ namespace gle {
             
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
             
-            buffer.BindForReading();
+            buffer.BindForReadingDebug();
             
             GLint HalfWidth = (GLint)(width / 2.0f);
             GLint HalfHeight = (GLint)(height / 2.0f);
