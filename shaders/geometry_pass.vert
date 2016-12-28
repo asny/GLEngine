@@ -1,18 +1,18 @@
 #version 330
-                                                                                    
-in vec3 position;                                            
+
+uniform mat4 MVMatrix;
+uniform mat4 MVPMatrix;
+uniform mat4 NMatrix;
+
+in vec3 position;
 in vec3 normal;
 
-uniform mat4 MVPMatrix;
-uniform mat4 MMatrix;
-
-out vec3 nor;
 out vec3 pos;
-
+out vec3 nor;
 
 void main()
 {
-    nor        = (MMatrix * vec4(normal, 0.0)).xyz;
-    pos      = (MMatrix * vec4(position, 1.0)).xyz;
-    gl_Position    = MVPMatrix * vec4(position, 1.0);
+    pos = (MVMatrix * vec4(position, 1.)).xyz;
+    nor = mat3(NMatrix) * normal;
+    gl_Position = MVPMatrix * vec4(position, 1.0);
 }

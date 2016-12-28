@@ -23,7 +23,8 @@ namespace gle
             shader = GLShader::create_or_get("../GLEngine/shaders/geometry_pass.vert",  "../GLEngine/shaders/geometry_pass.frag");
             
             use_uniform("MVPMatrix", modelViewProjection);
-            use_uniform("MMatrix", model);
+            use_uniform("MVMatrix", modelView);
+            use_uniform("NMatrix", inverseModelView);
         }
         
         void create_attributes(std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
@@ -41,7 +42,6 @@ namespace gle
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/light_pass.vert",  "../GLEngine/shaders/light_pass.frag");
             
-            use_uniform("MVPMatrix", modelViewProjection);
             use_uniform("eyePosition", camera_position);
             use_uniform("lightDirection", glm::vec3(-1., -1., -1.));
             use_uniform("screenSize", glm::vec2(2400, 1400));
