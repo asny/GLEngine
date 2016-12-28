@@ -23,6 +23,7 @@ namespace gle
         
     protected:
         
+        std::shared_ptr<glm::mat4> model = std::make_shared<glm::mat4>(1.);
         std::shared_ptr<glm::mat4> view = std::make_shared<glm::mat4>(1.);
         std::shared_ptr<glm::mat4> modelView = std::make_shared<glm::mat4>(1.);
         std::shared_ptr<glm::mat4> inverseModelView = std::make_shared<glm::mat4>(1.);
@@ -178,6 +179,7 @@ namespace gle
             }
             
             // Update standard uniforms related to object, camera and light.
+            *model = _model;
             *view = _view;
             *modelView = _view * _model;
             *inverseModelView = inverseTranspose(*modelView);
