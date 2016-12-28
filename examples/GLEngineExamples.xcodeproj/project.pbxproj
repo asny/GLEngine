@@ -54,6 +54,10 @@
 		4900D19D1E0DC4FB00F92EBD /* Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mesh.h; path = ../../Mesh/include/Mesh.h; sourceTree = "<group>"; };
 		4900D19E1E0DC4FB00F92EBD /* MeshCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeshCreator.h; path = ../../Mesh/include/MeshCreator.h; sourceTree = "<group>"; };
 		4900D19F1E0DC4FB00F92EBD /* Property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Property.h; path = ../../Mesh/include/Property.h; sourceTree = "<group>"; };
+		49471A531E13110B006E8AD5 /* GLBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLBuffer.h; path = ../include/GLBuffer.h; sourceTree = "<group>"; };
+		49471A541E131A30006E8AD5 /* GLDeferredMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLDeferredMaterial.h; path = ../include/materials/GLDeferredMaterial.h; sourceTree = "<group>"; };
+		49471A551E131AB9006E8AD5 /* geometry_pass.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = geometry_pass.frag; path = ../shaders/geometry_pass.frag; sourceTree = "<group>"; };
+		49471A561E131AB9006E8AD5 /* geometry_pass.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = geometry_pass.vert; path = ../shaders/geometry_pass.vert; sourceTree = "<group>"; };
 		4954F2371E06EF8D005B5739 /* GLEngineExample1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GLEngineExample1; sourceTree = BUILT_PRODUCTS_DIR; };
 		4954F23A1E06EF8D005B5739 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4954F2421E06F459005B5739 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -85,6 +89,7 @@
 				4900D1841E0A72D000F92EBD /* GLUniform.h */,
 				4900D1851E0A72D000F92EBD /* GLUtility.h */,
 				4900D1861E0A72D000F92EBD /* GLVertexAttribute.h */,
+				49471A531E13110B006E8AD5 /* GLBuffer.h */,
 			);
 			name = GLEngine;
 			sourceTree = "<group>";
@@ -96,6 +101,7 @@
 				4900D1891E0AD92900F92EBD /* GLFlatMaterial.h */,
 				4900D18A1E0B224700F92EBD /* GLTextureMaterial.h */,
 				4900D18B1E0B22DE00F92EBD /* GLSkyboxMaterial.h */,
+				49471A541E131A30006E8AD5 /* GLDeferredMaterial.h */,
 			);
 			name = Materials;
 			sourceTree = "<group>";
@@ -103,6 +109,8 @@
 		4900D18E1E0C57A600F92EBD /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				49471A551E131AB9006E8AD5 /* geometry_pass.frag */,
+				49471A561E131AB9006E8AD5 /* geometry_pass.vert */,
 				4900D18F1E0C57BF00F92EBD /* flat.geom */,
 				4900D1901E0C57BF00F92EBD /* gouraud.frag */,
 				4900D1911E0C57BF00F92EBD /* gouraud.vert */,
