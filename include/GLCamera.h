@@ -34,6 +34,8 @@ namespace gle {
             glEnable(GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
+            glClearColor(1., 1., 1., 0.);
+            
             set_screen_size(screen_width, screen_height);
         }
         
@@ -76,7 +78,6 @@ namespace gle {
         static void clear_screen()
         {
             glDepthMask(GL_TRUE); // If it is not possible to write to the depth buffer, we are not able to clear it.
-            glClearColor(1., 1., 1., 0.);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
         
