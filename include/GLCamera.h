@@ -6,6 +6,7 @@
 #pragma once
 
 #include "GLScene.h"
+#include "GLBuffer.h"
 
 namespace gle {
     
@@ -23,6 +24,8 @@ namespace gle {
         int x = 0;
         int y = 0;
         
+        GBuffer buffer;
+        
     public:
         
         GLCamera(int screen_width, int screen_height)
@@ -37,6 +40,8 @@ namespace gle {
             glClearColor(1., 1., 1., 0.);
             
             set_screen_size(screen_width, screen_height);
+            
+            buffer.Init(screen_width, screen_height);
         }
         
         /**
@@ -85,6 +90,39 @@ namespace gle {
         {
             glViewport(x, y, width, height);
             scene.draw(position, view, projection);
+            check_gl_error();
+        }
+        
+        void draw_deferred(const GLScene& scene)
+        {
+            glViewport(x, y, width, height);
+            
+            buffer.BindForWriting();
+            clear_screen();
+            
+            scene.draw(position, view, projection);
+            
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+            
+            buffer.BindForReading();
+            
+            GLint HalfWidth = (GLint)(width / 2.0f);
+            GLint HalfHeight = (GLint)(height / 2.0f);
+            
+            buffer.SetReadBuffer(GBuffer::GBUFFER_TEXTURE_TYPE_DIFFUSE);
+            glBlitFramebuffer(0, 0, width, height, 0, HalfHeight, HalfWidth, height, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+
+            buffer.SetReadBuffer(GBuffer::GBUFFER_TEXTURE_TYPE_NORMAL);
+            glBlitFramebuffer(0, 0, width, height, HalfWidth, HalfHeight, width, height, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+
+            buffer.SetReadBuffer(GBuffer::GBUFFER_TEXTURE_TYPE_POSITION);
+            glBlitFramebuffer(0, 0, width, height, HalfWidth, 0, width, HalfHeight, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+            
+            // Draw actual scene
+            
+            glViewport(0, 0, HalfWidth, HalfHeight);
+            scene.draw(position, view, projection);
+            
             check_gl_error();
         }
     };
