@@ -1,4 +1,4 @@
-#version 150
+#version 330
 
 uniform mat4 VMatrix;
 uniform mat4 MVMatrix;
