@@ -13,9 +13,8 @@ public:
     
     enum GBUFFER_TEXTURE_TYPE {
         GBUFFER_TEXTURE_TYPE_POSITION,
-//        GBUFFER_TEXTURE_TYPE_DIFFUSE,
-//        GBUFFER_TEXTURE_TYPE_NORMAL,
-//        GBUFFER_TEXTURE_TYPE_TEXCOORD,
+        GBUFFER_TEXTURE_TYPE_DIFFUSE,
+        GBUFFER_TEXTURE_TYPE_NORMAL,
         GBUFFER_NUM_TEXTURES
     };
     
@@ -62,7 +61,7 @@ public:
                      NULL);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTexture, 0);
         
-        GLenum DrawBuffers[] = { GL_COLOR_ATTACHMENT0 };//, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
+        GLenum DrawBuffers[] = { GL_COLOR_ATTACHMENT0 , GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
         glDrawBuffers(GBUFFER_NUM_TEXTURES, DrawBuffers);
         
         GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
