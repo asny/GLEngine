@@ -95,11 +95,6 @@ public:
         check_gl_error();
     }
     
-    void BindForReadingDebug()
-    {
-        glBindFramebuffer(GL_READ_FRAMEBUFFER, m_fbo);
-    }
-    
     void SetReadBuffer(GBUFFER_TEXTURE_TYPE TextureType)
     {
         glReadBuffer(GL_COLOR_ATTACHMENT0 + TextureType);
