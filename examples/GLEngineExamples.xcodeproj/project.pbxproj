@@ -60,6 +60,7 @@
 		49471A561E131AB9006E8AD5 /* geometry_pass.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = geometry_pass.vert; path = ../shaders/geometry_pass.vert; sourceTree = "<group>"; };
 		49471A571E14591C006E8AD5 /* light_pass.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = light_pass.frag; path = ../shaders/light_pass.frag; sourceTree = "<group>"; };
 		49471A581E14591C006E8AD5 /* light_pass.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = light_pass.vert; path = ../shaders/light_pass.vert; sourceTree = "<group>"; };
+		49471A5B1E152693006E8AD5 /* GLLight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLLight.h; path = ../include/lights/GLLight.h; sourceTree = "<group>"; };
 		4954F2371E06EF8D005B5739 /* GLEngineExample1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GLEngineExample1; sourceTree = BUILT_PRODUCTS_DIR; };
 		4954F23A1E06EF8D005B5739 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4954F2421E06F459005B5739 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -142,6 +143,14 @@
 			name = Mesh;
 			sourceTree = "<group>";
 		};
+		49471A591E152619006E8AD5 /* Lights */ = {
+			isa = PBXGroup;
+			children = (
+				49471A5B1E152693006E8AD5 /* GLLight.h */,
+			);
+			name = Lights;
+			sourceTree = "<group>";
+		};
 		4954F22E1E06EF8D005B5739 = {
 			isa = PBXGroup;
 			children = (
@@ -149,6 +158,7 @@
 				4900D19A1E0DC4DE00F92EBD /* Mesh */,
 				4900D17D1E0A72A600F92EBD /* GLEngine */,
 				4900D18E1E0C57A600F92EBD /* Shaders */,
+				49471A591E152619006E8AD5 /* Lights */,
 				4900D1871E0AD83800F92EBD /* Materials */,
 				4954F2391E06EF8D005B5739 /* GLEngineExample1 */,
 				4954F2381E06EF8D005B5739 /* Products */,

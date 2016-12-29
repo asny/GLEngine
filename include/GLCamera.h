@@ -8,6 +8,7 @@
 #include "GLScene.h"
 #include "GLBuffer.h"
 
+#include "lights/GLLight.h"
 #include "materials/GLDeferredMaterial.h"
 #include "MeshCreator.h"
 
@@ -32,7 +33,7 @@ namespace gle {
         
     public:
         
-        GLCamera(int screen_width, int screen_height) : screen_quad_object(MeshCreator::create_quad(), std::make_shared<GLLightMaterial>())
+        GLCamera(int screen_width, int screen_height) : screen_quad_object(MeshCreator::create_quad(), std::make_shared<GLDirectionalLight>())
         {
             // Enable states
             glEnable(GL_DEPTH_TEST);
