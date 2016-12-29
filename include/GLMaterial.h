@@ -31,7 +31,6 @@ namespace gle
         std::shared_ptr<glm::mat4> modelViewProjection = std::make_shared<glm::mat4>(1.);
         
         std::shared_ptr<glm::vec3> camera_position = std::make_shared<glm::vec3>(0.);
-        std::shared_ptr<glm::vec3> light_position = std::make_shared<glm::vec3>(0.);
         
         bool cull_back_faces = true;
         bool test_depth = true;
@@ -144,7 +143,7 @@ namespace gle
             
         }
         
-        virtual void pre_draw(const glm::vec3& _light_position, const glm::vec3& _camera_position, const glm::mat4& _model, const glm::mat4& _view, const glm::mat4& _projection)
+        virtual void pre_draw(const glm::vec3& _camera_position, const glm::mat4& _model, const glm::mat4& _view, const glm::mat4& _projection)
         {
             shader->use();
             
@@ -186,7 +185,6 @@ namespace gle
             *projection = _projection;
             *modelViewProjection = _projection * (*modelView);
             *camera_position = _camera_position;
-            *light_position = _light_position;
             
             // Use uniforms
             for (auto glUniform : int_uniforms)

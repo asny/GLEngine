@@ -123,7 +123,7 @@ namespace gle {
             glClearColor(0., 0., 0., 0.);
             glClear(GL_COLOR_BUFFER_BIT);
             
-            screen_quad_object.draw(glm::vec3(0.), position, glm::mat4(1.), glm::mat4(1.), glm::mat4(1.));
+            screen_quad_object.draw(position, glm::mat4(1.), glm::mat4(1.), glm::mat4(1.));
             
             check_gl_error();
         }

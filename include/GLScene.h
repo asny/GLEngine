@@ -29,7 +29,7 @@ namespace gle
         {
             for (const GLObject& object : objects)
             {
-                object.draw(light_pos, camera_position, model, view, projection);
+                object.draw(camera_position, model, view, projection);
             }
             for (std::shared_ptr<const GLNode> node : nodes)
             {
@@ -38,7 +38,6 @@ namespace gle
         }
         
     private:
-        glm::vec3 light_pos = glm::vec3(5., 5., 5.);
         std::vector<const GLObject> objects = std::vector<const GLObject>();
         std::vector<std::shared_ptr<GLNode>> nodes = std::vector<std::shared_ptr<GLNode>>();
     };

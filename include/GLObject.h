@@ -71,7 +71,7 @@ namespace gle
         /**
          Draws the object.
          */
-        void draw(const glm::vec3& light_position, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
+        void draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
         {
             // Infer draw mode
             GLenum drawmode;
@@ -108,7 +108,7 @@ namespace gle
             }
             
             // Use material specific uniforms and states
-            material->pre_draw(light_position, camera_position, model, view, projection);
+            material->pre_draw(camera_position, model, view, projection);
             
             // Bind vertex array and draw
             glBindVertexArray(array_id);
