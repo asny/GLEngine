@@ -12,8 +12,10 @@ namespace gle
     class GLLight : public GLMaterial
     {
     protected:
-        void init()
+        GLLight(const std::string& vertex_shader_filename, const std::string& fragment_shader_filename)
         {
+            shader = GLShader::create_or_get(vertex_shader_filename, fragment_shader_filename);
+            
             use_uniform("screenSize", glm::vec2(2400, 1400));
             
             use_uniform_int("positionMap", 0);
@@ -29,12 +31,11 @@ namespace gle
     {
     public:
         
-        GLDirectionalLight(const glm::vec3& direction)
+        GLDirectionalLight(const glm::vec3& direction) :
+            GLLight("../GLEngine/shaders/light_pass.vert",  "../GLEngine/shaders/light_pass.frag")
         {
-            shader = GLShader::create_or_get("../GLEngine/shaders/light_pass.vert",  "../GLEngine/shaders/light_pass.frag");
             
             use_uniform("lightDirection", direction);
-            init();
         }
     };
 }
