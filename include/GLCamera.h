@@ -33,7 +33,7 @@ namespace gle {
         
     public:
         
-        GLCamera(int screen_width, int screen_height) : screen_quad_object(MeshCreator::create_quad(), std::make_shared<GLDirectionalLight>())
+        GLCamera(int screen_width, int screen_height) : screen_quad_object(MeshCreator::create_quad(), std::make_shared<GLDirectionalLight>(glm::vec3(-1., -1., -1.)))
         {
             // Enable states
             glEnable(GL_DEPTH_TEST);
