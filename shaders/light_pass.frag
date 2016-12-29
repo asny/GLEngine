@@ -4,7 +4,6 @@ uniform sampler2D positionMap;
 uniform sampler2D colorMap;
 uniform sampler2D normalMap;
 
-uniform vec3 eyePosition;
 uniform vec2 screenSize;
 uniform vec3 lightDirection;
 

@@ -25,8 +25,6 @@ namespace gle
         
     };
     
-    
-    
     class GLDirectionalLight : public GLLight
     {
     public:
@@ -35,7 +33,6 @@ namespace gle
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/light_pass.vert",  "../GLEngine/shaders/light_pass.frag");
             
-            use_uniform("eyePosition", camera_position);
             use_uniform("lightDirection", direction);
             init();
         }
