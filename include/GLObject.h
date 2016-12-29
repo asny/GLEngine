@@ -24,9 +24,6 @@ namespace gle
         std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>> vec2_vertex_attributes;
         std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>> vec3_vertex_attributes;
         
-        // Transformation
-        std::shared_ptr<glm::mat4> modelMatrix = std::make_shared<glm::mat4>(1.);
-        
         template<class T>
         void update_attribute(std::shared_ptr<GLVertexAttribute<T>> attribute) const
         {
@@ -118,27 +115,6 @@ namespace gle
             glDrawArrays(drawmode, 0, no_vertices);
             
             check_gl_error();
-        }
-        
-        /**
-         Set the model matrix.
-         */
-        void set_model_matrix(const std::shared_ptr<glm::mat4> _modelMatrix)
-        {
-            modelMatrix = _modelMatrix;
-        }
-        
-        /**
-         Set the model matrix.
-         */
-        void set_model_matrix(const glm::mat4& _modelMatrix)
-        {
-            modelMatrix = std::make_shared<glm::mat4>(_modelMatrix);
-        }
-        
-        const glm::mat4& get_model()
-        {
-            return *modelMatrix;
         }
     };
 }
