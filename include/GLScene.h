@@ -21,7 +21,7 @@ namespace gle
         
         void add_child(std::shared_ptr<GLNode> node)
         {
-            nodes.push_back(node);
+            children.push_back(node);
         }
         
     protected:
@@ -31,15 +31,15 @@ namespace gle
             {
                 object.draw(camera_position, model, view, projection);
             }
-            for (std::shared_ptr<const GLNode> node : nodes)
+            for (std::shared_ptr<const GLNode> child : children)
             {
-                node->draw(camera_position, model, view, projection);
+                child->draw(camera_position, model, view, projection);
             }
         }
         
     private:
         std::vector<const GLObject> objects = std::vector<const GLObject>();
-        std::vector<std::shared_ptr<GLNode>> nodes = std::vector<std::shared_ptr<GLNode>>();
+        std::vector<std::shared_ptr<GLNode>> children = std::vector<std::shared_ptr<GLNode>>();
     };
     
     class GLScene : public GLNode
