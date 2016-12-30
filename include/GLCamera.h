@@ -8,10 +8,6 @@
 #include "GLScene.h"
 #include "GLBuffer.h"
 
-#include "lights/GLLight.h"
-#include "materials/GLDeferredMaterial.h"
-#include "MeshCreator.h"
-
 namespace gle {
     
     /**
@@ -29,8 +25,6 @@ namespace gle {
         int y = 0;
         
         GBuffer buffer;
-        std::shared_ptr<GLObject> screen_quad_object;
-        std::shared_ptr<GLLight> light;
         
     public:
         
@@ -46,9 +40,6 @@ namespace gle {
             set_screen_size(screen_width, screen_height);
             
             buffer.Init(screen_width, screen_height);
-            
-            light = std::make_shared<GLDirectionalLight>(glm::vec3(-1., -1., -1.));
-            screen_quad_object = std::make_shared<GLObject>(MeshCreator::create_quad(), light);
         }
         
         /**
@@ -127,8 +118,7 @@ namespace gle {
             glClearColor(0., 0., 0., 0.);
             glClear(GL_COLOR_BUFFER_BIT);
             
-            light->pre_draw(position, glm::mat4(1.), glm::mat4(1.), glm::mat4(1.));
-            screen_quad_object->draw();
+            scene.draw_light_pass(position);
             
             check_gl_error();
         }
