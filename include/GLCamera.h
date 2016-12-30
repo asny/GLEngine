@@ -29,11 +29,12 @@ namespace gle {
         int y = 0;
         
         GBuffer buffer;
-        GLObject screen_quad_object;
+        std::shared_ptr<GLObject> screen_quad_object;
+        std::shared_ptr<GLLight> light;
         
     public:
         
-        GLCamera(int screen_width, int screen_height) : screen_quad_object(MeshCreator::create_quad(), std::make_shared<GLDirectionalLight>(glm::vec3(-1., -1., -1.)))
+        GLCamera(int screen_width, int screen_height)
         {
             // Enable states
             glEnable(GL_DEPTH_TEST);
@@ -45,6 +46,9 @@ namespace gle {
             set_screen_size(screen_width, screen_height);
             
             buffer.Init(screen_width, screen_height);
+            
+            light = std::make_shared<GLDirectionalLight>(glm::vec3(-1., -1., -1.));
+            screen_quad_object = std::make_shared<GLObject>(MeshCreator::create_quad(), light);
         }
         
         /**
@@ -123,7 +127,8 @@ namespace gle {
             glClearColor(0., 0., 0., 0.);
             glClear(GL_COLOR_BUFFER_BIT);
             
-            screen_quad_object.draw(position, glm::mat4(1.), glm::mat4(1.), glm::mat4(1.));
+            light->pre_draw(position, glm::mat4(1.), glm::mat4(1.), glm::mat4(1.));
+            screen_quad_object->draw();
             
             check_gl_error();
         }
