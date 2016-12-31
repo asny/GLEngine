@@ -27,10 +27,11 @@ namespace gle
             use_uniform_int("texture0", texture_id);
         }
         
-        void create_attributes(std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
+        void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
                                std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes)
         {
-            vec2_vertex_attributes.push_back(create_attribute("uv_coordinates", uv_coordinates));
+            vec3_vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
+            vec2_vertex_attributes.push_back(shader->create_attribute("uv_coordinates", uv_coordinates));
         }
         
         void pre_draw(const glm::vec3& light_position, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)

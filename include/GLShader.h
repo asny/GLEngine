@@ -6,6 +6,7 @@
 #pragma once
 
 #include "GLUtility.h"
+#include "GLVertexAttribute.h"
 
 namespace gle {
     /**
@@ -63,6 +64,32 @@ namespace gle {
                 std::cerr << "Shader did not contain the '" << variable_name << "' attribute variable."<<std::endl;
             }
             return attributeLocation;
+        }
+        
+        std::shared_ptr<GLVertexAttribute<glm::vec2>> create_attribute(std::string name, std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> attribute)
+        {
+            auto glAttribute = GLVertexAttribute<glm::vec2>::create_or_get(attribute);
+            
+            // Initialize attribute
+            auto location = get_attribute_location(name);
+            glEnableVertexAttribArray(location);
+            glVertexAttribPointer(location, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (const GLvoid *)(0));
+            check_gl_error();
+            
+            return glAttribute;
+        }
+        
+        std::shared_ptr<GLVertexAttribute<glm::vec3>> create_attribute(std::string name, std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec3>> attribute)
+        {
+            auto glAttribute = GLVertexAttribute<glm::vec3>::create_or_get(attribute);
+            
+            // Initialize attribute
+            auto location = get_attribute_location(name);
+            glEnableVertexAttribArray(location);
+            glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (const GLvoid *)(0));
+            check_gl_error();
+            
+            return glAttribute;
         }
         
         // ****** Uniform variable functionality ********

@@ -63,8 +63,7 @@ namespace gle
             glGenVertexArrays(1, &array_id);
             glBindVertexArray(array_id);
             
-            vec3_vertex_attributes.push_back(material->create_attribute("position", geometry->position()));
-            material->create_attributes(vec2_vertex_attributes, vec3_vertex_attributes);
+            material->create_attributes(geometry, vec2_vertex_attributes, vec3_vertex_attributes);
         }
         
         /**

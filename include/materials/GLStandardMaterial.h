@@ -14,10 +14,9 @@ namespace gle
 {
     class GLStandardMaterial : public GLMaterial
     {
-        const std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec3>> normals;
     public:
         
-        GLStandardMaterial(const std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec3>> _normals, const glm::vec3& _ambient, const glm::vec3& _diffuse, const glm::vec3& _specular, double _opacity) : normals(_normals)
+        GLStandardMaterial(const glm::vec3& _ambient, const glm::vec3& _diffuse, const glm::vec3& _specular, double _opacity)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/phong.vert",  "../GLEngine/shaders/phong.frag");
             
@@ -34,10 +33,11 @@ namespace gle
             test_depth = _opacity >= 0.999;
         }
         
-        void create_attributes(std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
+        void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
                                std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes)
         {
-            vec3_vertex_attributes.push_back(create_attribute("normal", normals));
+            vec3_vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
+            vec3_vertex_attributes.push_back(shader->create_attribute("normal", geometry->normal()));
         }
     };
 }

@@ -15,10 +15,9 @@ namespace gle
     
     class GLDeferredMaterial : public GLMaterial
     {
-        const std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec3>> normals;
     public:
         
-        GLDeferredMaterial(const std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec3>> _normals) : normals(_normals)
+        GLDeferredMaterial()
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/geometry_pass.vert",  "../GLEngine/shaders/geometry_pass.frag");
             
@@ -27,10 +26,11 @@ namespace gle
             use_uniform("NMatrix", inverseModelView);
         }
         
-        void create_attributes(std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
+        void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
                                std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes)
         {
-            vec3_vertex_attributes.push_back(create_attribute("normal", normals));
+            vec3_vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
+            vec3_vertex_attributes.push_back(shader->create_attribute("normal", geometry->normal()));
         }
     };
 }

@@ -109,38 +109,12 @@ namespace gle
             use_uniform(name, std::make_shared<glm::mat4>(value));
         }
         
-        std::shared_ptr<GLVertexAttribute<glm::vec2>> create_attribute(std::string name, std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> attribute)
-        {
-            auto glAttribute = GLVertexAttribute<glm::vec2>::create_or_get(attribute);
-            
-            // Initialize attribute
-            auto location = shader->get_attribute_location(name);
-            glEnableVertexAttribArray(location);
-            glVertexAttribPointer(location, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (const GLvoid *)(0));
-            check_gl_error();
-            
-            return glAttribute;
-        }
-        
     public:
         
-        std::shared_ptr<GLVertexAttribute<glm::vec3>> create_attribute(std::string name, std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec3>> attribute)
-        {
-            auto glAttribute = GLVertexAttribute<glm::vec3>::create_or_get(attribute);
-            
-            // Initialize attribute
-            auto location = shader->get_attribute_location(name);
-            glEnableVertexAttribArray(location);
-            glVertexAttribPointer(location, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (const GLvoid *)(0));
-            check_gl_error();
-            
-            return glAttribute;
-        }
-        
-        virtual void create_attributes(std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
+        virtual void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
                                std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes)
         {
-            
+            vec3_vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
         }
         
         virtual void pre_draw(const glm::vec3& _camera_position, const glm::mat4& _model, const glm::mat4& _view, const glm::mat4& _projection)
