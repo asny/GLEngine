@@ -18,20 +18,6 @@ namespace gle
         std::shared_ptr<GLUniform<int>> normalMapUniform;
         std::shared_ptr<GLUniform<glm::vec2>> screenSizeUniform;
         
-        static std::shared_ptr<mesh::Mesh> create_screen_quad()
-        {
-            auto mesh = std::make_shared<mesh::Mesh>();
-            
-            mesh::VertexID* v1 = mesh->create_vertex(glm::vec3(-1., -1., 0.));
-            mesh::VertexID* v2 = mesh->create_vertex(glm::vec3(-1., 1., 0.));
-            mesh::VertexID* v3 = mesh->create_vertex(glm::vec3(1., 1., 0.));
-            mesh::VertexID* v4 = mesh->create_vertex(glm::vec3(1., -1., 0.));
-            mesh->create_face(v1, v3, v2);
-            mesh->create_face(v3, v1, v4);
-            
-            return mesh;
-        }
-        
     protected:
         std::shared_ptr<GLShader> shader;
         
@@ -48,16 +34,18 @@ namespace gle
             glGenVertexArrays(1, &array_id);
             glBindVertexArray(array_id);
             
-            auto mesh = create_screen_quad();
+            // Create mesh
+            auto mesh = std::make_shared<mesh::Mesh>();
+            mesh::VertexID* v1 = mesh->create_vertex(glm::vec3(-3., -1., 0.));
+            mesh::VertexID* v2 = mesh->create_vertex(glm::vec3(3., -1., 0.));
+            mesh::VertexID* v3 = mesh->create_vertex(glm::vec3(0., 2., 0.));
+            mesh->create_face(v1, v3, v2);
+            
+            // Create attribute and send data.
             auto attribute = shader->create_attribute("position", mesh->position());
-            
-            for(auto face = mesh->faces_begin(); face != mesh->faces_end(); face = face->next())
-            {
-                attribute->add_data_at(*face->v1());
-                attribute->add_data_at(*face->v2());
-                attribute->add_data_at(*face->v3());
-            }
-            
+            attribute->add_data_at(*v1);
+            attribute->add_data_at(*v2);
+            attribute->add_data_at(*v3);
             attribute->send_data();
         }
         
