@@ -13,7 +13,7 @@
 namespace gle
 {
     
-    class GLDeferredMaterial : public GLMaterial
+    class GLColorMaterial : public GLMaterial
     {
         std::shared_ptr<GLUniform<glm::mat4>> MVPUniform;
         std::shared_ptr<GLUniform<glm::mat4>> MVUniform;
@@ -23,9 +23,9 @@ namespace gle
         
     public:
         
-        GLDeferredMaterial(const glm::vec3& color)
+        GLColorMaterial(const glm::vec3& color)
         {
-            shader = GLShader::create_or_get("../GLEngine/shaders/geometry_pass.vert",  "../GLEngine/shaders/geometry_pass.frag");
+            shader = GLShader::create_or_get("../GLEngine/shaders/color_material.vert",  "../GLEngine/shaders/color_material.frag");
             
             MVPUniform = shader->create_uniform("MVPMatrix", glm::mat4(1.));
             MVUniform = shader->create_uniform("MVMatrix", glm::mat4(1.));
