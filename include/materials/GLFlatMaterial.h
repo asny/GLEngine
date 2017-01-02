@@ -13,25 +13,43 @@
 namespace gle
 {
     
-//    class GLFlatMaterial : public GLMaterial
-//    {
-//    public:
-//        
-//        GLFlatMaterial(const glm::vec3& _ambient, const glm::vec3& _diffuse, const glm::vec3& _specular, double _opacity)
-//        {
-//            shader = GLShader::create_or_get("../GLEngine/shaders/pre_geom.vert",  "../GLEngine/shaders/phong.frag", "../GLEngine/shaders/flat.geom");
-//            
-//            use_uniform("VMatrix", view);
-//            use_uniform("MVMatrix", modelView);
-//            use_uniform("PMatrix", projection);
-//            use_uniform("lightPos", glm::vec3(5., 5., 5.));
-//            use_uniform("ambientMat", _ambient);
-//            use_uniform("diffuseMat", _diffuse);
-//            use_uniform("specMat", _specular);
-//            use_uniform("opacity", _opacity);
-//            
-//            test_depth = _opacity >= 0.999;
-//        }
-//    };
+    class GLFlatMaterial : public GLMaterial
+    {
+        std::shared_ptr<GLUniform<glm::mat4>> PUniform;
+        std::shared_ptr<GLUniform<glm::mat4>> MVUniform;
+        std::shared_ptr<GLUniform<glm::mat4>> NUniform;
+        
+        std::shared_ptr<GLUniform<glm::vec3>> colorUniform;
+    public:
+        
+        GLFlatMaterial(const glm::vec3& color)
+        {
+            shader = GLShader::create_or_get("../GLEngine/shaders/pre_geom.vert",  "../GLEngine/shaders/color_material.frag", "../GLEngine/shaders/flat.geom");
+            
+            PUniform = shader->create_uniform("PMatrix", glm::mat4(1.));
+            MVUniform = shader->create_uniform("MVMatrix", glm::mat4(1.));
+            NUniform = shader->create_uniform("NMatrix", glm::mat4(1.));
+            
+            colorUniform = shader->create_uniform("materialColor", color);
+        }
+        
+        void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
+                               std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes)
+        {
+            vec3_vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
+        }
+        
+        void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
+        {
+            auto modelView = view * model;
+            
+            shader->use();
+            MVUniform->use(modelView);
+            PUniform->use(projection);
+            NUniform->use(inverseTranspose(modelView));
+            
+            colorUniform->use();
+        }
+    };
     
 }
