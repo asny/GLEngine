@@ -21,9 +21,9 @@ namespace gle
     protected:
         std::shared_ptr<GLShader> shader;
         
-        GLLight(const std::string& vertex_shader_filename, const std::string& fragment_shader_filename)
+        GLLight(const std::string& fragment_shader_filename)
         {
-            shader = GLShader::create_or_get(vertex_shader_filename, fragment_shader_filename);
+            shader = GLShader::create_or_get("../GLEngine/shaders/light_pass.vert",  fragment_shader_filename);
             
             screenSizeUniform = shader->create_uniform("screenSize", glm::vec2(2400, 1400));
             positionMapUniform = shader->create_uniform_int("positionMap", 0);
@@ -79,7 +79,7 @@ namespace gle
     public:
         
         GLDirectionalLight(const glm::vec3& direction) :
-            GLLight("../GLEngine/shaders/light_pass.vert",  "../GLEngine/shaders/light_pass.frag")
+            GLLight("../GLEngine/shaders/light_pass.frag")
         {
             
             lightDirectionUniform = shader->create_uniform("lightDirection", direction);
