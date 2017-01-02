@@ -19,15 +19,19 @@ namespace gle
         std::shared_ptr<GLUniform<glm::mat4>> MVUniform;
         std::shared_ptr<GLUniform<glm::mat4>> NUniform;
         
+        std::shared_ptr<GLUniform<glm::vec3>> colorUniform;
+        
     public:
         
-        GLDeferredMaterial()
+        GLDeferredMaterial(const glm::vec3& color)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/geometry_pass.vert",  "../GLEngine/shaders/geometry_pass.frag");
             
             MVPUniform = shader->create_uniform("MVPMatrix", glm::mat4(1.));
             MVUniform = shader->create_uniform("MVMatrix", glm::mat4(1.));
             NUniform = shader->create_uniform("NMatrix", glm::mat4(1.));
+            
+            colorUniform = shader->create_uniform("materialColor", color);
         }
         
         void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
@@ -45,6 +49,8 @@ namespace gle
             MVUniform->use(modelView);
             MVPUniform->use(projection * modelView);
             NUniform->use(inverseTranspose(modelView));
+            
+            colorUniform->use();
         }
     };
 }
