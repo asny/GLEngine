@@ -10,6 +10,7 @@
 #include "MeshCreator.h"
 #include "materials/GLFlatMaterial.h"
 #include "materials/GLStandardMaterial.h"
+#include "materials/GLColorMaterial.h"
 #include "gtx/rotate_vector.hpp"
 
 #define GLFW_INCLUDE_NONE
@@ -55,8 +56,10 @@ void update()
     last_time = time;
 }
 
-void create_cubes(GLNode& root)
+void create_cubes(GLScene& root)
 {
+    root.add_light(std::make_shared<GLDirectionalLight>(glm::vec3(1., -1., -1.)));
+    
     auto rotation_node = std::make_shared<GLTransformationNode>(cube_rotation);
     root.add_child(rotation_node);
     
@@ -65,7 +68,7 @@ void create_cubes(GLNode& root)
         rotation_node->add_child(translation_node);
         
         auto geometry = MeshCreator::create_box(false);
-        auto material = shared_ptr<GLMaterial>(new GLFlatMaterial({0.5, 0.5, 0.5}, {0., 0.5, 0.}, {0.5, 0., 0.}, 1.));
+        auto material = make_shared<GLFlatMaterial>(vec3(0.1, 0.5, 0.5));
         translation_node->add_leaf(geometry, material);
     }
     {
@@ -73,7 +76,7 @@ void create_cubes(GLNode& root)
         rotation_node->add_child(translation_node);
         
         auto geometry = MeshCreator::create_box(false);
-        auto material = shared_ptr<GLMaterial>(new GLStandardMaterial(geometry->normal(), {0.5, 0.5, 0.5}, {0., 0.5, 0.}, {0.5, 0., 0.}, 1.));
+        auto material = make_shared<GLColorMaterial>(vec3(0.5, 0.1, 0.7));
         translation_node->add_leaf(geometry, material);
     }
 }
@@ -125,7 +128,7 @@ int main(int argc, const char * argv[])
         
         // draw one frame
         GLCamera::clear_screen();
-        camera.draw(scene);
+        camera.draw_deferred(scene);
         
         glfwSwapBuffers(gWindow);
         
