@@ -104,21 +104,14 @@ namespace gle {
             
             scene.draw(position, view, projection);
             
-            glDepthMask(GL_FALSE);
-            glDisable(GL_DEPTH_TEST);
-            
             // Light pass
-            glEnable(GL_BLEND);
-            glBlendEquation(GL_FUNC_ADD);
-            glBlendFunc(GL_ONE, GL_ONE);
-            
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
             
             buffer.BindForReading();
             glClearColor(0., 0., 0., 0.);
             glClear(GL_COLOR_BUFFER_BIT);
             
-            scene.draw_light_pass(position);
+            scene.shine_light(position);
             
             check_gl_error();
         }

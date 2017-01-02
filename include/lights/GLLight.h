@@ -56,6 +56,18 @@ namespace gle
         
     public:
         
+        static void pre_shine()
+        {
+            // Do not write or test with the depth buffer
+            glDepthMask(GL_FALSE);
+            glDisable(GL_DEPTH_TEST);
+            
+            // Set up blending
+            glEnable(GL_BLEND);
+            glBlendEquation(GL_FUNC_ADD);
+            glBlendFunc(GL_ONE, GL_ONE);
+        }
+        
         void shine()
         {
             shader->use();
@@ -69,7 +81,7 @@ namespace gle
             
             // Bind vertex array and draw
             glBindVertexArray(array_id);
-            glDrawArrays(GL_TRIANGLES, 0, 6);
+            glDrawArrays(GL_TRIANGLES, 0, 3);
         }
     };
     

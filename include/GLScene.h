@@ -66,8 +66,9 @@ namespace gle
             GLNode::draw(camera_position, model, view, projection);
         }
         
-        void draw_light_pass(const glm::vec3& camera_position) const
+        void shine_light(const glm::vec3& camera_position) const
         {
+            GLLight::pre_shine();
             for(auto light : lights)
             {
                 light->shine();
