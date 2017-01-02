@@ -17,7 +17,6 @@ namespace gle
     {
         std::shared_ptr<GLUniform<glm::mat4>> PUniform;
         std::shared_ptr<GLUniform<glm::mat4>> MVUniform;
-        std::shared_ptr<GLUniform<glm::mat4>> NUniform;
         
         std::shared_ptr<GLUniform<glm::vec3>> colorUniform;
     public:
@@ -28,7 +27,6 @@ namespace gle
             
             PUniform = shader->create_uniform("PMatrix", glm::mat4(1.));
             MVUniform = shader->create_uniform("MVMatrix", glm::mat4(1.));
-            NUniform = shader->create_uniform("NMatrix", glm::mat4(1.));
             
             colorUniform = shader->create_uniform("materialColor", color);
         }
@@ -46,7 +44,6 @@ namespace gle
             shader->use();
             MVUniform->use(modelView);
             PUniform->use(projection);
-            NUniform->use(inverseTranspose(modelView));
             
             colorUniform->use();
         }
