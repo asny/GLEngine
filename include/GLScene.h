@@ -92,7 +92,7 @@ namespace gle
         {
             for(auto light : lights)
             {
-                light->pre_draw(camera_position, glm::mat4(1.), glm::mat4(1.), glm::mat4(1.));
+                light->pre_draw();
                 screen_quad_object->draw();
             }
         }
