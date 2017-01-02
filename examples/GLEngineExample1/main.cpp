@@ -8,8 +8,7 @@
 
 #include "GLCamera.h"
 #include "MeshCreator.h"
-#include "materials/GLFlatMaterial.h"
-#include "materials/GLStandardMaterial.h"
+#include "materials/GLFlatColorMaterial.h"
 #include "materials/GLColorMaterial.h"
 #include "gtx/rotate_vector.hpp"
 
@@ -68,7 +67,7 @@ void create_cubes(GLScene& root)
         rotation_node->add_child(translation_node);
         
         auto geometry = MeshCreator::create_box(false);
-        auto material = make_shared<GLFlatMaterial>(vec3(0.1, 0.5, 0.5));
+        auto material = make_shared<GLFlatColorMaterial>(vec3(0.1, 0.5, 0.5));
         translation_node->add_leaf(geometry, material);
     }
     {

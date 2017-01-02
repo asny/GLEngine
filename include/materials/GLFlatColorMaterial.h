@@ -13,7 +13,7 @@
 namespace gle
 {
     
-    class GLFlatMaterial : public GLMaterial
+    class GLFlatColorMaterial : public GLMaterial
     {
         std::shared_ptr<GLUniform<glm::mat4>> PUniform;
         std::shared_ptr<GLUniform<glm::mat4>> MVUniform;
@@ -22,7 +22,7 @@ namespace gle
         std::shared_ptr<GLUniform<glm::vec3>> colorUniform;
     public:
         
-        GLFlatMaterial(const glm::vec3& color)
+        GLFlatColorMaterial(const glm::vec3& color)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/pre_geom.vert",  "../GLEngine/shaders/color_material.frag", "../GLEngine/shaders/flat.geom");
             
