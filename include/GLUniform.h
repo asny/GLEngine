@@ -29,6 +29,11 @@ namespace gle
             set(*value);
         }
         
+        void use(const ValueType& value)
+        {
+            set(value);
+        }
+        
     private:
         const std::shared_ptr<ValueType> value;
         GLuint location;

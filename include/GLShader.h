@@ -7,6 +7,7 @@
 
 #include "GLUtility.h"
 #include "GLVertexAttribute.h"
+#include "GLUniform.h"
 
 namespace gle {
     /**
@@ -102,6 +103,42 @@ namespace gle {
                 std::cerr << "Shader did not contain the '" << variable_name << "' uniform variable."<<std::endl;
             }
             return uniformLocation;
+        }
+        
+        std::shared_ptr<GLUniform<int>> create_uniform_int(const std::string& name, const int& value)
+        {
+            auto location = get_uniform_location(name);
+            return std::make_shared<GLUniform<int>>(location, value);
+        }
+        
+        std::shared_ptr<GLUniform<float>> create_uniform(const std::string& name, const float& value)
+        {
+            auto location = get_uniform_location(name);
+            return std::make_shared<GLUniform<float>>(location, value);
+        }
+        
+        std::shared_ptr<GLUniform<glm::vec2>> create_uniform(const std::string& name, const glm::vec2& value)
+        {
+            auto location = get_uniform_location(name);
+            return std::make_shared<GLUniform<glm::vec2>>(location, value);
+        }
+        
+        std::shared_ptr<GLUniform<glm::vec3>> create_uniform(const std::string& name, const glm::vec3& value)
+        {
+            auto location = get_uniform_location(name);
+            return std::make_shared<GLUniform<glm::vec3>>(location, value);
+        }
+        
+        std::shared_ptr<GLUniform<glm::vec4>> create_uniform(const std::string& name, const glm::vec4& value)
+        {
+            auto location = get_uniform_location(name);
+            return std::make_shared<GLUniform<glm::vec4>>(location, value);
+        }
+        
+        std::shared_ptr<GLUniform<glm::mat4>> create_uniform(const std::string& name, const glm::mat4& value)
+        {
+            auto location = get_uniform_location(name);
+            return std::make_shared<GLUniform<glm::mat4>>(location, value);
         }
         
     private:
