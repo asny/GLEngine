@@ -18,6 +18,7 @@ namespace gle
     class GLObject
     {
         std::shared_ptr<mesh::Mesh> geometry;
+        std::shared_ptr<GLMaterial> material;
         
         GLuint array_id;
         std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>> vec2_vertex_attributes;
@@ -57,7 +58,7 @@ namespace gle
         
     public:
         
-        GLObject(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLMaterial> material) : geometry(geometry)
+        GLObject(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLMaterial> material) : material(material), geometry(geometry)
         {
             // Generate and bind array
             glGenVertexArrays(1, &array_id);
@@ -69,7 +70,7 @@ namespace gle
         /**
          Draws the object.
          */
-        void draw() const
+        void draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
         {
             // Infer draw mode
             GLenum drawmode;
@@ -104,6 +105,9 @@ namespace gle
             {
                 update_attribute(glAttribute);
             }
+            
+            // Use material specific uniforms and states
+            material->pre_draw(camera_position, model, view, projection);
             
             // Bind vertex array and draw
             glBindVertexArray(array_id);

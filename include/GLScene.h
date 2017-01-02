@@ -12,16 +12,11 @@ namespace gle
 {
     class GLNode
     {
-        struct Object
-        {
-            std::shared_ptr<GLObject> geometry;
-            std::shared_ptr<GLMaterial> material;
-        };
     public:
         
         void add_leaf(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLMaterial> material)
         {
-            Object object = {std::make_shared<GLObject>(geometry, material), material};
+            auto object = GLObject(geometry, material);
             objects.push_back(object);
         }
         
@@ -33,10 +28,9 @@ namespace gle
     protected:
         virtual void draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
         {
-            for (const Object& object : objects)
+            for (const GLObject& object : objects)
             {
-                object.material->pre_draw(camera_position, model, view, projection);
-                object.geometry->draw();
+                object.draw(camera_position, model, view, projection);
             }
             for (std::shared_ptr<const GLNode> child : children)
             {
@@ -45,7 +39,7 @@ namespace gle
         }
         
     private:
-        std::vector<const Object> objects = std::vector<const Object>();
+        std::vector<const GLObject> objects = std::vector<const GLObject>();
         std::vector<std::shared_ptr<GLNode>> children = std::vector<std::shared_ptr<GLNode>>();
     };
     
