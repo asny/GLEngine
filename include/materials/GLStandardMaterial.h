@@ -12,32 +12,57 @@
 
 namespace gle
 {
-//    class GLStandardMaterial : public GLMaterial
-//    {
-//    public:
-//        
-//        GLStandardMaterial(const glm::vec3& _ambient, const glm::vec3& _diffuse, const glm::vec3& _specular, double _opacity)
-//        {
-//            shader = GLShader::create_or_get("../GLEngine/shaders/phong.vert",  "../GLEngine/shaders/phong.frag");
-//            
-//            use_uniform("VMatrix", view);
-//            use_uniform("MVMatrix", modelView);
-//            use_uniform("NMatrix", inverseModelView);
-//            use_uniform("MVPMatrix", modelViewProjection);
-//            use_uniform("lightPos", glm::vec3(5., 5., 5.));
-//            use_uniform("ambientMat", _ambient);
-//            use_uniform("diffuseMat", _diffuse);
-//            use_uniform("specMat", _specular);
-//            use_uniform("opacity", _opacity);
-//            
-//            test_depth = _opacity >= 0.999;
-//        }
-//        
-//        void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
-//                               std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes)
-//        {
-//            vec3_vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
-//            vec3_vertex_attributes.push_back(shader->create_attribute("normal", geometry->normal()));
-//        }
-//    };
+    class GLStandardMaterial : public GLMaterial
+    {
+        std::shared_ptr<GLUniform<glm::mat4>> MVPUniform;
+        std::shared_ptr<GLUniform<glm::mat4>> MVUniform;
+        std::shared_ptr<GLUniform<glm::mat4>> VUniform;
+        std::shared_ptr<GLUniform<glm::mat4>> NUniform;
+        
+        std::shared_ptr<GLUniform<glm::vec3>> ambientUniform;
+        std::shared_ptr<GLUniform<glm::vec3>> diffuseUniform;
+        std::shared_ptr<GLUniform<glm::vec3>> specularUniform;
+        std::shared_ptr<GLUniform<float>> opacityUniform;
+        
+    public:
+        
+        GLStandardMaterial(const glm::vec3& _ambient, const glm::vec3& _diffuse, const glm::vec3& _specular, double _opacity)
+        {
+            shader = GLShader::create_or_get("../GLEngine/shaders/phong.vert",  "../GLEngine/shaders/phong.frag");
+            
+            VUniform = shader->create_uniform("VMatrix", glm::mat4(1.));
+            MVUniform = shader->create_uniform("MVMatrix", glm::mat4(1.));
+            NUniform = shader->create_uniform("NMatrix", glm::mat4(1.));
+            MVPUniform = shader->create_uniform("MVPMatrix", glm::mat4(1.));
+            ambientUniform = shader->create_uniform("ambientMat", _ambient);
+            diffuseUniform = shader->create_uniform("diffuseMat", _diffuse);
+            specularUniform = shader->create_uniform("specMat", _specular);
+            opacityUniform = shader->create_uniform("opacity", _opacity);
+            
+            test_depth = _opacity >= 0.999;
+        }
+        
+        void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
+                               std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes)
+        {
+            vec3_vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
+            vec3_vertex_attributes.push_back(shader->create_attribute("normal", geometry->normal()));
+        }
+        
+        void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
+        {
+            auto modelView = view * model;
+            
+            shader->use();
+            VUniform->use(view);
+            MVUniform->use(modelView);
+            MVPUniform->use(projection * modelView);
+            NUniform->use(inverseTranspose(modelView));
+            
+            ambientUniform->use();
+            diffuseUniform->use();
+            specularUniform->use();
+            opacityUniform->use();
+        }
+    };
 }

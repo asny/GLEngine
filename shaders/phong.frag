@@ -2,8 +2,6 @@
 
 uniform mat4 VMatrix;
 
-uniform vec3 lightPos;
-
 uniform vec3 ambientMat;
 uniform vec3 diffuseMat;
 uniform vec3 specMat;
@@ -18,6 +16,7 @@ void main(void)
 {
     // Define material specs
     float specPow = 5.;
+    vec3 lightPos = vec3(5., 5., 5.);
     
     // Compute vectors
     vec3 N = normalize(nor);
