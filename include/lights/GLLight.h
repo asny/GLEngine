@@ -25,7 +25,7 @@ namespace gle
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/light_pass.vert",  fragment_shader_filename);
             
-            screenSizeUniform = shader->create_uniform("screenSize", glm::vec2(2400, 1400));
+            screenSizeUniform = shader->create_uniform("screenSize", glm::vec2(1,1));
             positionMapUniform = shader->create_uniform_int("positionMap", 0);
             colorMapUniform = shader->create_uniform_int("colorMap", 1);
             normalMapUniform = shader->create_uniform_int("normalMap", 2);
@@ -68,11 +68,11 @@ namespace gle
             glBlendFunc(GL_ONE, GL_ONE);
         }
         
-        void shine()
+        void shine(const glm::vec2& screen_size)
         {
             shader->use();
             
-            screenSizeUniform->use();
+            screenSizeUniform->use(screen_size);
             positionMapUniform->use();
             colorMapUniform->use();
             normalMapUniform->use();

@@ -66,12 +66,12 @@ namespace gle
             GLNode::draw(draw_pass, camera_position, model, view, projection);
         }
         
-        void shine_light(const glm::vec3& camera_position) const
+        void shine_light(const glm::vec2& screen_size) const
         {
             GLLight::pre_shine();
             for(auto light : lights)
             {
-                light->shine();
+                light->shine(screen_size);
             }
         }
     };

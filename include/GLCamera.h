@@ -105,7 +105,7 @@ namespace gle {
             glClearColor(0., 0., 0., 0.);
             glClear(GL_COLOR_BUFFER_BIT);
             
-            scene.shine_light(position);
+            scene.shine_light(glm::vec2(width, height));
             
             // Forward draw
             glDepthMask(GL_TRUE);
