@@ -7,11 +7,11 @@
 
 #include "GLTexture.h"
 #include "GLShader.h"
-#include "GLUniform.h"
-#include "GLVertexAttribute.h"
 
 namespace gle
 {
+    enum DrawPassMode {FORWARD, DEFERRED};
+    
     class GLMaterial
     {
     protected:
@@ -22,6 +22,8 @@ namespace gle
         std::shared_ptr<GLShader> shader;
         
     public:
+        
+        virtual bool should_draw(DrawPassMode draw_pass) = 0;
         
         virtual void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
                                std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes)

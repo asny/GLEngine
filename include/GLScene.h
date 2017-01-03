@@ -26,15 +26,15 @@ namespace gle
         }
         
     protected:
-        virtual void draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
+        virtual void draw(DrawPassMode draw_pass, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
         {
             for (const GLObject& object : objects)
             {
-                object.draw(camera_position, model, view, projection);
+                object.draw(draw_pass, camera_position, model, view, projection);
             }
             for (std::shared_ptr<const GLNode> child : children)
             {
-                child->draw(camera_position, model, view, projection);
+                child->draw(draw_pass, camera_position, model, view, projection);
             }
         }
         
@@ -60,10 +60,10 @@ namespace gle
             lights.push_back(light);
         }
         
-        void draw(const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection) const
+        void draw(DrawPassMode draw_pass, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection) const
         {
             auto model = glm::mat4(1.);
-            GLNode::draw(camera_position, model, view, projection);
+            GLNode::draw(draw_pass, camera_position, model, view, projection);
         }
         
         void shine_light(const glm::vec3& camera_position) const
@@ -92,9 +92,9 @@ namespace gle
     private:
         std::shared_ptr<const glm::mat4> transformation;
         
-        void draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
+        void draw(DrawPassMode draw_pass, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
         {
-            GLNode::draw(camera_position, (*transformation) * model, view, projection);
+            GLNode::draw(draw_pass, camera_position, (*transformation) * model, view, projection);
         }
     };
 

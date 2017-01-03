@@ -34,6 +34,11 @@ namespace gle
             colorUniform = shader->create_uniform("materialColor", color);
         }
         
+        bool should_draw(DrawPassMode draw_pass)
+        {
+            return draw_pass == DEFERRED;
+        }
+        
         void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
                                std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes)
         {

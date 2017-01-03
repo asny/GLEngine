@@ -70,8 +70,11 @@ namespace gle
         /**
          Draws the object.
          */
-        void draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
+        void draw(DrawPassMode draw_pass, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
         {
+            if(!material->should_draw(draw_pass))
+                return;
+            
             // Infer draw mode
             GLenum drawmode;
             int no_vertices;
