@@ -87,13 +87,7 @@ namespace gle {
         
         void draw(const GLScene& scene)
         {
-            glViewport(x, y, width, height);
-            scene.draw(position, view, projection);
-            check_gl_error();
-        }
-        
-        void draw_deferred(const GLScene& scene)
-        {
+            // Deffered draw
             // Geometry pass
             glViewport(x, y, width, height);
             
@@ -102,7 +96,7 @@ namespace gle {
             glEnable(GL_DEPTH_TEST);
             glDisable(GL_BLEND);
             
-            scene.draw(position, view, projection);
+            scene.draw(DEFERRED, position, view, projection);
             
             // Light pass
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
@@ -112,6 +106,14 @@ namespace gle {
             glClear(GL_COLOR_BUFFER_BIT);
             
             scene.shine_light(position);
+            
+            // Forward draw
+            glDepthMask(GL_TRUE);
+            glEnable(GL_DEPTH_TEST);
+            glDisable(GL_BLEND);
+            
+            scene.draw(FORWARD, position, view, projection);
+            
             
             check_gl_error();
         }
