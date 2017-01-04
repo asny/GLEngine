@@ -27,9 +27,9 @@ namespace gle
             return draw_pass == FORWARD;
         }
         
-        void pre_draw(const glm::vec3& light_position, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
+        void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
         {
-            shader->use();
+            gle::GLMaterial::pre_draw();
             auto texture_id = texture->use();
             GLUniform::use(shader, "texture0", texture_id);
             GLUniform::use(shader, "MVMatrix", view * model);

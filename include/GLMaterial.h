@@ -31,7 +31,9 @@ namespace gle
             vec3_vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
         }
         
-        virtual void pre_draw(const glm::vec3& _camera_position, const glm::mat4& _model, const glm::mat4& _view, const glm::mat4& _projection)
+        virtual void pre_draw(const glm::vec3& _camera_position, const glm::mat4& _model, const glm::mat4& _view, const glm::mat4& _projection) = 0;
+        
+        void pre_draw()
         {
             shader->use();
             
@@ -65,6 +67,5 @@ namespace gle
                 currently_test_depth = test_depth;
             }
         }
-        
     };
 }
