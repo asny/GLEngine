@@ -16,11 +16,13 @@ namespace gle
     {
         glm::vec3 ambient, diffuse, specular;
         float opacity;
+        const std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec3>> normals;
         
     public:
         
-        GLStandardMaterial(const glm::vec3& _ambient, const glm::vec3& _diffuse, const glm::vec3& _specular, double _opacity)
-            : ambient(_ambient), diffuse(_diffuse), specular(_specular), opacity(_opacity)
+        GLStandardMaterial(const std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec3>> _normals,
+                           const glm::vec3& _ambient, const glm::vec3& _diffuse, const glm::vec3& _specular, double _opacity)
+            : normals(_normals), ambient(_ambient), diffuse(_diffuse), specular(_specular), opacity(_opacity)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/phong.vert",  "../GLEngine/shaders/phong.frag");
             test_depth = _opacity >= 0.999;
@@ -35,7 +37,7 @@ namespace gle
                                std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes)
         {
             vec3_vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
-            vec3_vertex_attributes.push_back(shader->create_attribute("normal", geometry->normal()));
+            vec3_vertex_attributes.push_back(shader->create_attribute("normal", normals));
         }
         
         void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)

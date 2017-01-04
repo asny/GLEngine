@@ -68,7 +68,7 @@ void create_cubes(GLScene& root)
         rotation_node->add_child(translation_node);
         
         auto geometry = MeshCreator::create_box(false);
-        auto material = make_shared<GLStandardMaterial>(vec3(0.2, 0.2, 0.2), vec3(0.5, 0.1, 0.7), vec3(0.5, 0.1, 0.7), 1.);
+        auto material = make_shared<GLStandardMaterial>(geometry->normal(), vec3(0.2, 0.2, 0.2), vec3(0.5, 0.1, 0.7), vec3(0.5, 0.1, 0.7), 1.);
         translation_node->add_leaf(geometry, material);
     }
     {
@@ -76,7 +76,7 @@ void create_cubes(GLScene& root)
         rotation_node->add_child(translation_node);
         
         auto geometry = MeshCreator::create_box(false);
-        auto material = make_shared<GLColorMaterial>(vec3(0.5, 0.1, 0.7));
+        auto material = make_shared<GLColorMaterial>(geometry->normal(), vec3(0.5, 0.1, 0.7));
         translation_node->add_leaf(geometry, material);
     }
 }

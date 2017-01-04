@@ -16,10 +16,12 @@ namespace gle
     class GLColorMaterial : public GLMaterial
     {
         glm::vec3 color;
+        const std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec3>> normals;
         
     public:
         
-        GLColorMaterial(const glm::vec3& _color) : color(_color)
+        GLColorMaterial(const std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec3>> _normals,
+                        const glm::vec3& _color) : normals(_normals), color(_color)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/color_material.vert",  "../GLEngine/shaders/color_material.frag");
         }
@@ -33,7 +35,7 @@ namespace gle
                                std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes)
         {
             vec3_vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
-            vec3_vertex_attributes.push_back(shader->create_attribute("normal", geometry->normal()));
+            vec3_vertex_attributes.push_back(shader->create_attribute("normal", normals));
         }
         
         void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
