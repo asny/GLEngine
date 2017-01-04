@@ -14,31 +14,15 @@ namespace gle
 {
     class GLStandardMaterial : public GLMaterial
     {
-        std::shared_ptr<GLUniform<glm::mat4>> MVPUniform;
-        std::shared_ptr<GLUniform<glm::mat4>> MVUniform;
-        std::shared_ptr<GLUniform<glm::mat4>> VUniform;
-        std::shared_ptr<GLUniform<glm::mat4>> NUniform;
-        
-        std::shared_ptr<GLUniform<glm::vec3>> ambientUniform;
-        std::shared_ptr<GLUniform<glm::vec3>> diffuseUniform;
-        std::shared_ptr<GLUniform<glm::vec3>> specularUniform;
-        std::shared_ptr<GLUniform<float>> opacityUniform;
+        glm::vec3 ambient, diffuse, specular;
+        float opacity;
         
     public:
         
         GLStandardMaterial(const glm::vec3& _ambient, const glm::vec3& _diffuse, const glm::vec3& _specular, double _opacity)
+            : ambient(_ambient), diffuse(_diffuse), specular(_specular), opacity(_opacity)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/phong.vert",  "../GLEngine/shaders/phong.frag");
-            
-            VUniform = shader->create_uniform("VMatrix", glm::mat4(1.));
-            MVUniform = shader->create_uniform("MVMatrix", glm::mat4(1.));
-            NUniform = shader->create_uniform("NMatrix", glm::mat4(1.));
-            MVPUniform = shader->create_uniform("MVPMatrix", glm::mat4(1.));
-            ambientUniform = shader->create_uniform("ambientMat", _ambient);
-            diffuseUniform = shader->create_uniform("diffuseMat", _diffuse);
-            specularUniform = shader->create_uniform("specMat", _specular);
-            opacityUniform = shader->create_uniform("opacity", _opacity);
-            
             test_depth = _opacity >= 0.999;
         }
         
@@ -58,16 +42,16 @@ namespace gle
         {
             auto modelView = view * model;
             
-            shader->use();
-            VUniform->use(view);
-            MVUniform->use(modelView);
-            MVPUniform->use(projection * modelView);
-            NUniform->use(inverseTranspose(modelView));
+            GLUniform<glm::mat4>::use(shader, "VMatrix", view);
+            GLUniform<glm::mat4>::use(shader, "MVMatrix", modelView);
+            GLUniform<glm::mat4>::use(shader, "MVPMatrix", projection * modelView);
+            GLUniform<glm::mat4>::use(shader, "NMatrix", inverseTranspose(modelView));
             
-            ambientUniform->use();
-            diffuseUniform->use();
-            specularUniform->use();
-            opacityUniform->use();
+            GLUniform<glm::vec3>::use(shader, "ambientMat", ambient);
+            GLUniform<glm::vec3>::use(shader, "diffuseMat", diffuse);
+            GLUniform<glm::vec3>::use(shader, "specMat", specular);
+            
+            GLUniform<float>::use(shader, "opacity", opacity);
         }
     };
 }

@@ -15,20 +15,12 @@ namespace gle
     
     class GLFlatColorMaterial : public GLMaterial
     {
-        std::shared_ptr<GLUniform<glm::mat4>> PUniform;
-        std::shared_ptr<GLUniform<glm::mat4>> MVUniform;
-        
-        std::shared_ptr<GLUniform<glm::vec3>> colorUniform;
+        glm::vec3 color;
     public:
         
-        GLFlatColorMaterial(const glm::vec3& color)
+        GLFlatColorMaterial(const glm::vec3& _color) : color(_color)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/pre_geom.vert",  "../GLEngine/shaders/color_material.frag", "../GLEngine/shaders/flat.geom");
-            
-            PUniform = shader->create_uniform("PMatrix", glm::mat4(1.));
-            MVUniform = shader->create_uniform("MVMatrix", glm::mat4(1.));
-            
-            colorUniform = shader->create_uniform("materialColor", color);
         }
         
         bool should_draw(DrawPassMode draw_pass)
@@ -44,13 +36,10 @@ namespace gle
         
         void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
         {
-            auto modelView = view * model;
+            GLUniform<glm::mat4>::use(shader, "MVMatrix", view * model);
+            GLUniform<glm::mat4>::use(shader, "PMatrix", projection);
             
-            shader->use();
-            MVUniform->use(modelView);
-            PUniform->use(projection);
-            
-            colorUniform->use();
+            GLUniform<glm::vec3>::use(shader, "materialColor", color);
         }
     };
     

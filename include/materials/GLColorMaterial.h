@@ -15,23 +15,13 @@ namespace gle
     
     class GLColorMaterial : public GLMaterial
     {
-        std::shared_ptr<GLUniform<glm::mat4>> MVPUniform;
-        std::shared_ptr<GLUniform<glm::mat4>> MVUniform;
-        std::shared_ptr<GLUniform<glm::mat4>> NUniform;
-        
-        std::shared_ptr<GLUniform<glm::vec3>> colorUniform;
+        glm::vec3 color;
         
     public:
         
-        GLColorMaterial(const glm::vec3& color)
+        GLColorMaterial(const glm::vec3& _color) : color(_color)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/color_material.vert",  "../GLEngine/shaders/color_material.frag");
-            
-            MVPUniform = shader->create_uniform("MVPMatrix", glm::mat4(1.));
-            MVUniform = shader->create_uniform("MVMatrix", glm::mat4(1.));
-            NUniform = shader->create_uniform("NMatrix", glm::mat4(1.));
-            
-            colorUniform = shader->create_uniform("materialColor", color);
         }
         
         bool should_draw(DrawPassMode draw_pass)
@@ -50,12 +40,11 @@ namespace gle
         {
             auto modelView = view * model;
             
-            shader->use();
-            MVUniform->use(modelView);
-            MVPUniform->use(projection * modelView);
-            NUniform->use(inverseTranspose(modelView));
+            GLUniform<glm::mat4>::use(shader, "MVMatrix", modelView);
+            GLUniform<glm::mat4>::use(shader, "MVPMatrix", projection * modelView);
+            GLUniform<glm::mat4>::use(shader, "NMatrix", inverseTranspose(modelView));
             
-            colorUniform->use();
+            GLUniform<glm::vec3>::use(shader, "materialColor", color);
         }
     };
 }

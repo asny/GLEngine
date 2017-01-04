@@ -6,7 +6,7 @@
 #pragma once
 
 #include "GLObject.h"
-#include "GLLight.h"
+#include "lights/GLLight.h"
 
 namespace gle
 {

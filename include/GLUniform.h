@@ -6,6 +6,7 @@
 #pragma once
 
 #include "GLUtility.h"
+#include "GLShader.h"
 
 namespace gle
 {
@@ -14,28 +15,28 @@ namespace gle
     {
     public:
         
-        GLUniform(GLuint _location, const ValueType& _value) : value(std::make_shared<ValueType>(_value)), location(_location)
+        GLUniform(GLuint _location) : location(_location)
         {
             
         }
         
-        GLUniform(GLuint _location, const std::shared_ptr<ValueType> _value) : value(_value), location(_location)
+        static void use(std::shared_ptr<GLShader> shader, const std::string& name, const ValueType& value)
         {
+            static std::map<std::string, std::shared_ptr<GLUniform>> dictionary = std::map<std::string, std::shared_ptr<GLUniform>>();
+            auto key = shader->get_name() + name;
+            auto iterator = dictionary.find(key);
+            if (iterator == dictionary.end())
+            {
+                auto location = shader->get_uniform_location(name);
+                auto uniform = std::make_shared<GLUniform<ValueType>>(location);
+                iterator = dictionary.insert(std::make_pair(key, uniform)).first;
+            }
             
-        }
-        
-        void use()
-        {
-            set(*value);
-        }
-        
-        void use(const ValueType& value)
-        {
-            set(value);
+            shader->use();
+            iterator->second->set(value);
         }
         
     private:
-        const std::shared_ptr<ValueType> value;
         GLuint location;
         
         void set(float value)

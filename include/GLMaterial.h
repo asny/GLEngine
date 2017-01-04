@@ -6,7 +6,7 @@
 #pragma once
 
 #include "GLTexture.h"
-#include "GLShader.h"
+#include "GLUniform.h"
 
 namespace gle
 {

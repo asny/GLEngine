@@ -13,22 +13,12 @@ namespace gle
     {
         GLuint array_id;
         
-        std::shared_ptr<GLUniform<int>> positionMapUniform;
-        std::shared_ptr<GLUniform<int>> colorMapUniform;
-        std::shared_ptr<GLUniform<int>> normalMapUniform;
-        std::shared_ptr<GLUniform<glm::vec2>> screenSizeUniform;
-        
     protected:
         std::shared_ptr<GLShader> shader;
         
         GLLight(const std::string& fragment_shader_filename)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/light_pass.vert",  fragment_shader_filename);
-            
-            screenSizeUniform = shader->create_uniform("screenSize", glm::vec2(1,1));
-            positionMapUniform = shader->create_uniform_int("positionMap", 0);
-            colorMapUniform = shader->create_uniform_int("colorMap", 1);
-            normalMapUniform = shader->create_uniform_int("normalMap", 2);
             
             // Generate and bind array
             glGenVertexArrays(1, &array_id);
@@ -70,16 +60,15 @@ namespace gle
         
         void shine(const glm::vec2& screen_size)
         {
-            shader->use();
-            
-            screenSizeUniform->use(screen_size);
-            positionMapUniform->use();
-            colorMapUniform->use();
-            normalMapUniform->use();
+            GLUniform<glm::vec2>::use(shader, "screenSize", screen_size);
+            GLUniform<int>::use(shader, "positionMap", 0);
+            GLUniform<int>::use(shader, "colorMap", 1);
+            GLUniform<int>::use(shader, "normalMap", 2);
             
             use_light_properties();
             
             // Bind vertex array and draw
+            shader->use();
             glBindVertexArray(array_id);
             glDrawArrays(GL_TRIANGLES, 0, 3);
         }
@@ -87,19 +76,18 @@ namespace gle
     
     class GLDirectionalLight : public GLLight
     {
-        std::shared_ptr<GLUniform<glm::vec3>> lightDirectionUniform;
+        glm::vec3 direction;
     public:
         
-        GLDirectionalLight(const glm::vec3& direction) :
-            GLLight("../GLEngine/shaders/light_pass.frag")
+        GLDirectionalLight(const glm::vec3& _direction) :
+            GLLight("../GLEngine/shaders/light_pass.frag"), direction(_direction)
         {
             
-            lightDirectionUniform = shader->create_uniform("lightDirection", direction);
         }
         
         void use_light_properties()
         {
-            lightDirectionUniform->use();
+            GLUniform<glm::vec3>::use(shader, "lightDirection", direction);
         }
     };
 }
