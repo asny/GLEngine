@@ -5,69 +5,62 @@
 
 #pragma once
 
-#include "GLUtility.h"
 #include "GLShader.h"
 
 namespace gle
 {
-    template <class ValueType>
     class GLUniform
     {
     public:
         
-        GLUniform(GLuint _location) : location(_location)
-        {
-            
-        }
-        
+        template<typename ValueType>
         static void use(std::shared_ptr<GLShader> shader, const std::string& name, const ValueType& value)
         {
-            static std::map<std::string, std::shared_ptr<GLUniform>> dictionary = std::map<std::string, std::shared_ptr<GLUniform>>();
+            static std::map<std::string, GLuint> dictionary = std::map<std::string, GLuint>();
             auto key = shader->get_name() + name;
             auto iterator = dictionary.find(key);
+            
+            // Lazy construction
             if (iterator == dictionary.end())
             {
                 auto location = shader->get_uniform_location(name);
-                auto uniform = std::make_shared<GLUniform<ValueType>>(location);
-                iterator = dictionary.insert(std::make_pair(key, uniform)).first;
+                iterator = dictionary.insert(std::make_pair(key, location)).first;
             }
             
+            // Use the value
             shader->use();
-            iterator->second->set(value);
+            GLUniform::set(iterator->second, value);
         }
         
     private:
-        GLuint location;
-        
-        void set(float value)
+        static void set(GLuint location, float value)
         {
             glUniform1f(location, value);
         }
         
-        void set(int value)
+        static void set(GLuint location, int value)
         {
             glUniform1i(location, value);
         }
         
-        void set(const glm::vec2& value)
+        static void set(GLuint location, const glm::vec2& value)
         {
             glUniform2fv(location, 1, &value[0]);
         }
         
-        void set(const glm::vec3& value)
+        static void set(GLuint location, const glm::vec3& value)
         {
             glUniform3fv(location, 1, &value[0]);
         }
         
-        void set(const glm::vec4& value)
+        static void set(GLuint location, const glm::vec4& value)
         {
             glUniform4fv(location, 1, &value[0]);
         }
         
-        void set(const glm::mat4& value)
+        static void set(GLuint location, const glm::mat4& value)
         {
             glUniformMatrix4fv(location, 1, GL_FALSE, &value[0][0]);
         }
-        
     };
 }

@@ -42,16 +42,16 @@ namespace gle
         {
             auto modelView = view * model;
             
-            GLUniform<glm::mat4>::use(shader, "VMatrix", view);
-            GLUniform<glm::mat4>::use(shader, "MVMatrix", modelView);
-            GLUniform<glm::mat4>::use(shader, "MVPMatrix", projection * modelView);
-            GLUniform<glm::mat4>::use(shader, "NMatrix", inverseTranspose(modelView));
+            GLUniform::use(shader, "VMatrix", view);
+            GLUniform::use(shader, "MVMatrix", modelView);
+            GLUniform::use(shader, "MVPMatrix", projection * modelView);
+            GLUniform::use(shader, "NMatrix", inverseTranspose(modelView));
             
-            GLUniform<glm::vec3>::use(shader, "ambientMat", ambient);
-            GLUniform<glm::vec3>::use(shader, "diffuseMat", diffuse);
-            GLUniform<glm::vec3>::use(shader, "specMat", specular);
+            GLUniform::use(shader, "ambientMat", ambient);
+            GLUniform::use(shader, "diffuseMat", diffuse);
+            GLUniform::use(shader, "specMat", specular);
             
-            GLUniform<float>::use(shader, "opacity", opacity);
+            GLUniform::use(shader, "opacity", opacity);
         }
     };
 }

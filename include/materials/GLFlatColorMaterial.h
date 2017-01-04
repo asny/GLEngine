@@ -36,10 +36,10 @@ namespace gle
         
         void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
         {
-            GLUniform<glm::mat4>::use(shader, "MVMatrix", view * model);
-            GLUniform<glm::mat4>::use(shader, "PMatrix", projection);
+            GLUniform::use(shader, "MVMatrix", view * model);
+            GLUniform::use(shader, "PMatrix", projection);
             
-            GLUniform<glm::vec3>::use(shader, "materialColor", color);
+            GLUniform::use(shader, "materialColor", color);
         }
     };
     

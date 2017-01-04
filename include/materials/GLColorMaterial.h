@@ -40,11 +40,11 @@ namespace gle
         {
             auto modelView = view * model;
             
-            GLUniform<glm::mat4>::use(shader, "MVMatrix", modelView);
-            GLUniform<glm::mat4>::use(shader, "MVPMatrix", projection * modelView);
-            GLUniform<glm::mat4>::use(shader, "NMatrix", inverseTranspose(modelView));
+            GLUniform::use(shader, "MVMatrix", modelView);
+            GLUniform::use(shader, "MVPMatrix", projection * modelView);
+            GLUniform::use(shader, "NMatrix", inverseTranspose(modelView));
             
-            GLUniform<glm::vec3>::use(shader, "materialColor", color);
+            GLUniform::use(shader, "materialColor", color);
         }
     };
 }

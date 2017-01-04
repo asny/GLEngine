@@ -60,10 +60,10 @@ namespace gle
         
         void shine(const glm::vec2& screen_size)
         {
-            GLUniform<glm::vec2>::use(shader, "screenSize", screen_size);
-            GLUniform<int>::use(shader, "positionMap", 0);
-            GLUniform<int>::use(shader, "colorMap", 1);
-            GLUniform<int>::use(shader, "normalMap", 2);
+            GLUniform::use(shader, "screenSize", screen_size);
+            GLUniform::use(shader, "positionMap", 0);
+            GLUniform::use(shader, "colorMap", 1);
+            GLUniform::use(shader, "normalMap", 2);
             
             use_light_properties();
             
@@ -87,7 +87,7 @@ namespace gle
         
         void use_light_properties()
         {
-            GLUniform<glm::vec3>::use(shader, "lightDirection", direction);
+            GLUniform::use(shader, "lightDirection", direction);
         }
     };
 }
