@@ -16,15 +16,16 @@ namespace gle
     {
         std::shared_ptr<GLTexture> texture;
         std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> uv_coordinates;
-        std::shared_ptr<int> texture_id = std::make_shared<int>(0);
     public:
         
         GLTextureMaterial(std::shared_ptr<GLTexture> _texture, std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> _uv_coordinates) : texture(_texture), uv_coordinates(_uv_coordinates)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/texture.vert",  "../GLEngine/shaders/texture.frag");
-            
-            use_uniform("MVPMatrix", modelViewProjection);
-            use_uniform_int("texture0", texture_id);
+        }
+        
+        bool should_draw(DrawPassMode draw_pass)
+        {
+            return draw_pass == FORWARD;
         }
         
         void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
@@ -34,10 +35,12 @@ namespace gle
             vec2_vertex_attributes.push_back(shader->create_attribute("uv_coordinates", uv_coordinates));
         }
         
-        void pre_draw(const glm::vec3& light_position, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
+        void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
         {
-            *texture_id = texture->use();
-            GLMaterial::pre_draw(light_position, camera_position, model, view, projection);
+            shader->use();
+            auto texture_id = texture->use();
+            GLUniform::use(shader, "texture0", texture_id);
+            GLUniform::use(shader, "MVPMatrix", projection * view * model);
         }
     };
 }
