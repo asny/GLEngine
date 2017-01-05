@@ -25,7 +25,6 @@ namespace gle
             : normals(_normals), ambient(_ambient), diffuse(_diffuse), specular(_specular), opacity(_opacity)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/phong.vert",  "../GLEngine/shaders/phong.frag");
-            test_depth = _opacity >= 0.999;
         }
         
         bool should_draw(DrawPassMode draw_pass)
@@ -42,7 +41,9 @@ namespace gle
         
         void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
         {
-            gle::GLMaterial::pre_draw();
+            shader->depth_test(opacity >= 0.999);
+            shader->cull_back_faces(true);
+            
             auto modelView = view * model;
             
             GLUniform::use(shader, "VMatrix", view);

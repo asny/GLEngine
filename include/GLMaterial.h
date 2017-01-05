@@ -16,9 +16,6 @@ namespace gle
     {
     protected:
         
-        bool cull_back_faces = true;
-        bool test_depth = true;
-        
         std::shared_ptr<GLShader> shader;
         
     public:
@@ -32,40 +29,5 @@ namespace gle
         }
         
         virtual void pre_draw(const glm::vec3& _camera_position, const glm::mat4& _model, const glm::mat4& _view, const glm::mat4& _projection) = 0;
-        
-        void pre_draw()
-        {
-            shader->use();
-            
-            // Cull back faces
-            static bool currently_cull_back_faces = true;
-            if(currently_cull_back_faces != cull_back_faces)
-            {
-                if(cull_back_faces)
-                {
-                    glEnable(GL_CULL_FACE);
-                    glCullFace(GL_BACK);
-                }
-                else {
-                    glDisable(GL_CULL_FACE);
-                }
-                currently_cull_back_faces = cull_back_faces;
-            }
-            
-            // Depth test
-            static bool currently_test_depth = true;
-            if(currently_test_depth != test_depth)
-            {
-                if(test_depth)
-                {
-                    glDepthMask(GL_TRUE);
-                }
-                else {
-                    glDepthMask(GL_FALSE);
-                    
-                }
-                currently_test_depth = test_depth;
-            }
-        }
     };
 }
