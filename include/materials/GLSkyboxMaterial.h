@@ -27,6 +27,12 @@ namespace gle
             return draw_pass == FORWARD;
         }
         
+        void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
+                                       std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes)
+        {
+            vec3_vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
+        }
+        
         void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
         {
             shader->depth_test(true);

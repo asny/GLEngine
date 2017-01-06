@@ -23,10 +23,7 @@ namespace gle
         virtual bool should_draw(DrawPassMode draw_pass) = 0;
         
         virtual void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
-                               std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes)
-        {
-            vec3_vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
-        }
+                                       std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes) = 0;
         
         virtual void pre_draw(const glm::vec3& _camera_position, const glm::mat4& _model, const glm::mat4& _view, const glm::mat4& _projection) = 0;
     };
