@@ -110,7 +110,7 @@ namespace gle {
             // Forward draw
             glDepthMask(GL_TRUE);
             glEnable(GL_DEPTH_TEST);
-            glDisable(GL_BLEND);
+            glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
             scene.draw(FORWARD, position, view, projection);
             
