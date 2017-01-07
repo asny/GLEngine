@@ -46,18 +46,6 @@ namespace gle
         
     public:
         
-        static void pre_shine()
-        {
-            // Do not write or test with the depth buffer
-            GLShader::depth_write(false);
-            glDisable(GL_DEPTH_TEST);
-            
-            // Set up blending
-            glEnable(GL_BLEND);
-            glBlendEquation(GL_FUNC_ADD);
-            glBlendFunc(GL_ONE, GL_ONE);
-        }
-        
         void shine(const glm::vec2& screen_size)
         {
             GLUniform::use(shader, "screenSize", screen_size);

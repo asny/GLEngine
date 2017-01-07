@@ -37,6 +37,7 @@ namespace gle
         {
             GLShader::depth_write(true);
             GLShader::cull_back_faces(true);
+            glDepthFunc(GL_LEQUAL);
             
             auto texture_id = texture->use();
             GLUniform::use(shader, "texture0", texture_id);

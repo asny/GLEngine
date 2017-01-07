@@ -30,13 +30,6 @@ namespace gle {
         
         GLCamera(int screen_width, int screen_height)
         {
-            // Enable states
-            glEnable(GL_DEPTH_TEST);
-            glDepthFunc(GL_LEQUAL);
-            
-            glEnable(GL_BLEND);
-            glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            
             set_screen_size(screen_width, screen_height);
             
             buffer.Init(screen_width, screen_height);
@@ -87,32 +80,68 @@ namespace gle {
         
         void draw(const GLScene& scene)
         {
-            // Deffered draw
-            // Geometry pass
             glViewport(x, y, width, height);
             
-            buffer.BindForWriting();
-            clear_screen();
+            // Deffered draw
+            geometry_pass(scene);
+            light_pass(scene);
+            
+            // Forward draw
+            forward_pass(scene);
+            
+            check_gl_error();
+        }
+    private:
+        void forward_pass(const GLScene& scene)
+        {
+            // Write and test with the depth buffer
+            GLShader::depth_write(true);
             glEnable(GL_DEPTH_TEST);
+            
+            // Set up default blending
+            glEnable(GL_BLEND);
+            glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            
+            // Draw the scene
+            scene.draw(FORWARD, position, view, projection);
+        }
+        
+        void geometry_pass(const GLScene& scene)
+        {
+            // Bind buffers
+            buffer.BindForWriting();
+            
+            // Write and test with the depth buffer
+            GLShader::depth_write(true);
+            glEnable(GL_DEPTH_TEST);
+            
+            // Do not blend
             glDisable(GL_BLEND);
             
-            scene.draw(DEFERRED, position, view, projection);
+            // Clear the buffer
+            clear_screen();
             
-            // Light pass
+            // Draw the scene
+            scene.draw(DEFERRED, position, view, projection);
+        }
+        
+        void light_pass(const GLScene& scene)
+        {
+            // Bind buffers
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
             buffer.BindForReading();
             
+            // Do not write or test with the depth buffer
+            GLShader::depth_write(false);
+            glDisable(GL_DEPTH_TEST);
+            
+            // Set up blending
+            glEnable(GL_BLEND);
+            glBlendEquation(GL_FUNC_ADD);
+            glBlendFunc(GL_ONE, GL_ONE);
+            
+            // Draw the scene
             scene.shine_light(glm::vec2(width, height));
-            
-            // Forward draw
-            GLShader::depth_write(true);
-            glEnable(GL_DEPTH_TEST);
-            glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            
-            scene.draw(FORWARD, position, view, projection);
-            
-            
-            check_gl_error();
         }
     };
 }

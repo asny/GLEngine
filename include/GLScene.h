@@ -68,7 +68,6 @@ namespace gle
         
         void shine_light(const glm::vec2& screen_size) const
         {
-            GLLight::pre_shine();
             for(auto light : lights)
             {
                 light->shine(screen_size);
