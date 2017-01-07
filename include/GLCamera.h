@@ -80,7 +80,7 @@ namespace gle {
         
         static void clear_screen()
         {
-            glDepthMask(GL_TRUE); // If it is not possible to write to the depth buffer, we are not able to clear it.
+            GLShader::depth_write(true); // If it is not possible to write to the depth buffer, we are not able to clear it.
             glClearColor(1., 1., 1., 0.);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
@@ -108,7 +108,7 @@ namespace gle {
             scene.shine_light(glm::vec2(width, height));
             
             // Forward draw
-            glDepthMask(GL_TRUE);
+            GLShader::depth_write(true);
             glEnable(GL_DEPTH_TEST);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             

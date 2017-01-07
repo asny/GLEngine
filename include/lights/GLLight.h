@@ -49,7 +49,7 @@ namespace gle
         static void pre_shine()
         {
             // Do not write or test with the depth buffer
-            glDepthMask(GL_FALSE);
+            GLShader::depth_write(false);
             glDisable(GL_DEPTH_TEST);
             
             // Set up blending

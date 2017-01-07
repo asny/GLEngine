@@ -40,8 +40,8 @@ namespace gle
         
         void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
         {
-            shader->depth_test(true);
-            shader->cull_back_faces(true);
+            GLShader::depth_write(true);
+            GLShader::cull_back_faces(true);
             
             auto modelView = view * model;
             

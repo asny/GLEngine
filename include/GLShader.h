@@ -112,7 +112,7 @@ namespace gle {
         
         // ******* State functionality ********
         
-        void cull_back_faces(bool enable)
+        static void cull_back_faces(bool enable)
         {
             static bool currently_enabled = true;
             if(currently_enabled != enable)
@@ -129,7 +129,7 @@ namespace gle {
             }
         }
         
-        void depth_test(bool enable)
+        static void depth_write(bool enable)
         {
             static bool currently_enabled = true;
             if(currently_enabled != enable)
