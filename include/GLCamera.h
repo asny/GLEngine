@@ -81,7 +81,7 @@ namespace gle {
         static void clear_screen()
         {
             GLShader::depth_write(true); // If it is not possible to write to the depth buffer, we are not able to clear it.
-            glClearColor(1., 1., 1., 0.);
+            glClearColor(0., 0., 0., 0.);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
         
@@ -100,10 +100,7 @@ namespace gle {
             
             // Light pass
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-            
             buffer.BindForReading();
-            glClearColor(0., 0., 0., 0.);
-            glClear(GL_COLOR_BUFFER_BIT);
             
             scene.shine_light(glm::vec2(width, height));
             
