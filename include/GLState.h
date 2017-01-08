@@ -27,6 +27,22 @@ namespace gle
             }
         }
         
+        static void depth_test(bool enable)
+        {
+            static bool currently_enabled = false;
+            if(currently_enabled != enable)
+            {
+                if(enable)
+                {
+                    glEnable(GL_DEPTH_TEST);
+                }
+                else {
+                    glDisable(GL_DEPTH_TEST);
+                }
+                currently_enabled = enable;
+            }
+        }
+        
         static void depth_write(bool enable)
         {
             static bool currently_enabled = true;

@@ -96,7 +96,7 @@ namespace gle {
         {
             // Write and test with the depth buffer
             GLState::depth_write(true);
-            glEnable(GL_DEPTH_TEST);
+            GLState::depth_test(true);
             
             // Set up default blending
             glEnable(GL_BLEND);
@@ -113,7 +113,7 @@ namespace gle {
             
             // Write and test with the depth buffer
             GLState::depth_write(true);
-            glEnable(GL_DEPTH_TEST);
+            GLState::depth_test(true);
             
             // Do not blend
             glDisable(GL_BLEND);
@@ -133,7 +133,7 @@ namespace gle {
             
             // Do not write or test with the depth buffer
             GLState::depth_write(false);
-            glDisable(GL_DEPTH_TEST);
+            GLState::depth_test(false);
             
             // Set up blending
             glEnable(GL_BLEND);
