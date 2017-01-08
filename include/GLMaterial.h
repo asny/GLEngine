@@ -7,6 +7,7 @@
 
 #include "GLTexture.h"
 #include "GLUniform.h"
+#include "GLState.h"
 
 namespace gle
 {

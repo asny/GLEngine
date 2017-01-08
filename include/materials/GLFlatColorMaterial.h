@@ -36,8 +36,8 @@ namespace gle
         
         void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
         {
-            GLShader::depth_write(true);
-            GLShader::cull_back_faces(true);
+            GLState::depth_write(true);
+            GLState::cull_back_faces(true);
             
             GLUniform::use(shader, "MVMatrix", view * model);
             GLUniform::use(shader, "PMatrix", projection);

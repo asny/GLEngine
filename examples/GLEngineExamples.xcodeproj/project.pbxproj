@@ -25,7 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4900D17E1E0A72D000F92EBD /* GLCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLCamera.h; path = ../include/GLCamera.h; sourceTree = "<group>"; };
+		4900D17E1E0A72D000F92EBD /* GLCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLCamera.h; path = ../include/GLCamera.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4900D17F1E0A72D000F92EBD /* GLMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLMaterial.h; path = ../include/GLMaterial.h; sourceTree = "<group>"; };
 		4900D1801E0A72D000F92EBD /* GLObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLObject.h; path = ../include/GLObject.h; sourceTree = "<group>"; };
 		4900D1811E0A72D000F92EBD /* GLScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLScene.h; path = ../include/GLScene.h; sourceTree = "<group>"; };
@@ -34,10 +34,10 @@
 		4900D1841E0A72D000F92EBD /* GLUniform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLUniform.h; path = ../include/GLUniform.h; sourceTree = "<group>"; };
 		4900D1851E0A72D000F92EBD /* GLUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLUtility.h; path = ../include/GLUtility.h; sourceTree = "<group>"; };
 		4900D1861E0A72D000F92EBD /* GLVertexAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLVertexAttribute.h; path = ../include/GLVertexAttribute.h; sourceTree = "<group>"; };
-		4900D1881E0AD89200F92EBD /* GLStandardMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLStandardMaterial.h; path = ../include/materials/GLStandardMaterial.h; sourceTree = "<group>"; };
-		4900D1891E0AD92900F92EBD /* GLFlatColorMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLFlatColorMaterial.h; path = ../include/materials/GLFlatColorMaterial.h; sourceTree = "<group>"; };
-		4900D18A1E0B224700F92EBD /* GLTextureMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLTextureMaterial.h; path = ../include/materials/GLTextureMaterial.h; sourceTree = "<group>"; };
-		4900D18B1E0B22DE00F92EBD /* GLSkyboxMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLSkyboxMaterial.h; path = ../include/materials/GLSkyboxMaterial.h; sourceTree = "<group>"; };
+		4900D1881E0AD89200F92EBD /* GLStandardMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLStandardMaterial.h; path = ../include/materials/GLStandardMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		4900D1891E0AD92900F92EBD /* GLFlatColorMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLFlatColorMaterial.h; path = ../include/materials/GLFlatColorMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		4900D18A1E0B224700F92EBD /* GLTextureMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLTextureMaterial.h; path = ../include/materials/GLTextureMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		4900D18B1E0B22DE00F92EBD /* GLSkyboxMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLSkyboxMaterial.h; path = ../include/materials/GLSkyboxMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4900D18F1E0C57BF00F92EBD /* flat.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = flat.geom; path = ../shaders/flat.geom; sourceTree = "<group>"; };
 		4900D1901E0C57BF00F92EBD /* gouraud.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = gouraud.frag; path = ../shaders/gouraud.frag; sourceTree = "<group>"; };
 		4900D1911E0C57BF00F92EBD /* gouraud.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = gouraud.vert; path = ../shaders/gouraud.vert; sourceTree = "<group>"; };
@@ -55,16 +55,17 @@
 		4900D19E1E0DC4FB00F92EBD /* MeshCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeshCreator.h; path = ../../Mesh/include/MeshCreator.h; sourceTree = "<group>"; };
 		4900D19F1E0DC4FB00F92EBD /* Property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Property.h; path = ../../Mesh/include/Property.h; sourceTree = "<group>"; };
 		49471A531E13110B006E8AD5 /* GLBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLBuffer.h; path = ../include/GLBuffer.h; sourceTree = "<group>"; };
-		49471A541E131A30006E8AD5 /* GLColorMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLColorMaterial.h; path = ../include/materials/GLColorMaterial.h; sourceTree = "<group>"; };
+		49471A541E131A30006E8AD5 /* GLColorMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLColorMaterial.h; path = ../include/materials/GLColorMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		49471A551E131AB9006E8AD5 /* color_material.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = color_material.frag; path = ../shaders/color_material.frag; sourceTree = "<group>"; };
 		49471A561E131AB9006E8AD5 /* color_material.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = color_material.vert; path = ../shaders/color_material.vert; sourceTree = "<group>"; };
 		49471A571E14591C006E8AD5 /* light_pass.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = light_pass.frag; path = ../shaders/light_pass.frag; sourceTree = "<group>"; };
 		49471A581E14591C006E8AD5 /* light_pass.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = light_pass.vert; path = ../shaders/light_pass.vert; sourceTree = "<group>"; };
-		49471A5B1E152693006E8AD5 /* GLLight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLLight.h; path = ../include/lights/GLLight.h; sourceTree = "<group>"; };
+		49471A5B1E152693006E8AD5 /* GLLight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLLight.h; path = ../include/lights/GLLight.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4954F2371E06EF8D005B5739 /* GLEngineExample1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GLEngineExample1; sourceTree = BUILT_PRODUCTS_DIR; };
 		4954F23A1E06EF8D005B5739 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4954F2421E06F459005B5739 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		4954F2441E06F47C005B5739 /* libglfw.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.dylib; path = ../../../../../opt/local/lib/libglfw.dylib; sourceTree = "<group>"; };
+		497D00901E22D1E400DC549A /* GLState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLState.h; path = ../include/GLState.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +94,7 @@
 				4900D1851E0A72D000F92EBD /* GLUtility.h */,
 				4900D1861E0A72D000F92EBD /* GLVertexAttribute.h */,
 				49471A531E13110B006E8AD5 /* GLBuffer.h */,
+				497D00901E22D1E400DC549A /* GLState.h */,
 			);
 			name = GLEngine;
 			sourceTree = "<group>";

@@ -5,7 +5,9 @@
 
 #pragma once
 
-#include "GLMaterial.h"
+#include "Mesh.h"
+#include "GLShader.h"
+#include "GLUniform.h"
 
 namespace gle
 {

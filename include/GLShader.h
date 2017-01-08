@@ -110,41 +110,6 @@ namespace gle {
             return uniformLocation;
         }
         
-        // ******* State functionality ********
-        
-        static void cull_back_faces(bool enable)
-        {
-            static bool currently_enabled = true;
-            if(currently_enabled != enable)
-            {
-                if(enable)
-                {
-                    glEnable(GL_CULL_FACE);
-                    glCullFace(GL_BACK);
-                }
-                else {
-                    glDisable(GL_CULL_FACE);
-                }
-                currently_enabled = enable;
-            }
-        }
-        
-        static void depth_write(bool enable)
-        {
-            static bool currently_enabled = true;
-            if(currently_enabled != enable)
-            {
-                if(enable)
-                {
-                    glDepthMask(GL_TRUE);
-                }
-                else {
-                    glDepthMask(GL_FALSE);
-                }
-                currently_enabled = enable;
-            }
-        }
-        
     private:
         // Create a GLSL program object from vertex and fragment shader files
         static GLuint init_shader(const char* vShaderFile, const char* fShaderFile, const char* outputAttributeName, const char* gShaderFile)

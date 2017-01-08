@@ -73,7 +73,7 @@ namespace gle {
         
         static void clear_screen()
         {
-            GLShader::depth_write(true); // If it is not possible to write to the depth buffer, we are not able to clear it.
+            GLState::depth_write(true); // If it is not possible to write to the depth buffer, we are not able to clear it.
             glClearColor(0., 0., 0., 0.);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
@@ -95,7 +95,7 @@ namespace gle {
         void forward_pass(const GLScene& scene)
         {
             // Write and test with the depth buffer
-            GLShader::depth_write(true);
+            GLState::depth_write(true);
             glEnable(GL_DEPTH_TEST);
             
             // Set up default blending
@@ -112,7 +112,7 @@ namespace gle {
             buffer.BindForWriting();
             
             // Write and test with the depth buffer
-            GLShader::depth_write(true);
+            GLState::depth_write(true);
             glEnable(GL_DEPTH_TEST);
             
             // Do not blend
@@ -132,7 +132,7 @@ namespace gle {
             buffer.BindForReading();
             
             // Do not write or test with the depth buffer
-            GLShader::depth_write(false);
+            GLState::depth_write(false);
             glDisable(GL_DEPTH_TEST);
             
             // Set up blending
