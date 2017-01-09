@@ -86,18 +86,11 @@ public:
     
     void BindForReading()
     {
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-        
         for (unsigned int i = 0 ; i < GBUFFER_NUM_TEXTURES; i++) {
             glActiveTexture(GL_TEXTURE0 + i);
             glBindTexture(GL_TEXTURE_2D, m_textures[GBUFFER_TEXTURE_TYPE_POSITION + i]);
         }
         check_gl_error();
-    }
-    
-    void SetReadBuffer(GBUFFER_TEXTURE_TYPE TextureType)
-    {
-        glReadBuffer(GL_COLOR_ATTACHMENT0 + TextureType);
     }
     
 private:
