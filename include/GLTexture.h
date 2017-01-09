@@ -39,7 +39,6 @@ namespace gle
         GLTexture(GLenum _target) : target(_target)
         {
             glGenTextures(1, &texture_id);
-            check_gl_error();
         }
         
         /**
@@ -48,7 +47,6 @@ namespace gle
         ~GLTexture()
         {
             glDeleteTextures(1, &texture_id);
-            check_gl_error();
         }
         
         void bind()
@@ -64,7 +62,6 @@ namespace gle
         {
             glActiveTexture(GL_TEXTURE0 + location);
             bind();
-            check_gl_error();
         }
     };
     
@@ -86,9 +83,6 @@ namespace gle
             glTexParameteri(target, GL_TEXTURE_MAG_FILTER, minMagFilter);
             glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapMode);
             glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapMode);
-            
-            glBindTexture(GL_TEXTURE_2D, 0);
-            check_gl_error();
         }
     };
     
@@ -114,9 +108,6 @@ namespace gle
             glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapMode);
             glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapMode);
             glTexParameteri(target, GL_TEXTURE_WRAP_R, wrapMode);
-            
-            glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-            check_gl_error();
         }
     };
     
@@ -135,9 +126,6 @@ namespace gle
             glTexParameterf(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTexParameterf(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + channel, GL_TEXTURE_2D, texture_id, 0);
-            
-            glBindTexture(GL_TEXTURE_2D, 0);
-            check_gl_error();
         }
     };
 
