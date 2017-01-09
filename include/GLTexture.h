@@ -50,15 +50,17 @@ namespace gle
             check_gl_error();
         }
         
+        virtual void bind() = 0;
+        
     public:
         /**
-         Bind the texture and returns the id of the active texture.
+         Bind the texture to the given location.
          */
-        virtual int use()
+        void use(int location)
         {
-            glActiveTexture(GL_TEXTURE0);
+            glActiveTexture(GL_TEXTURE0 + location);
+            bind();
             check_gl_error();
-            return 0; //return 0 because the texture is bound to GL_TEXTURE0
         }
     };
     
@@ -73,7 +75,7 @@ namespace gle
          */
         GLTexture2D(unsigned char* data, unsigned int width, unsigned int height, GLenum format) : GLTexture::GLTexture()
         {
-            use();
+            bind();
             bind_image(data, width, height, format, GL_TEXTURE_2D);
             
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minMagFilter);
@@ -85,15 +87,11 @@ namespace gle
             check_gl_error();
         }
         
-        /**
-         Bind the texture and returns the id of the active texture.
-         */
-        int use()
+    protected:
+        void bind()
         {
-            int id = GLTexture::use();
             glBindTexture(GL_TEXTURE_2D, texture_id);
             check_gl_error();
-            return id;
         }
     };
     
@@ -108,7 +106,7 @@ namespace gle
          */
         GLTexture3D(const std::vector<unsigned char*>& data, unsigned int width, unsigned int height, GLenum format) : GLTexture::GLTexture()
         {
-            use();
+            bind();
             for(GLuint i = 0; i < data.size(); i++)
             {
                 bind_image(data[i], width, height, format, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
@@ -124,15 +122,11 @@ namespace gle
             check_gl_error();
         }
         
-        /**
-         Bind the texture and returns the id of the active texture.
-         */
-        int use()
+    protected:
+        void bind()
         {
-            int id = GLTexture::use();
             glBindTexture(GL_TEXTURE_CUBE_MAP, texture_id);
             check_gl_error();
-            return id;
         }
     };
     
@@ -144,7 +138,7 @@ namespace gle
     public:
         GLFramebufferTexture(unsigned int width, unsigned int height, int channel) : GLTexture::GLTexture()
         {
-            glBindTexture(GL_TEXTURE_2D, texture_id);
+            bind();
             
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
             
@@ -156,14 +150,11 @@ namespace gle
             check_gl_error();
         }
         
-        /**
-         Bind the texture and returns the id of the active texture.
-         */
-        int use()
+    protected:
+        void bind()
         {
             glBindTexture(GL_TEXTURE_2D, texture_id);
             check_gl_error();
-            return 0;
         }
     };
 

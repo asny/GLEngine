@@ -40,8 +40,8 @@ namespace gle
             GLState::depth_write(true);
             GLState::cull_back_faces(true);
             
-            auto texture_id = texture->use();
-            GLUniform::use(shader, "texture0", texture_id);
+            texture->use(0);
+            GLUniform::use(shader, "texture0", 0);
             GLUniform::use(shader, "MVPMatrix", projection * view * model);
         }
     };

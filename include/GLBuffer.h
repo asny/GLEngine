@@ -72,12 +72,9 @@ namespace gle {
         
         void BindForReading()
         {
-            glActiveTexture(GL_TEXTURE0);
-            position_texture->use();
-            glActiveTexture(GL_TEXTURE1);
-            color_texture->use();
-            glActiveTexture(GL_TEXTURE2);
-            normal_texture->use();
+            position_texture->use(0);
+            color_texture->use(1);
+            normal_texture->use(2);
             check_gl_error();
         }
         

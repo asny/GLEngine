@@ -39,8 +39,8 @@ namespace gle
             GLState::cull_back_faces(true);
             glDepthFunc(GL_LEQUAL);
             
-            auto texture_id = texture->use();
-            GLUniform::use(shader, "texture0", texture_id);
+            texture->use(0);
+            GLUniform::use(shader, "texture0", 0);
             GLUniform::use(shader, "MVMatrix", view * model);
             GLUniform::use(shader, "PMatrix", projection);
         }
