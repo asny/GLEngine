@@ -16,6 +16,7 @@ namespace gle
     {
     protected:
         GLuint texture_id;
+        GLenum target;
         GLenum minMagFilter = GL_LINEAR; // GL_NEAREST or GL_LINEAR
         GLenum wrapMode = GL_CLAMP_TO_EDGE; // GL_REPEAT, GL_MIRRORED_REPEAT, GL_CLAMP_TO_EDGE, or GL_CLAMP_TO_BORDER
         
@@ -35,7 +36,7 @@ namespace gle
         /**
          Creates a texture from a bitmap.
          */
-        GLTexture()
+        GLTexture(GLenum _target) : target(_target)
         {
             glGenTextures(1, &texture_id);
             check_gl_error();
@@ -50,7 +51,10 @@ namespace gle
             check_gl_error();
         }
         
-        virtual void bind() = 0;
+        void bind()
+        {
+            glBindTexture(target, texture_id);
+        }
         
     public:
         /**
@@ -73,24 +77,17 @@ namespace gle
         /**
          Creates a texture from a bitmap.
          */
-        GLTexture2D(unsigned char* data, unsigned int width, unsigned int height, GLenum format) : GLTexture::GLTexture()
+        GLTexture2D(unsigned char* data, unsigned int width, unsigned int height, GLenum format) : GLTexture(GL_TEXTURE_2D)
         {
             bind();
             bind_image(data, width, height, format, GL_TEXTURE_2D);
             
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minMagFilter);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, minMagFilter);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapMode);
+            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minMagFilter);
+            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, minMagFilter);
+            glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapMode);
+            glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapMode);
             
             glBindTexture(GL_TEXTURE_2D, 0);
-            check_gl_error();
-        }
-        
-    protected:
-        void bind()
-        {
-            glBindTexture(GL_TEXTURE_2D, texture_id);
             check_gl_error();
         }
     };
@@ -104,7 +101,7 @@ namespace gle
         /**
          Creates a 3D texture from a set of bitmaps.
          */
-        GLTexture3D(const std::vector<unsigned char*>& data, unsigned int width, unsigned int height, GLenum format) : GLTexture::GLTexture()
+        GLTexture3D(const std::vector<unsigned char*>& data, unsigned int width, unsigned int height, GLenum format) : GLTexture(GL_TEXTURE_CUBE_MAP)
         {
             bind();
             for(GLuint i = 0; i < data.size(); i++)
@@ -112,20 +109,13 @@ namespace gle
                 bind_image(data[i], width, height, format, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
             }
             
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, minMagFilter);
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, minMagFilter);
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, wrapMode);
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, wrapMode);
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, wrapMode);
+            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minMagFilter);
+            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, minMagFilter);
+            glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapMode);
+            glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapMode);
+            glTexParameteri(target, GL_TEXTURE_WRAP_R, wrapMode);
             
             glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-            check_gl_error();
-        }
-        
-    protected:
-        void bind()
-        {
-            glBindTexture(GL_TEXTURE_CUBE_MAP, texture_id);
             check_gl_error();
         }
     };
@@ -136,24 +126,17 @@ namespace gle
     class GLFramebufferTexture : public GLTexture
     {
     public:
-        GLFramebufferTexture(unsigned int width, unsigned int height, int channel) : GLTexture::GLTexture()
+        GLFramebufferTexture(unsigned int width, unsigned int height, int channel) : GLTexture(GL_TEXTURE_2D)
         {
             bind();
             
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
             
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glTexParameterf(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameterf(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + channel, GL_TEXTURE_2D, texture_id, 0);
             
             glBindTexture(GL_TEXTURE_2D, 0);
-            check_gl_error();
-        }
-        
-    protected:
-        void bind()
-        {
-            glBindTexture(GL_TEXTURE_2D, texture_id);
             check_gl_error();
         }
     };
