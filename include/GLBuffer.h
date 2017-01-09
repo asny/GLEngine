@@ -7,95 +7,87 @@
 
 #include "GLUtility.h"
 
-class GBuffer
-{
-public:
-    
-    enum GBUFFER_TEXTURE_TYPE {
-        GBUFFER_TEXTURE_TYPE_POSITION,
-        GBUFFER_TEXTURE_TYPE_DIFFUSE,
-        GBUFFER_TEXTURE_TYPE_NORMAL,
-        GBUFFER_NUM_TEXTURES
+namespace gle {
+    class GBuffer
+    {
+    public:
+        
+        GBuffer()
+        {
+            m_fbo = 0;
+            m_depthTexture = 0;
+        }
+        
+        ~GBuffer()
+        {
+            if (m_fbo != 0) {
+                glDeleteFramebuffers(1, &m_fbo);
+            }
+            
+            if (m_depthTexture != 0) {
+                glDeleteTextures(1, &m_depthTexture);
+            }
+        }
+        
+        bool Init(unsigned int width, unsigned int height)
+        {
+            // Create the FBO
+            glGenFramebuffers(1, &m_fbo);
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbo);
+            
+            // Create the textures
+            position_texture = std::make_shared<GLFramebufferTexture>(width, height, 0);
+            color_texture = std::make_shared<GLFramebufferTexture>(width, height, 1);
+            normal_texture = std::make_shared<GLFramebufferTexture>(width, height, 2);
+            
+            // depth
+            glGenTextures(1, &m_depthTexture);
+            glBindTexture(GL_TEXTURE_2D, m_depthTexture);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32F, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT,
+                         NULL);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTexture, 0);
+            
+            // Set the draw buffers
+            GLenum DrawBuffers[] = { GL_COLOR_ATTACHMENT0 , GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+            glDrawBuffers(3, DrawBuffers);
+            
+            // Check status
+            GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+            
+            if (Status != GL_FRAMEBUFFER_COMPLETE) {
+                printf("FB error, status: 0x%x\n", Status);
+                return false;
+            }
+            
+            // restore default FBO
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+            
+            return true;
+        }
+        
+        void BindForWriting()
+        {
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbo);
+        }
+        
+        void BindForReading()
+        {
+            glActiveTexture(GL_TEXTURE0);
+            position_texture->use();
+            glActiveTexture(GL_TEXTURE1);
+            color_texture->use();
+            glActiveTexture(GL_TEXTURE2);
+            normal_texture->use();
+            check_gl_error();
+        }
+        
+    private:
+        
+        GLuint m_fbo;
+        
+        std::shared_ptr<GLTexture> position_texture;
+        std::shared_ptr<GLTexture> color_texture;
+        std::shared_ptr<GLTexture> normal_texture;
+        GLuint m_depthTexture;
     };
-    
-    GBuffer()
-    {
-        m_fbo = 0;
-        m_depthTexture = 0;
-    }
-    
-    ~GBuffer()
-    {
-        if (m_fbo != 0) {
-            glDeleteFramebuffers(1, &m_fbo);
-        }
-        
-        if (m_textures[0] != 0) {
-            glDeleteTextures(GBUFFER_NUM_TEXTURES, m_textures);
-        }
-        
-        if (m_depthTexture != 0) {
-            glDeleteTextures(1, &m_depthTexture);
-        }
-    }
-    
-    bool Init(unsigned int WindowWidth, unsigned int WindowHeight)
-    {
-        // Create the FBO
-        glGenFramebuffers(1, &m_fbo);
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbo);
-        
-        // Create the gbuffer textures
-        glGenTextures(GBUFFER_NUM_TEXTURES, m_textures);
-        glGenTextures(1, &m_depthTexture);
-        
-        for (unsigned int i = 0 ; i < GBUFFER_NUM_TEXTURES ; i++) {
-            glBindTexture(GL_TEXTURE_2D, m_textures[i]);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, WindowWidth, WindowHeight, 0, GL_RGB, GL_FLOAT, NULL);
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, m_textures[i], 0);
-        }
-        
-        // depth
-        glBindTexture(GL_TEXTURE_2D, m_depthTexture);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32F, WindowWidth, WindowHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT,
-                     NULL);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthTexture, 0);
-        
-        GLenum DrawBuffers[] = { GL_COLOR_ATTACHMENT0 , GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
-        glDrawBuffers(GBUFFER_NUM_TEXTURES, DrawBuffers);
-        
-        GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-        
-        if (Status != GL_FRAMEBUFFER_COMPLETE) {
-            printf("FB error, status: 0x%x\n", Status);
-            return false;
-        }
-        
-        // restore default FBO
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-        
-        return true;
-    }
-    
-    void BindForWriting()
-    {
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbo);
-    }
-    
-    void BindForReading()
-    {
-        for (unsigned int i = 0 ; i < GBUFFER_NUM_TEXTURES; i++) {
-            glActiveTexture(GL_TEXTURE0 + i);
-            glBindTexture(GL_TEXTURE_2D, m_textures[GBUFFER_TEXTURE_TYPE_POSITION + i]);
-        }
-        check_gl_error();
-    }
-    
-private:
-    
-    GLuint m_fbo;
-    GLuint m_textures[GBUFFER_NUM_TEXTURES];
-    GLuint m_depthTexture;
-};
+}

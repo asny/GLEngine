@@ -135,5 +135,36 @@ namespace gle
             return id;
         }
     };
+    
+    /**
+     Represents an OpenGL framebuffer texture
+     */
+    class GLFramebufferTexture : public GLTexture
+    {
+    public:
+        GLFramebufferTexture(unsigned int width, unsigned int height, int channel) : GLTexture::GLTexture()
+        {
+            glBindTexture(GL_TEXTURE_2D, texture_id);
+            
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
+            
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + channel, GL_TEXTURE_2D, texture_id, 0);
+            
+            glBindTexture(GL_TEXTURE_2D, 0);
+            check_gl_error();
+        }
+        
+        /**
+         Bind the texture and returns the id of the active texture.
+         */
+        int use()
+        {
+            glBindTexture(GL_TEXTURE_2D, texture_id);
+            check_gl_error();
+            return 0;
+        }
+    };
 
 }
