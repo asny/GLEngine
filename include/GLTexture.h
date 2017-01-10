@@ -111,13 +111,10 @@ namespace gle
         }
     };
     
-    /**
-     Represents an OpenGL framebuffer texture
-     */
-    class GLFramebufferTexture : public GLTexture
+    class GLFramebufferColorTexture : public GLTexture
     {
     public:
-        GLFramebufferTexture(unsigned int width, unsigned int height, int channel) : GLTexture(GL_TEXTURE_2D)
+        GLFramebufferColorTexture(unsigned int width, unsigned int height, int channel) : GLTexture(GL_TEXTURE_2D)
         {
             bind();
             
@@ -128,5 +125,16 @@ namespace gle
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + channel, GL_TEXTURE_2D, texture_id, 0);
         }
     };
-
+    
+    class GLFramebufferDepthTexture : public GLTexture
+    {
+    public:
+        GLFramebufferDepthTexture(unsigned int width, unsigned int height) : GLTexture(GL_TEXTURE_2D)
+        {
+            bind();
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32F, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT,
+                         NULL);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texture_id, 0);
+        }
+    };
 }
