@@ -7,12 +7,13 @@
 
 #include "GLUtility.h"
 
-namespace gle {
-    class GBuffer
+namespace gle
+{
+    class GLBuffer
     {
     public:
         
-        GBuffer(int width, int height)
+        GLBuffer(int width, int height)
         {
             // Create the FBO
             glGenFramebuffers(1, &framebufferobject_id);
@@ -29,7 +30,7 @@ namespace gle {
             glDrawBuffers(3, DrawBuffers);
         }
         
-        ~GBuffer()
+        ~GLBuffer()
         {
             glDeleteFramebuffers(1, &framebufferobject_id);
         }

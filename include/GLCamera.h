@@ -24,11 +24,11 @@ namespace gle {
         int x = 0;
         int y = 0;
         
-        GBuffer buffer;
+        GLBuffer buffer;
         
     public:
         
-        GLCamera(int screen_width, int screen_height) : buffer(GBuffer(screen_width, screen_height))
+        GLCamera(int screen_width, int screen_height) : buffer(GLBuffer(screen_width, screen_height))
         {
             set_screen_size(screen_width, screen_height);
         }
