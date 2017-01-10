@@ -118,7 +118,7 @@ namespace gle {
         
         void geometry_pass(const GLScene& scene)
         {
-            // Bind buffers
+            // Bind buffer
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebufferobject_id);
             
             // Write and test with the depth buffer
@@ -137,11 +137,8 @@ namespace gle {
         
         void light_pass(const GLScene& scene)
         {
-            // Bind buffers
+            // Bind buffer
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-            position_texture->use(0);
-            color_texture->use(1);
-            normal_texture->use(2);
             
             // Do not write or test with the depth buffer
             GLState::depth_write(false);
@@ -153,7 +150,7 @@ namespace gle {
             glBlendFunc(GL_ONE, GL_ONE);
             
             // Draw the scene
-            scene.shine_light(glm::vec2(width, height));
+            scene.shine_light(glm::vec2(width, height), position_texture, color_texture, normal_texture);
         }
         
         void resize_deferred_buffers()

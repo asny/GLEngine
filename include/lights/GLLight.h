@@ -48,8 +48,12 @@ namespace gle
         
     public:
         
-        void shine(const glm::vec2& screen_size)
+        void shine(const glm::vec2& screen_size, const std::shared_ptr<GLTexture> position_texture, const std::shared_ptr<GLTexture> color_texture, const std::shared_ptr<GLTexture> normal_texture)
         {
+            position_texture->use(0);
+            color_texture->use(1);
+            normal_texture->use(2);
+            
             GLUniform::use(shader, "screenSize", screen_size);
             GLUniform::use(shader, "positionMap", 0);
             GLUniform::use(shader, "colorMap", 1);
