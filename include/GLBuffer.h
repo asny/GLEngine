@@ -12,23 +12,11 @@ namespace gle {
     {
     public:
         
-        GBuffer()
-        {
-            m_fbo = 0;
-        }
-        
-        ~GBuffer()
-        {
-            if (m_fbo != 0) {
-                glDeleteFramebuffers(1, &m_fbo);
-            }
-        }
-        
-        bool Init(unsigned int width, unsigned int height)
+        GBuffer(int width, int height)
         {
             // Create the FBO
-            glGenFramebuffers(1, &m_fbo);
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbo);
+            glGenFramebuffers(1, &framebufferobject_id);
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebufferobject_id);
             
             // Create the textures
             position_texture = std::make_shared<GLFramebufferColorTexture>(width, height, 0);
@@ -39,24 +27,16 @@ namespace gle {
             // Set the draw buffers
             GLenum DrawBuffers[] = { GL_COLOR_ATTACHMENT0 , GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
             glDrawBuffers(3, DrawBuffers);
-            
-            // Check status
-            GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-            
-            if (Status != GL_FRAMEBUFFER_COMPLETE) {
-                printf("FB error, status: 0x%x\n", Status);
-                return false;
-            }
-            
-            // restore default FBO
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-            
-            return true;
+        }
+        
+        ~GBuffer()
+        {
+            glDeleteFramebuffers(1, &framebufferobject_id);
         }
         
         void BindForWriting()
         {
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbo);
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebufferobject_id);
         }
         
         void BindForReading()
@@ -64,12 +44,11 @@ namespace gle {
             position_texture->use(0);
             color_texture->use(1);
             normal_texture->use(2);
-            check_gl_error();
         }
         
     private:
         
-        GLuint m_fbo;
+        GLuint framebufferobject_id;
         
         std::shared_ptr<GLTexture> position_texture;
         std::shared_ptr<GLTexture> color_texture;
