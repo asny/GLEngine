@@ -6,7 +6,6 @@
 #pragma once
 
 #include "GLScene.h"
-#include "GLBuffer.h"
 
 namespace gle {
     
@@ -24,13 +23,25 @@ namespace gle {
         int x = 0;
         int y = 0;
         
-        GLBuffer buffer;
+        GLuint framebufferobject_id;
+        
+        std::shared_ptr<GLTexture> position_texture;
+        std::shared_ptr<GLTexture> color_texture;
+        std::shared_ptr<GLTexture> normal_texture;
+        std::shared_ptr<GLTexture> depth_texture;
         
     public:
         
-        GLCamera(int screen_width, int screen_height) : buffer(GLBuffer(screen_width, screen_height))
+        GLCamera(int screen_width, int screen_height)
         {
+            glGenFramebuffers(1, &framebufferobject_id);
+            
             set_screen_size(screen_width, screen_height);
+        }
+        
+        ~GLCamera()
+        {
+            glDeleteFramebuffers(1, &framebufferobject_id);
         }
         
         /**
@@ -41,6 +52,7 @@ namespace gle {
             width = _width;
             height = _height;
             projection = glm::perspective(45.f, width/float(height), 0.1f, 100.f);
+            resize_deferred_buffers();
         }
         
         void set_screen_position(int _x, int _y)
@@ -107,7 +119,7 @@ namespace gle {
         void geometry_pass(const GLScene& scene)
         {
             // Bind buffers
-            buffer.BindForWriting();
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebufferobject_id);
             
             // Write and test with the depth buffer
             GLState::depth_write(true);
@@ -127,7 +139,9 @@ namespace gle {
         {
             // Bind buffers
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-            buffer.BindForReading();
+            position_texture->use(0);
+            color_texture->use(1);
+            normal_texture->use(2);
             
             // Do not write or test with the depth buffer
             GLState::depth_write(false);
@@ -140,6 +154,19 @@ namespace gle {
             
             // Draw the scene
             scene.shine_light(glm::vec2(width, height));
+        }
+        
+        void resize_deferred_buffers()
+        {
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebufferobject_id);
+            GLenum DrawBuffers[] = { GL_COLOR_ATTACHMENT0 , GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+            glDrawBuffers(3, DrawBuffers);
+            
+            // Create the textures
+            position_texture = std::make_shared<GLFramebufferColorTexture>(width, height, 0);
+            color_texture = std::make_shared<GLFramebufferColorTexture>(width, height, 1);
+            normal_texture = std::make_shared<GLFramebufferColorTexture>(width, height, 2);
+            depth_texture = std::make_shared<GLFramebufferDepthTexture>(width, height);
         }
     };
 }
