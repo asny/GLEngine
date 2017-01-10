@@ -50,6 +50,11 @@ namespace gle
         
         void shine(const glm::vec2& screen_size, const std::shared_ptr<GLTexture> position_texture, const std::shared_ptr<GLTexture> color_texture, const std::shared_ptr<GLTexture> normal_texture)
         {
+            // Do not write or test with the depth buffer
+            GLState::depth_write(false);
+            GLState::depth_test(false);
+            GLState::cull_back_faces(true);
+            
             position_texture->use(0);
             color_texture->use(1);
             normal_texture->use(2);

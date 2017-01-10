@@ -35,6 +35,7 @@ namespace gle
         
         void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
         {
+            GLState::depth_test(true);
             GLState::depth_write(true);
             GLState::cull_back_faces(true);
             glDepthFunc(GL_LEQUAL);

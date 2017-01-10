@@ -104,10 +104,6 @@ namespace gle {
     private:
         void forward_pass(const GLScene& scene)
         {
-            // Write and test with the depth buffer
-            GLState::depth_write(true);
-            GLState::depth_test(true);
-            
             // Set up default blending
             glEnable(GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -120,10 +116,6 @@ namespace gle {
         {
             // Bind buffer
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebufferobject_id);
-            
-            // Write and test with the depth buffer
-            GLState::depth_write(true);
-            GLState::depth_test(true);
             
             // Do not blend
             glDisable(GL_BLEND);
@@ -139,10 +131,6 @@ namespace gle {
         {
             // Bind buffer
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-            
-            // Do not write or test with the depth buffer
-            GLState::depth_write(false);
-            GLState::depth_test(false);
             
             // Set up blending
             glEnable(GL_BLEND);
