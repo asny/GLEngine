@@ -56,6 +56,15 @@ void update()
     last_time = time;
 }
 
+void create_cube(std::shared_ptr<GLNode> root, const vec3& translation, std::shared_ptr<GLMaterial> material)
+{
+    auto geometry = MeshCreator::create_box(false);
+    
+    auto translation_node = std::make_shared<GLTransformationNode>(translate(translation));
+    root->add_child(translation_node);
+    translation_node->add_leaf(geometry, material);
+}
+
 void create_cubes(GLScene& root)
 {
     root.add_light(std::make_shared<GLDirectionalLight>(glm::vec3(1., -1., -1.)));
@@ -63,22 +72,15 @@ void create_cubes(GLScene& root)
     auto rotation_node = std::make_shared<GLTransformationNode>(cube_rotation);
     root.add_child(rotation_node);
     
-    {
-        auto translation_node = std::make_shared<GLTransformationNode>(translate(vec3(-1., 0., 1.)));
-        rotation_node->add_child(translation_node);
-        
-        auto geometry = MeshCreator::create_box(false);
-        auto material = make_shared<GLStandardMaterial>(geometry->normal(), vec3(0.2, 0.2, 0.2), vec3(0.5, 0.1, 0.7), vec3(0.5, 0.1, 0.7), 1.);
-        translation_node->add_leaf(geometry, material);
-    }
-    {
-        auto translation_node = std::make_shared<GLTransformationNode>(translate(vec3(1., 0., -1.)));
-        rotation_node->add_child(translation_node);
-        
-        auto geometry = MeshCreator::create_box(false);
-        auto material = make_shared<GLColorMaterial>(geometry->normal(), vec3(0.5, 0.1, 0.7));
-        translation_node->add_leaf(geometry, material);
-    }
+    auto flat_material = make_shared<GLFlatColorMaterial>(vec3(0.5, 0.1, 0.7));
+    auto color_material = make_shared<GLColorMaterial>(vec3(0.5, 0.1, 0.7));
+    auto standard_material = make_shared<GLStandardMaterial>(vec3(0.2, 0.2, 0.2), vec3(0.5, 0.1, 0.7), vec3(0.5, 0.1, 0.7), 1.);
+    
+    create_cube(rotation_node, vec3(-1., 0., 1.), standard_material);
+    create_cube(rotation_node, vec3(0., -1.0, 1.5), flat_material);
+    
+    create_cube(rotation_node, vec3(1., 0., -1.), flat_material);
+    create_cube(rotation_node, vec3(1.5, -1.0, 0.), standard_material);
 }
 
 int main(int argc, const char * argv[])
