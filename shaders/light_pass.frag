@@ -3,6 +3,7 @@
 uniform sampler2D positionMap;
 uniform sampler2D colorMap;
 uniform sampler2D normalMap;
+uniform sampler2D depthMap;
 
 uniform vec2 screenSize;
 uniform vec3 lightDirection;
@@ -28,4 +29,5 @@ void main()
     float diffuse = clamp( max(dot(N,L), 0.0) , 0.0, 1.0 );
     float spec = clamp ( pow(max(dot(R,E), 0.0), specPow) , 0.0, 1.0 );
     fragColour = vec4(color * (ambient + diffuse + spec), 1.);
+    gl_FragDepth = texture(depthMap, TexCoord).r;
 }

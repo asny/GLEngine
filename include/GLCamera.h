@@ -138,7 +138,7 @@ namespace gle {
             glBlendFunc(GL_ONE, GL_ONE);
             
             // Draw the scene
-            scene.shine_light(glm::vec2(width, height), position_texture, color_texture, normal_texture);
+            scene.shine_light(glm::vec2(width, height), position_texture, color_texture, normal_texture, depth_texture);
         }
         
         void resize_deferred_buffers()
@@ -152,6 +152,13 @@ namespace gle {
             color_texture = std::make_shared<GLFramebufferColorTexture>(width, height, 1);
             normal_texture = std::make_shared<GLFramebufferColorTexture>(width, height, 2);
             depth_texture = std::make_shared<GLFramebufferDepthTexture>(width, height);
+            
+            GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+            
+            if (Status != GL_FRAMEBUFFER_COMPLETE) {
+                printf("Framebuffer error, status: 0x%x\n", Status);
+            }
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         }
     };
 }

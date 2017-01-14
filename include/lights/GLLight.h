@@ -48,21 +48,23 @@ namespace gle
         
     public:
         
-        void shine(const glm::vec2& screen_size, const std::shared_ptr<GLTexture> position_texture, const std::shared_ptr<GLTexture> color_texture, const std::shared_ptr<GLTexture> normal_texture)
+        void shine(const glm::vec2& screen_size, const std::shared_ptr<GLTexture> position_texture, const std::shared_ptr<GLTexture> color_texture, const std::shared_ptr<GLTexture> normal_texture, const std::shared_ptr<GLTexture> depth_texture)
         {
             // Do not write or test with the depth buffer
-            GLState::depth_write(false);
+            GLState::depth_write(true);
             GLState::depth_test(false);
             GLState::cull_back_faces(true);
             
             position_texture->use(0);
             color_texture->use(1);
             normal_texture->use(2);
+            depth_texture->use(3);
             
             GLUniform::use(shader, "screenSize", screen_size);
             GLUniform::use(shader, "positionMap", 0);
             GLUniform::use(shader, "colorMap", 1);
             GLUniform::use(shader, "normalMap", 2);
+            GLUniform::use(shader, "depthMap", 3);
             
             use_light_properties();
             
