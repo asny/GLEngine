@@ -12,10 +12,14 @@ out vec4 fragColour;
 
 void main()
 {
-   	vec2 TexCoord = gl_FragCoord.xy / screenSize;
-   	vec3 pos = texture(positionMap, TexCoord).xyz;
-   	vec3 color = texture(colorMap, TexCoord).xyz;
-   	vec3 Normal = texture(normalMap, TexCoord).xyz;
+   	vec2 uv = gl_FragCoord.xy / screenSize;
+    float depth = texture(depthMap, uv).r;
+    if(depth == 1.)
+        discard;
+    
+   	vec3 pos = texture(positionMap, uv).xyz;
+   	vec3 color = texture(colorMap, uv).xyz;
+   	vec3 Normal = texture(normalMap, uv).xyz;
     
     float specPow = 5.;
     
@@ -29,5 +33,5 @@ void main()
     float diffuse = clamp( max(dot(N,L), 0.0) , 0.0, 1.0 );
     float spec = clamp ( pow(max(dot(R,E), 0.0), specPow) , 0.0, 1.0 );
     fragColour = vec4(color * (ambient + diffuse + spec), 1.);
-    gl_FragDepth = texture(depthMap, TexCoord).r;
+    gl_FragDepth = depth;
 }
