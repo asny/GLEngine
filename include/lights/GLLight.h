@@ -52,7 +52,7 @@ namespace gle
         {
             // Do not write or test with the depth buffer
             GLState::depth_write(true);
-            GLState::depth_test(false);
+            GLState::depth_test(true);
             GLState::cull_back_faces(true);
             
             position_texture->use(0);
