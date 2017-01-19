@@ -25,13 +25,14 @@ namespace gle
         
         bool should_draw(DrawPassMode draw_pass)
         {
-            return draw_pass == FORWARD;
+            return draw_pass == DEFERRED;
         }
         
         void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
                                std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes)
         {
             vec3_vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
+            vec3_vertex_attributes.push_back(shader->create_attribute("normal", geometry->normal()));
             vec2_vertex_attributes.push_back(shader->create_attribute("uv_coordinates", uv_coordinates));
         }
         
@@ -41,9 +42,12 @@ namespace gle
             GLState::depth_write(true);
             GLState::cull_back_faces(true);
             
+            auto modelView = view * model;
             texture->use(0);
             GLUniform::use(shader, "texture0", 0);
-            GLUniform::use(shader, "MVPMatrix", projection * view * model);
+            GLUniform::use(shader, "MVMatrix", modelView);
+            GLUniform::use(shader, "MVPMatrix", projection * modelView);
+            GLUniform::use(shader, "NMatrix", inverseTranspose(modelView));
         }
     };
 }
