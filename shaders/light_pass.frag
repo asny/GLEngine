@@ -7,6 +7,7 @@ uniform sampler2D depthMap;
 
 uniform vec2 screenSize;
 uniform vec3 lightDirection;
+uniform vec3 eyePosition;
 
 out vec4 fragColour;
 
@@ -25,7 +26,7 @@ void main()
     
     vec3 N = normalize(Normal);
     vec3 L = normalize(-lightDirection);
-    vec3 E = normalize(-pos);
+    vec3 E = normalize(eyePosition-pos);
     vec3 R = normalize(reflect(-L,N));
     
     // Calculate colour

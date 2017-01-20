@@ -1,7 +1,7 @@
 #version 330
 
 uniform mat4 MVPMatrix;
-uniform mat4 MVMatrix;
+uniform mat4 MMatrix;
 uniform mat4 NMatrix;
 
 in vec3 position;
@@ -16,7 +16,7 @@ void main()
 {
     // Pass the tex coord straight through to the fragment shader
     coords = uv_coordinates;
-    pos = (MVMatrix * vec4(position, 1.)).xyz;
+    pos = (MMatrix * vec4(position, 1.)).xyz;
     nor = mat3(NMatrix) * normal;
     
     // Calculate position

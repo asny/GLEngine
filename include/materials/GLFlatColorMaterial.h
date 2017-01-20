@@ -40,8 +40,8 @@ namespace gle
             GLState::depth_write(true);
             GLState::cull_back_faces(true);
             
-            GLUniform::use(shader, "MVMatrix", view * model);
-            GLUniform::use(shader, "PMatrix", projection);
+            GLUniform::use(shader, "MMatrix", model);
+            GLUniform::use(shader, "VPMatrix", projection * view);
             
             GLUniform::use(shader, "materialColor", color);
         }

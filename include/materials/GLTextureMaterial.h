@@ -42,12 +42,11 @@ namespace gle
             GLState::depth_write(true);
             GLState::cull_back_faces(true);
             
-            auto modelView = view * model;
             texture->use(0);
             GLUniform::use(shader, "texture0", 0);
-            GLUniform::use(shader, "MVMatrix", modelView);
-            GLUniform::use(shader, "MVPMatrix", projection * modelView);
-            GLUniform::use(shader, "NMatrix", inverseTranspose(modelView));
+            GLUniform::use(shader, "MMatrix", model);
+            GLUniform::use(shader, "MVPMatrix", projection * view * model);
+            GLUniform::use(shader, "NMatrix", inverseTranspose(model));
         }
     };
 }

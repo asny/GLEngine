@@ -138,7 +138,7 @@ namespace gle {
             glBlendFunc(GL_ONE, GL_ONE);
             
             // Draw the scene
-            scene.shine_light(glm::vec2(width, height), position_texture, color_texture, normal_texture, depth_texture);
+            scene.shine_light(glm::vec2(width, height), position, position_texture, color_texture, normal_texture, depth_texture);
         }
         
         void resize_deferred_buffers()
