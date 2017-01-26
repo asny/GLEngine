@@ -89,7 +89,10 @@ namespace gle
         
         void use_light_properties()
         {
-            GLUniform::use(shader, "lightDirection", direction);
+            GLUniform::use(shader, "directionalLight.direction", direction);
+            GLUniform::use(shader, "directionalLight.base.color", glm::vec3(1., 1., 1.));
+            GLUniform::use(shader, "directionalLight.base.ambientIntensity", 0.2f);
+            GLUniform::use(shader, "directionalLight.base.diffuseIntensity", 0.5f);
         }
     };
 }
