@@ -25,23 +25,23 @@ struct DirectionalLight
 
 struct Attenuation
 {
-    float Constant;
-    float Linear;
-    float Exp;
+    float constant;
+    float linear;
+    float exp;
 };
 
 struct PointLight
 {
-    BaseLight Base;
-    vec3 Position;
-    Attenuation Atten;
+    BaseLight base;
+    vec3 position;
+    Attenuation attenuation;
 };
 
 struct SpotLight
 {
-    PointLight Base;
-    vec3 Direction;
-    float Cutoff;
+    PointLight base;
+    vec3 direction;
+    float cutoff;
 };
 
 uniform DirectionalLight directionalLight;
@@ -90,15 +90,15 @@ vec4 CalcDirectionalLight(vec3 position, vec3 normal)
 
 vec4 CalcPointLight(vec3 position, vec3 normal)
 {
-    vec3 lightDirection = position - pointLight.Position;
+    vec3 lightDirection = position - pointLight.position;
     float distance = length(lightDirection);
     lightDirection = normalize(lightDirection);
     
-    vec4 color = CalcLightInternal(pointLight.Base, lightDirection, position, normal);
+    vec4 color = CalcLightInternal(pointLight.base, lightDirection, position, normal);
     
-    float attenuation =  pointLight.Atten.Constant +
-    pointLight.Atten.Linear * distance +
-    pointLight.Atten.Exp * distance * distance;
+    float attenuation =  pointLight.attenuation.constant +
+        pointLight.attenuation.linear * distance +
+        pointLight.attenuation.exp * distance * distance;
     
     attenuation = max(1.0, attenuation);
     
