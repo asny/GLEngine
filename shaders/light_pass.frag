@@ -52,7 +52,7 @@ uniform int lightType;
 const float specularIntensity = 0.f;
 const float specularPower = 5.f;
 
-vec4 CalcLightInternal(BaseLight light,
+vec4 calculate_light(BaseLight light,
                        vec3 lightDirection,
                        vec3 position,
                        vec3 normal)
@@ -80,21 +80,21 @@ vec4 CalcLightInternal(BaseLight light,
     return (AmbientColor + DiffuseColor + SpecularColor);
 }
 
-vec4 CalcDirectionalLight(vec3 position, vec3 normal)
+vec4 calculate_directional_light(vec3 position, vec3 normal)
 {
-    return CalcLightInternal(directionalLight.base,
+    return calculate_light(directionalLight.base,
                              directionalLight.direction,
                              position,
                              normal);
 }
 
-vec4 CalcPointLight(vec3 position, vec3 normal)
+vec4 calculate_point_light(vec3 position, vec3 normal)
 {
     vec3 lightDirection = position - pointLight.position;
     float distance = length(lightDirection);
     lightDirection = normalize(lightDirection);
     
-    vec4 color = CalcLightInternal(pointLight.base, lightDirection, position, normal);
+    vec4 color = calculate_light(pointLight.base, lightDirection, position, normal);
     
     float attenuation =  pointLight.attenuation.constant +
         pointLight.attenuation.linear * distance +
@@ -116,6 +116,6 @@ void main()
    	vec3 color = texture(colorMap, uv).xyz;
    	vec3 normal = normalize(texture(normalMap, uv).xyz);
     
-    fragColour = vec4(color, 1.0) * CalcDirectionalLight(pos, normal);
+    fragColour = vec4(color, 1.0) * calculate_directional_light(pos, normal);
     gl_FragDepth = depth;
 }
