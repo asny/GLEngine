@@ -52,58 +52,58 @@ uniform int lightType;
 const float specularIntensity = 0.f;
 const float specularPower = 5.f;
 
-vec4 CalcLightInternal(BaseLight Light,
-                       vec3 LightDirection,
-                       vec3 WorldPos,
-                       vec3 Normal)
+vec4 CalcLightInternal(BaseLight light,
+                       vec3 lightDirection,
+                       vec3 position,
+                       vec3 normal)
 {
-    vec4 AmbientColor = vec4(Light.color * Light.ambientIntensity, 1.0);
-    float DiffuseFactor = dot(Normal, -LightDirection);
+    vec4 AmbientColor = vec4(light.color * light.ambientIntensity, 1.0);
+    float DiffuseFactor = dot(normal, -lightDirection);
     
     vec4 DiffuseColor  = vec4(0, 0, 0, 0);
     vec4 SpecularColor = vec4(0, 0, 0, 0);
     
     if (DiffuseFactor > 0.0)
     {
-        DiffuseColor = vec4(Light.color * Light.diffuseIntensity * DiffuseFactor, 1.0);
+        DiffuseColor = vec4(light.color * light.diffuseIntensity * DiffuseFactor, 1.0);
         
-        vec3 VertexToEye = normalize(eyePosition - WorldPos);
-        vec3 LightReflect = normalize(reflect(LightDirection, Normal));
-        float SpecularFactor = dot(VertexToEye, LightReflect);
+        vec3 VertexToEye = normalize(eyePosition - position);
+        vec3 lightReflect = normalize(reflect(lightDirection, normal));
+        float SpecularFactor = dot(VertexToEye, lightReflect);
         if (SpecularFactor > 0.0)
         {
             SpecularFactor = pow(SpecularFactor, specularPower);
-            SpecularColor = vec4(Light.color * specularIntensity * SpecularFactor, 1.0);
+            SpecularColor = vec4(light.color * specularIntensity * SpecularFactor, 1.0);
         }
     }
     
     return (AmbientColor + DiffuseColor + SpecularColor);
 }
 
-vec4 CalcDirectionalLight(vec3 WorldPos, vec3 Normal)
+vec4 CalcDirectionalLight(vec3 position, vec3 normal)
 {
     return CalcLightInternal(directionalLight.base,
                              directionalLight.direction,
-                             WorldPos,
-                             Normal);
+                             position,
+                             normal);
 }
 
-/*vec4 CalcPointLight(vec3 WorldPos, vec3 Normal)
+vec4 CalcPointLight(vec3 position, vec3 normal)
 {
-    vec3 LightDirection = WorldPos - gPointLight.Position;
-    float Distance = length(LightDirection);
-    LightDirection = normalize(LightDirection);
+    vec3 lightDirection = position - pointLight.Position;
+    float distance = length(lightDirection);
+    lightDirection = normalize(lightDirection);
     
-    vec4 Color = CalcLightInternal(gPointLight.Base, LightDirection, WorldPos, Normal);
+    vec4 color = CalcLightInternal(pointLight.Base, lightDirection, position, normal);
     
-    float Attenuation =  pointLight.Atten.Constant +
-    gPointLight.Atten.Linear * Distance +
-    gPointLight.Atten.Exp * Distance * Distance;
+    float attenuation =  pointLight.Atten.Constant +
+    pointLight.Atten.Linear * distance +
+    pointLight.Atten.Exp * distance * distance;
     
-    Attenuation = max(1.0, Attenuation);
+    attenuation = max(1.0, attenuation);
     
-    return Color / Attenuation;
-}*/
+    return color / attenuation;
+}
 
 void main()
 {
