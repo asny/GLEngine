@@ -18,9 +18,9 @@ namespace gle
     protected:
         std::shared_ptr<GLShader> shader;
         
-        GLLight(const std::string& fragment_shader_filename)
+        GLLight()
         {
-            shader = GLShader::create_or_get("../GLEngine/shaders/light_pass.vert",  fragment_shader_filename);
+            shader = GLShader::create_or_get("../GLEngine/shaders/light_pass.vert",  "../GLEngine/shaders/light_pass.frag");
             
             // Generate and bind array
             glGenVertexArrays(1, &array_id);
@@ -82,7 +82,7 @@ namespace gle
     public:
         
         GLDirectionalLight(const glm::vec3& _direction) :
-            GLLight("../GLEngine/shaders/light_pass.frag"), direction(_direction)
+            GLLight(), direction(_direction)
         {
             
         }
@@ -93,6 +93,28 @@ namespace gle
             GLUniform::use(shader, "directionalLight.base.color", glm::vec3(1., 1., 1.));
             GLUniform::use(shader, "directionalLight.base.ambientIntensity", 0.2f);
             GLUniform::use(shader, "directionalLight.base.diffuseIntensity", 0.5f);
+        }
+    };
+    
+    class GLPointLight : public GLLight
+    {
+        glm::vec3 position;
+    public:
+        
+        GLPointLight(const glm::vec3& _position) : GLLight(), position(_position)
+        {
+            
+        }
+        
+        void use_light_properties()
+        {
+            GLUniform::use(shader, "pointLight.position", position);
+            GLUniform::use(shader, "pointLight.base.color", glm::vec3(1., 1., 1.));
+            GLUniform::use(shader, "pointLight.base.ambientIntensity", 0.2f);
+            GLUniform::use(shader, "pointLight.base.diffuseIntensity", 0.5f);
+            GLUniform::use(shader, "pointLight.attenuation.constant", 0.f);
+            GLUniform::use(shader, "pointLight.attenuation.linear", 0.5f);
+            GLUniform::use(shader, "pointLight.attenuation.exp", 0.1f);
         }
     };
 }
