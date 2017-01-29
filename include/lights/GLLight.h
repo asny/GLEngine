@@ -114,9 +114,9 @@ namespace gle
             GLUniform::use(shader, "pointLight.base.color", glm::vec3(1., 1., 1.));
             GLUniform::use(shader, "pointLight.base.ambientIntensity", 0.2f);
             GLUniform::use(shader, "pointLight.base.diffuseIntensity", 0.5f);
-            GLUniform::use(shader, "pointLight.attenuation.constant", 0.f);
-            GLUniform::use(shader, "pointLight.attenuation.linear", 0.5f);
-            GLUniform::use(shader, "pointLight.attenuation.exp", 0.1f);
+            GLUniform::use(shader, "pointLight.attenuation.constant", 1.f);
+            GLUniform::use(shader, "pointLight.attenuation.linear", 0.1f);
+            GLUniform::use(shader, "pointLight.attenuation.exp", 0.01f);
         }
     };
 }
