@@ -54,6 +54,7 @@ namespace gle
             GLState::depth_write(true);
             GLState::depth_test(true);
             GLState::cull_back_faces(true);
+            glDepthFunc(GL_LEQUAL);
             
             position_texture->use(0);
             color_texture->use(1);
