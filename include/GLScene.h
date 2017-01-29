@@ -51,8 +51,7 @@ namespace gle
         
         GLScene()
         {
-            auto default_light = std::make_shared<GLDirectionalLight>(glm::vec3(-1., -1., -1.));
-            lights.push_back(default_light);
+            
         }
         
         void add_light(std::shared_ptr<GLLight> light)
