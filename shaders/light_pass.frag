@@ -116,6 +116,16 @@ void main()
    	vec3 color = texture(colorMap, uv).xyz;
    	vec3 normal = normalize(texture(normalMap, uv).xyz);
     
-    fragColour = vec4(color, 1.0) * calculate_directional_light(pos, normal);
+    vec4 light;
+    if(lightType == 1)
+    {
+        light = calculate_directional_light(pos, normal);
+    }
+    else if(lightType == 2)
+    {
+        light = calculate_point_light(pos, normal);
+    }
+    
+    fragColour = vec4(color, 1.0) * light;
     gl_FragDepth = depth;
 }
