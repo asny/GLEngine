@@ -18,7 +18,7 @@ namespace gle
         GLuint texture_id;
         GLenum target;
         GLenum minMagFilter = GL_LINEAR; // GL_NEAREST or GL_LINEAR
-        GLenum wrapMode = GL_CLAMP_TO_EDGE; // GL_REPEAT, GL_MIRRORED_REPEAT, GL_CLAMP_TO_EDGE, or GL_CLAMP_TO_BORDER
+        GLenum wrapMode = GL_REPEAT; // GL_REPEAT, GL_MIRRORED_REPEAT, GL_CLAMP_TO_EDGE, or GL_CLAMP_TO_BORDER
         
         void bind_image(unsigned char* data, unsigned int width, unsigned int height, GLenum format, GLenum target)
         {
