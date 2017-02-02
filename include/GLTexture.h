@@ -193,12 +193,12 @@ namespace gle
         /**
          Creates a 3D texture from a set of bitmaps.
          */
-        GLTexture3D(const std::vector<unsigned char*>& data, unsigned int width, unsigned int height, GLenum format) : GLTexture(GL_TEXTURE_CUBE_MAP)
+        GLTexture3D(const std::vector<std::string>& filenames) : GLTexture(GL_TEXTURE_CUBE_MAP)
         {
             bind();
-            for(GLuint i = 0; i < data.size(); i++)
+            for(GLuint i = 0; i < filenames.size(); i++)
             {
-                bind_image(data[i], width, height, format, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
+                bind_image(filenames[i], GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, false);
             }
             
             glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minMagFilter);
