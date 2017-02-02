@@ -169,20 +169,6 @@ namespace gle
     class GLTexture2D : public GLTexture
     {
     public:
-        /**
-         Creates a texture from a bitmap.
-         */
-        GLTexture2D(unsigned char* data, unsigned int width, unsigned int height, GLenum format) : GLTexture(GL_TEXTURE_2D)
-        {
-            bind();
-            bind_image(data, width, height, format, GL_TEXTURE_2D);
-            
-            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minMagFilter);
-            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, minMagFilter);
-            glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapMode);
-            glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapMode);
-        }
-        
         GLTexture2D(std::string filename) : GLTexture(GL_TEXTURE_2D)
         {
             bind();
