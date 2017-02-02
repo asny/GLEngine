@@ -34,7 +34,7 @@ namespace gle
                          data);
         }
         
-        void bind_image(std::string filename, GLenum target)
+        void bind_image(std::string filename, GLenum target, bool invert = true)
         {
             auto image = loadSurface(filename);
             unsigned int width = image->w;
@@ -46,7 +46,10 @@ namespace gle
             
             char *pixels = static_cast<char *>(image->pixels);
             
-            invert_image(width * bytesPerPixel, height, pixels);
+            if(invert)
+            {
+                invert_image(width * bytesPerPixel, height, pixels);
+            }
             
             glTexImage2D(target,
                          0,
