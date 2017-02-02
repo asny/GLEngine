@@ -11,6 +11,7 @@
 #include "materials/GLFlatColorMaterial.h"
 #include "materials/GLColorMaterial.h"
 #include "materials/GLStandardMaterial.h"
+#include "materials/GLTextureMaterial.h"
 #include "gtx/rotate_vector.hpp"
 
 #define GLFW_INCLUDE_NONE
@@ -67,20 +68,27 @@ void create_cube(std::shared_ptr<GLNode> root, const vec3& translation, std::sha
 
 void create_cubes(GLScene& root)
 {
+    root.add_light(std::make_shared<GLPointLight>(glm::vec3(1., 1., 1.)));
     root.add_light(std::make_shared<GLDirectionalLight>(glm::vec3(1., -1., -1.)));
     
     auto rotation_node = std::make_shared<GLTransformationNode>(cube_rotation);
     root.add_child(rotation_node);
     
+    std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> uv_attribute = std::make_shared<mesh::Attribute<mesh::VertexID, glm::vec2>>();
+    auto geometry = MeshCreator::create_quad(uv_attribute);
+    auto texture = make_shared<GLTexture2D>(std::string("test_texture.jpg"));
+    auto texture_material = make_shared<GLTextureMaterial>(texture, uv_attribute);
+    root.add_leaf(geometry, texture_material);
+    
     auto flat_material = make_shared<GLFlatColorMaterial>(vec3(0.5, 0.1, 0.7));
     auto color_material = make_shared<GLColorMaterial>(vec3(0.5, 0.1, 0.7));
     auto standard_material = make_shared<GLStandardMaterial>(vec3(0.2, 0.2, 0.2), vec3(0.5, 0.1, 0.7), vec3(0.5, 0.1, 0.7), 1.);
     
-    create_cube(rotation_node, vec3(-1., 0., 1.), standard_material);
+    create_cube(rotation_node, vec3(-1., 0., 1.), color_material);
     create_cube(rotation_node, vec3(0., -1.0, 1.5), flat_material);
     
     create_cube(rotation_node, vec3(1., 0., -1.), flat_material);
-    create_cube(rotation_node, vec3(1.5, -1.0, 0.), standard_material);
+    create_cube(rotation_node, vec3(1.5, -1.0, 0.), color_material);
 }
 
 int main(int argc, const char * argv[])
