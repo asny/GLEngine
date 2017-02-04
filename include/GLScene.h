@@ -119,5 +119,28 @@ namespace gle
             GLNode::draw(draw_pass, camera_position, rotation * model, view, projection);
         }
     };
+    
+    class GLTranslationNode : public GLNode
+    {
+    public:
+        GLTranslationNode(const glm::vec3& _translation) : translation(std::make_shared<glm::vec3>(_translation))
+        {
+            
+        }
+        
+        GLTranslationNode(std::shared_ptr<glm::vec3> _translation) : translation(_translation)
+        {
+            
+        }
+        
+    private:
+        std::shared_ptr<glm::vec3> translation;
+        
+        void draw(DrawPassMode draw_pass, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
+        {
+            auto rotation = glm::translate(glm::mat4(1.f), *translation);
+            GLNode::draw(draw_pass, camera_position, rotation * model, view, projection);
+        }
+    };
 
 }
