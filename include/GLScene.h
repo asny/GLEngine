@@ -95,5 +95,29 @@ namespace gle
             GLNode::draw(draw_pass, camera_position, (*transformation) * model, view, projection);
         }
     };
+    
+    class GLRotationNode : public GLNode
+    {
+    public:
+        GLRotationNode(const glm::vec3& _axis, float _angle) : axis(_axis), angle(std::make_shared<float>(_angle))
+        {
+            
+        }
+        
+        GLRotationNode(const glm::vec3& _axis, std::shared_ptr<float> _angle) : axis(_axis), angle(_angle)
+        {
+            
+        }
+        
+    private:
+        glm::vec3 axis;
+        std::shared_ptr<float> angle;
+        
+        void draw(DrawPassMode draw_pass, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
+        {
+            auto rotation = glm::rotate(glm::mat4(1.f), *angle, axis);
+            GLNode::draw(draw_pass, camera_position, rotation * model, view, projection);
+        }
+    };
 
 }
