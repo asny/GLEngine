@@ -92,7 +92,7 @@ namespace gle
         
         void draw(DrawPassMode draw_pass, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
         {
-            GLNode::draw(draw_pass, camera_position, (*transformation) * model, view, projection);
+            GLNode::draw(draw_pass, camera_position, model * (*transformation), view, projection);
         }
     };
     
@@ -115,8 +115,7 @@ namespace gle
         
         void draw(DrawPassMode draw_pass, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
         {
-            auto rotation = glm::rotate(glm::mat4(1.f), *angle, axis);
-            GLNode::draw(draw_pass, camera_position, rotation * model, view, projection);
+            GLNode::draw(draw_pass, camera_position, model * glm::rotate(glm::mat4(1.f), *angle, axis), view, projection);
         }
     };
     
@@ -138,8 +137,7 @@ namespace gle
         
         void draw(DrawPassMode draw_pass, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
         {
-            auto rotation = glm::translate(glm::mat4(1.f), *translation);
-            GLNode::draw(draw_pass, camera_position, rotation * model, view, projection);
+            GLNode::draw(draw_pass, camera_position, model * glm::translate(glm::mat4(1.f), *translation), view, projection);
         }
     };
 
