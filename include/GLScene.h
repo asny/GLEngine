@@ -25,6 +25,15 @@ namespace gle
             children.push_back(node);
         }
         
+        void remove_child(std::shared_ptr<GLNode> node)
+        {
+            
+            auto pointer = std::find(children.begin(), children.end(), node);
+            if(pointer == children.end())
+                std::runtime_error("The node cannot be removed since it is not a child.");
+            children.erase(pointer);
+        }
+        
     protected:
         virtual void draw(DrawPassMode draw_pass, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
         {
