@@ -24,17 +24,20 @@ namespace gle {
         int y = 0;
         
         GLuint framebufferobject_id;
+        GLuint shadow_framebufferobject;
         
         std::shared_ptr<GLTexture> position_texture;
         std::shared_ptr<GLTexture> color_texture;
         std::shared_ptr<GLTexture> normal_texture;
         std::shared_ptr<GLTexture> depth_texture;
+        std::shared_ptr<GLTexture> shadow_depth_texture;
         
     public:
         
         GLCamera(int screen_width, int screen_height)
         {
             glGenFramebuffers(1, &framebufferobject_id);
+            glGenFramebuffers(1, &shadow_framebufferobject);
             
             set_screen_size(screen_width, screen_height);
         }
@@ -52,6 +55,7 @@ namespace gle {
             width = _width;
             height = _height;
             projection = glm::perspective(45.f, width/float(height), 0.1f, 100.f);
+            resize_shadow_buffer();
             resize_deferred_buffers();
         }
         
@@ -92,6 +96,8 @@ namespace gle {
         {
             glViewport(x, y, width, height);
             
+            shadow_pass(scene);
+            
             // Deffered draw
             geometry_pass(scene);
             light_pass(scene);
@@ -102,6 +108,24 @@ namespace gle {
             check_gl_error();
         }
     private:
+        
+        void shadow_pass(const GLScene& scene)
+        {
+            // Bind buffer
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, shadow_framebufferobject);
+            
+            // Do not blend
+            glDisable(GL_BLEND);
+            
+            // Clear the buffer
+            clear_screen();
+            
+            // Draw the scene
+            glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,20);
+            glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(1., -1., 0.), glm::vec3(0,0,0), glm::vec3(0,1,0));
+            scene.draw(SHADOW, position, depthViewMatrix, depthProjectionMatrix);
+        }
+        
         void forward_pass(const GLScene& scene)
         {
             // Set up default blending
@@ -138,6 +162,22 @@ namespace gle {
             
             // Draw the scene
             scene.shine_light(glm::vec2(width, height), position, position_texture, color_texture, normal_texture, depth_texture);
+        }
+        
+        void resize_shadow_buffer()
+        {
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, shadow_framebufferobject);
+            glDrawBuffer(GL_NONE);
+            
+            // Create the textures
+            shadow_depth_texture = std::make_shared<GLFramebufferDepthTexture>(width, height);
+            
+            GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+            
+            if (Status != GL_FRAMEBUFFER_COMPLETE) {
+                printf("Framebuffer error, status: 0x%x\n", Status);
+            }
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         }
         
         void resize_deferred_buffers()
