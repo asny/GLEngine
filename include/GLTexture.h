@@ -36,13 +36,19 @@ namespace gle
         
         void bind_image(std::string filename, GLenum target, bool invert = true)
         {
-            auto image = loadSurface(filename);
+            auto image = IMG_Load( filename.c_str() );
+            if( image == NULL )
+            {
+                std::runtime_error("Unable to load image " + filename + "! SDL_image Error: " + IMG_GetError());
+            }
             unsigned int width = image->w;
             unsigned int height = image->h;
             
             int bytesPerPixel = image->format->BytesPerPixel;
-            auto internal_format = bytesPerPixel == 3 ? GL_RGB : GL_RGBA;
-            auto format = getFormat(image);
+            if(bytesPerPixel != 3 && bytesPerPixel != 4)
+            {
+                std::runtime_error("Unknown image format.");
+            }
             
             char *pixels = static_cast<char *>(image->pixels);
             
@@ -51,6 +57,8 @@ namespace gle
                 invert_image(width * bytesPerPixel, height, pixels);
             }
             
+            auto internal_format = bytesPerPixel == 3 ? GL_RGB : GL_RGBA;
+            auto format = image->format->Rmask == 0x000000ff ? internal_format : (bytesPerPixel == 3 ? GL_BGR : GL_BGRA);
             glTexImage2D(target,
                          0,
                          (GLint) internal_format,
@@ -98,36 +106,12 @@ namespace gle
         
     private:
         
-        GLenum getFormat(SDL_Surface *image)
-        {
-            assert(image->format->BitsPerPixel == 24 || image->format->BitsPerPixel == 32);
-            
-            GLint Colors = image->format->BytesPerPixel;
-            if (Colors == 4 )
-            {
-                if (image->format->Rmask == 0x000000ff)
-                    return GL_RGBA;
-                else
-                    return GL_BGRA;
-            }
-            else if (Colors == 3)
-            {
-                if (image->format->Rmask == 0x000000ff)
-                    return GL_RGB;
-                else
-                    return GL_BGR;
-            }
-            std::runtime_error("Unknown image format. Only PNG-24 and JPEG is supported.");
-            return NULL;
-        }
-        
-        int invert_image(int width, int height, void *image_pixels)
+        static void invert_image(int width, int height, void *image_pixels)
         {
             auto temp_row = std::unique_ptr<char>(new char[width]);
             if (temp_row.get() == nullptr)
             {
                 std::runtime_error("Not enough memory for image inversion");
-                return -1;
             }
             //if height is odd, don't need to swap middle row
             int height_div_2 = height / 2;
@@ -150,19 +134,6 @@ namespace gle
                        temp_row.get(),
                        width);
             }
-            return 0;
-        }
-        
-        SDL_Surface* loadSurface( std::string path )
-        {
-            //Load image at specified path
-            SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
-            if( loadedSurface == NULL )
-            {
-                printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
-            }
-            
-            return loadedSurface;
         }
     };
     
