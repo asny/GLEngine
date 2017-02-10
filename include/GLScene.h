@@ -74,11 +74,11 @@ namespace gle
             GLNode::draw(draw_pass, camera_position, model, view, projection);
         }
         
-        void shine_light(const glm::vec2& screen_size, const glm::vec3& camera_position, const std::shared_ptr<GLTexture> position_texture, const std::shared_ptr<GLTexture> color_texture, const std::shared_ptr<GLTexture> normal_texture, const std::shared_ptr<GLTexture> depth_texture) const
+        void shine_light(const glm::vec2& screen_size, const glm::vec3& camera_position, const std::shared_ptr<GLTexture> position_texture, const std::shared_ptr<GLTexture> color_texture, const std::shared_ptr<GLTexture> normal_texture, const std::shared_ptr<GLTexture> depth_texture, const std::shared_ptr<GLTexture> shadow_texture) const
         {
             for(auto light : lights)
             {
-                light->shine(screen_size, camera_position, position_texture, color_texture, normal_texture, depth_texture);
+                light->shine(screen_size, camera_position, position_texture, color_texture, normal_texture, depth_texture, shadow_texture);
             }
         }
     };
