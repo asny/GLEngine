@@ -56,6 +56,8 @@
 		4900D19D1E0DC4FB00F92EBD /* Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mesh.h; path = ../../Mesh/include/Mesh.h; sourceTree = "<group>"; };
 		4900D19E1E0DC4FB00F92EBD /* MeshCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeshCreator.h; path = ../../Mesh/include/MeshCreator.h; sourceTree = "<group>"; };
 		4900D19F1E0DC4FB00F92EBD /* Property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Property.h; path = ../../Mesh/include/Property.h; sourceTree = "<group>"; };
+		493F8F161E4E1A0600D94AC1 /* shadow.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = shadow.frag; path = ../shaders/shadow.frag; sourceTree = "<group>"; };
+		493F8F171E4E1A0600D94AC1 /* shadow.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = shadow.vert; path = ../shaders/shadow.vert; sourceTree = "<group>"; };
 		49471A541E131A30006E8AD5 /* GLColorMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLColorMaterial.h; path = ../include/materials/GLColorMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		49471A551E131AB9006E8AD5 /* color_material.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = color_material.frag; path = ../shaders/color_material.frag; sourceTree = "<group>"; };
 		49471A561E131AB9006E8AD5 /* color_material.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = color_material.vert; path = ../shaders/color_material.vert; sourceTree = "<group>"; };
@@ -118,6 +120,8 @@
 		4900D18E1E0C57A600F92EBD /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				493F8F161E4E1A0600D94AC1 /* shadow.frag */,
+				493F8F171E4E1A0600D94AC1 /* shadow.vert */,
 				49471A571E14591C006E8AD5 /* light_pass.frag */,
 				49471A581E14591C006E8AD5 /* light_pass.vert */,
 				49471A551E131AB9006E8AD5 /* color_material.frag */,
