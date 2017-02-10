@@ -122,35 +122,4 @@ namespace gle
             GLUniform::use(shader, "pointLight.attenuation.exp", 0.01f);
         }
     };
-    
-    class GLShadow : public GLMaterial
-    {
-        
-    public:
-        
-        GLShadow()
-        {
-            shader = GLShader::create_or_get("../GLEngine/shaders/shadow.vert",  "../GLEngine/shaders/shadow.frag");
-        }
-        
-        bool should_draw(DrawPassMode draw_pass)
-        {
-            return draw_pass == DEFERRED;
-        }
-        
-        void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
-                               std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes)
-        {
-            vec3_vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
-        }
-        
-        void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
-        {
-            GLState::depth_test(true);
-            GLState::depth_write(true);
-            GLState::cull_back_faces(true);
-            
-            GLUniform::use(shader, "MVPMatrix", projection * view * model);
-        }
-    };
 }

@@ -29,7 +29,7 @@ namespace gle
         
         bool should_draw(DrawPassMode draw_pass)
         {
-            return draw_pass == FORWARD;
+            return draw_pass == FORWARD || (draw_pass == SHADOW && opacity == 1);
         }
         
         void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,

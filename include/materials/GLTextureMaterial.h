@@ -25,7 +25,7 @@ namespace gle
         
         bool should_draw(DrawPassMode draw_pass)
         {
-            return draw_pass == DEFERRED;
+            return draw_pass == DEFERRED || draw_pass == SHADOW;
         }
         
         void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
