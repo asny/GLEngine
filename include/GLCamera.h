@@ -96,8 +96,6 @@ namespace gle {
         {
             glViewport(x, y, width, height);
             
-            shadow_pass(scene);
-            
             // Deffered draw
             geometry_pass(scene);
             light_pass(scene);
@@ -108,24 +106,6 @@ namespace gle {
             check_gl_error();
         }
     private:
-        
-        void shadow_pass(const GLScene& scene)
-        {
-            // Bind buffer
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, shadow_framebufferobject);
-            
-            // Do not blend
-            glDisable(GL_BLEND);
-            
-            // Clear the buffer
-            clear_screen();
-            
-            // Draw the scene
-            glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,20);
-            glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(-5., 5., 0.), glm::vec3(0,0,0), glm::vec3(0,1,0));
-            scene.draw(SHADOW, position, depthViewMatrix, depthProjectionMatrix);
-        }
-        
         void forward_pass(const GLScene& scene)
         {
             // Set up default blending
@@ -154,6 +134,18 @@ namespace gle {
         void light_pass(const GLScene& scene)
         {
             // Bind buffer
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, shadow_framebufferobject);
+            
+            // Clear the buffer
+            GLState::depth_write(true);
+            glClear(GL_DEPTH_BUFFER_BIT);
+            
+            // Draw the scene
+            glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,20);
+            glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(-5., 5., 0.), glm::vec3(0,0,0), glm::vec3(0,1,0));
+            scene.draw(SHADOW, position, depthViewMatrix, depthProjectionMatrix);
+            
+            // Bind buffer
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
             
             // Set up blending
@@ -161,8 +153,6 @@ namespace gle {
             glBlendFunc(GL_ONE, GL_ONE);
             
             // Draw the scene
-            glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,20);
-            glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(-5., 5., 0.), glm::vec3(0,0,0), glm::vec3(0,1,0));
             glm::mat4 biasMatrix(
                                  0.5, 0.0, 0.0, 0.0,
                                  0.0, 0.5, 0.0, 0.0,
