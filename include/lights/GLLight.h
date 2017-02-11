@@ -54,6 +54,7 @@ namespace gle
     public:
         
         void shine(const glm::vec2& screen_size, const glm::vec3& camera_position,
+                   const glm::vec3& target,
                    const std::shared_ptr<GLTexture> position_texture,
                    const std::shared_ptr<GLTexture> color_texture,
                    const std::shared_ptr<GLTexture> normal_texture,
@@ -72,7 +73,7 @@ namespace gle
             depth_texture->use(3);
             shadow_texture->use(4);
             
-            GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view());
+            GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view(target));
             GLUniform::use(shader, "eyePosition", camera_position);
             GLUniform::use(shader, "screenSize", screen_size);
             GLUniform::use(shader, "positionMap", 0);
@@ -89,10 +90,7 @@ namespace gle
             glDrawArrays(GL_TRIANGLES, 0, 3);
         }
         
-        virtual glm::mat4 get_view()
-        {
-            return glm::lookAt(glm::vec3(-5., 5., 0.), glm::vec3(0,0,0), glm::vec3(0,1,0));
-        }
+        virtual glm::mat4 get_view(const glm::vec3& target) = 0;
         
         virtual glm::mat4 get_projection()
         {
@@ -111,6 +109,14 @@ namespace gle
             
         }
         
+        glm::mat4 get_view(const glm::vec3& target)
+        {
+            const float distance = 5.f;
+            glm::vec3 up = normalize(cross(direction, glm::vec3(1., 0., 0.)));
+            return glm::lookAt(target - distance * direction, target, up);
+        }
+        
+    protected:
         void use_light_properties()
         {
             GLUniform::use(shader, "lightType", 1);
@@ -131,6 +137,13 @@ namespace gle
             
         }
         
+        glm::mat4 get_view(const glm::vec3& target)
+        {
+            glm::vec3 up = normalize(cross(target - position, glm::vec3(1., 0., 0.)));
+            return glm::lookAt(position, target, up);
+        }
+        
+    protected:
         void use_light_properties()
         {
             GLUniform::use(shader, "lightType", 2);
