@@ -8,6 +8,7 @@ uniform sampler2D shadowMap;
 
 uniform vec2 screenSize;
 uniform vec3 eyePosition;
+uniform mat4 shadowMVP;
 
 out vec4 fragColour;
 
@@ -117,6 +118,12 @@ void main()
    	vec3 color = texture(colorMap, uv).xyz;
    	vec3 normal = normalize(texture(normalMap, uv).xyz);
     
+    // Shadow
+    vec4 shadow_coord = shadowMVP * vec4(pos, 1.);
+    float visibility = 1.0;
+    if ( texture(shadowMap, shadow_coord.xy).x  <  shadow_coord.z){
+        visibility = 0.5;
+    }
     vec4 light;
     if(lightType == 1)
     {
@@ -127,6 +134,6 @@ void main()
         light = calculate_point_light(pos, normal);
     }
     
-    fragColour = vec4(color, 1.0) * light;
+    fragColour = visibility * vec4(color, 1.0) * light;
     gl_FragDepth = depth;
 }

@@ -48,7 +48,12 @@ namespace gle
         
     public:
         
-        void shine(const glm::vec2& screen_size, const glm::vec3& camera_position, const std::shared_ptr<GLTexture> position_texture, const std::shared_ptr<GLTexture> color_texture, const std::shared_ptr<GLTexture> normal_texture, const std::shared_ptr<GLTexture> depth_texture, const std::shared_ptr<GLTexture> shadow_texture)
+        void shine(const glm::vec2& screen_size, const glm::vec3& camera_position, const glm::mat4& depthMVP,
+                   const std::shared_ptr<GLTexture> position_texture,
+                   const std::shared_ptr<GLTexture> color_texture,
+                   const std::shared_ptr<GLTexture> normal_texture,
+                   const std::shared_ptr<GLTexture> depth_texture,
+                   const std::shared_ptr<GLTexture> shadow_texture)
         {
             // Do not write or test with the depth buffer
             GLState::depth_write(true);
@@ -62,6 +67,7 @@ namespace gle
             depth_texture->use(3);
             shadow_texture->use(4);
             
+            GLUniform::use(shader, "shadowMVP", depthMVP);
             GLUniform::use(shader, "eyePosition", camera_position);
             GLUniform::use(shader, "screenSize", screen_size);
             GLUniform::use(shader, "positionMap", 0);

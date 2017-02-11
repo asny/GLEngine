@@ -122,7 +122,7 @@ namespace gle {
             
             // Draw the scene
             glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,20);
-            glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(1., -1., 0.), glm::vec3(0,0,0), glm::vec3(0,1,0));
+            glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(-5., 5., 0.), glm::vec3(0,0,0), glm::vec3(0,1,0));
             scene.draw(SHADOW, position, depthViewMatrix, depthProjectionMatrix);
         }
         
@@ -161,7 +161,15 @@ namespace gle {
             glBlendFunc(GL_ONE, GL_ONE);
             
             // Draw the scene
-            scene.shine_light(glm::vec2(width, height), position, position_texture, color_texture, normal_texture, depth_texture, shadow_depth_texture);
+            glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,20);
+            glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(-5., 5., 0.), glm::vec3(0,0,0), glm::vec3(0,1,0));
+            glm::mat4 biasMatrix(
+                                 0.5, 0.0, 0.0, 0.0,
+                                 0.0, 0.5, 0.0, 0.0,
+                                 0.0, 0.0, 0.5, 0.0,
+                                 0.5, 0.5, 0.5, 1.0
+                                 );
+            scene.shine_light(glm::vec2(width, height), position, biasMatrix * depthProjectionMatrix * depthViewMatrix, position_texture, color_texture, normal_texture, depth_texture, shadow_depth_texture);
         }
         
         void resize_shadow_buffer()
