@@ -20,11 +20,7 @@ namespace gle
         GLSkyboxMaterial(std::shared_ptr<GLTexture3D> _texture) : texture(_texture)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/skybox.vert",  "../GLEngine/shaders/skybox.frag");
-        }
-        
-        bool should_draw(DrawPassMode draw_pass)
-        {
-            return draw_pass == FORWARD;
+            mode = FORWARD;
         }
         
         void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,

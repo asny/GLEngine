@@ -16,12 +16,15 @@ namespace gle
     class GLMaterial
     {
     protected:
-        
+        DrawPassMode mode = DEFERRED;
         std::shared_ptr<GLShader> shader;
         
     public:
         
-        virtual bool should_draw(DrawPassMode draw_pass) = 0;
+        bool should_draw(DrawPassMode draw_pass)
+        {
+            return mode == draw_pass || (mode == DEFERRED && draw_pass == SHADOW);
+        }
         
         virtual void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
                                        std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes) = 0;

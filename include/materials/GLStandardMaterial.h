@@ -25,11 +25,7 @@ namespace gle
             : normals(_normals), ambient(_ambient), diffuse(_diffuse), specular(_specular), opacity(_opacity)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/phong.vert",  "../GLEngine/shaders/phong.frag");
-        }
-        
-        bool should_draw(DrawPassMode draw_pass)
-        {
-            return draw_pass == FORWARD || (draw_pass == SHADOW && opacity == 1);
+            mode = FORWARD;
         }
         
         void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,

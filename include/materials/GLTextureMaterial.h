@@ -23,11 +23,6 @@ namespace gle
             shader = GLShader::create_or_get("../GLEngine/shaders/texture.vert",  "../GLEngine/shaders/texture.frag");
         }
         
-        bool should_draw(DrawPassMode draw_pass)
-        {
-            return draw_pass == DEFERRED || draw_pass == SHADOW;
-        }
-        
         void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,
                                std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vec3_vertex_attributes)
         {
