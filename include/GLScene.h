@@ -82,6 +82,10 @@ namespace gle
                          const std::shared_ptr<GLTexture> normal_texture,
                          const std::shared_ptr<GLTexture> depth_texture) const
         {
+            // Set up blending
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_ONE, GL_ONE);
+            
             for(auto light : lights)
             {
                 // Use shadow render target
@@ -94,10 +98,6 @@ namespace gle
                 
                 // Use default render target
                 GLRenderTarget::use_default(false);
-                
-                // Set up blending
-                glEnable(GL_BLEND);
-                glBlendFunc(GL_ONE, GL_ONE);
                 
                 // Draw the scene
                 glm::mat4 biasMatrix(0.5, 0.0, 0.0, 0.0,
