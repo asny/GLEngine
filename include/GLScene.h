@@ -100,13 +100,7 @@ namespace gle
                 GLRenderTarget::use_default(false);
                 
                 // Draw the scene
-                glm::mat4 biasMatrix(0.5, 0.0, 0.0, 0.0,
-                                     0.0, 0.5, 0.0, 0.0,
-                                     0.0, 0.0, 0.5, 0.0,
-                                     0.5, 0.5, 0.5, 1.0
-                                     );
-                
-                light->shine(screen_size, camera_position, biasMatrix * depthProjectionMatrix * depthViewMatrix,
+                light->shine(screen_size, camera_position, depthProjectionMatrix * depthViewMatrix,
                              position_texture, color_texture, normal_texture, depth_texture,
                              shadow_render_target.get_depth_texture());
             }

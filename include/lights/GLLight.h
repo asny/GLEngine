@@ -17,6 +17,11 @@ namespace gle
         
     protected:
         std::shared_ptr<GLShader> shader;
+        glm::mat4 bias_matrix = glm::mat4(
+                             0.5, 0.0, 0.0, 0.0,
+                             0.0, 0.5, 0.0, 0.0,
+                             0.0, 0.0, 0.5, 0.0,
+                             0.5, 0.5, 0.5, 1.0);
         
         GLLight()
         {
@@ -67,7 +72,7 @@ namespace gle
             depth_texture->use(3);
             shadow_texture->use(4);
             
-            GLUniform::use(shader, "shadowMVP", depthMVP);
+            GLUniform::use(shader, "shadowMVP", bias_matrix * depthMVP);
             GLUniform::use(shader, "eyePosition", camera_position);
             GLUniform::use(shader, "screenSize", screen_size);
             GLUniform::use(shader, "positionMap", 0);
