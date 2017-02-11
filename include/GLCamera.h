@@ -15,6 +15,7 @@ namespace gle {
     class GLCamera
     {
         glm::vec3 position = glm::vec3(0.);
+        glm::vec3 direction = glm::vec3(0., 0., -1.);
         glm::mat4 view = glm::mat4(1.);
         glm::mat4 projection = glm::mat4(1.);
         
@@ -55,7 +56,8 @@ namespace gle {
         void set_view(const glm::vec3& _position, const glm::vec3& _direction)
         {
             position = _position;
-            view = lookAt(position, _position + _direction, glm::vec3(0., 1., 0.));
+            direction = _direction;
+            view = lookAt(position, position + direction, glm::vec3(0., 1., 0.));
         }
         
         void wireframe(bool on)
@@ -115,7 +117,7 @@ namespace gle {
         
         void light_pass(const GLScene& scene)
         {
-            scene.shine_light(glm::vec2(width, height), position,
+            scene.shine_light(glm::vec2(width, height), position, direction,
                               deferred_render_target.get_color_texture(0),
                               deferred_render_target.get_color_texture(1),
                               deferred_render_target.get_color_texture(2),

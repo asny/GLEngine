@@ -53,7 +53,7 @@ namespace gle
         
     public:
         
-        void shine(const glm::vec2& screen_size, const glm::vec3& camera_position,
+        void shine(const glm::vec2& screen_size, const glm::vec3& view_position,
                    const glm::vec3& target,
                    const std::shared_ptr<GLTexture> position_texture,
                    const std::shared_ptr<GLTexture> color_texture,
@@ -74,7 +74,7 @@ namespace gle
             shadow_texture->use(4);
             
             GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view(target));
-            GLUniform::use(shader, "eyePosition", camera_position);
+            GLUniform::use(shader, "eyePosition", view_position);
             GLUniform::use(shader, "screenSize", screen_size);
             GLUniform::use(shader, "positionMap", 0);
             GLUniform::use(shader, "colorMap", 1);
