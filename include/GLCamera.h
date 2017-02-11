@@ -80,11 +80,7 @@ namespace gle {
         {
             glViewport(x, y, width, height);
             
-            // Deffered draw
-            geometry_pass(scene);
-            light_pass(scene);
-            
-            // Forward draw
+            deferred_pass(scene);
             forward_pass(scene);
             
             check_gl_error();
@@ -103,8 +99,9 @@ namespace gle {
             scene.draw(FORWARD, position, view, projection);
         }
         
-        void geometry_pass(const GLScene& scene)
+        void deferred_pass(const GLScene& scene)
         {
+            // Geometry pass
             // Use deferred render target
             deferred_render_target.use();
             
@@ -113,10 +110,8 @@ namespace gle {
             
             // Draw the scene
             scene.draw(DEFERRED, position, view, projection);
-        }
-        
-        void light_pass(const GLScene& scene)
-        {
+            
+            // Light pass
             scene.shine_light(glm::vec2(width, height), position, direction,
                               deferred_render_target.get_color_texture(0),
                               deferred_render_target.get_color_texture(1),
