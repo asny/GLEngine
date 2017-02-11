@@ -140,7 +140,6 @@ int main(int argc, const char * argv[])
         update();
         
         // draw one frame
-        GLCamera::clear_screen();
         camera.draw(scene);
         
         glfwSwapBuffers(gWindow);

@@ -13,7 +13,7 @@ namespace gle
 {
     class GLRenderTarget
     {
-        
+        int width, height;
         GLenum framebufferobject_id;
         std::vector<std::shared_ptr<GLTexture>> color_textures;
         std::shared_ptr<GLTexture> depth_texture;
@@ -30,9 +30,12 @@ namespace gle
             glDeleteFramebuffers(1, &framebufferobject_id);
         }
         
-        void resize(int width, int height, int no_color_textures, bool create_depth_texture)
+        void resize(int _width, int _height, int no_color_textures, bool create_depth_texture)
         {
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebufferobject_id);
+            width = _width;
+            height = _height;
+            
+            use(false);
             
             GLenum DrawBuffers[no_color_textures];
             color_textures = std::vector<std::shared_ptr<GLTexture>>(no_color_textures);
@@ -58,7 +61,6 @@ namespace gle
             if (Status != GL_FRAMEBUFFER_COMPLETE) {
                 printf("Framebuffer error, status: 0x%x\n", Status);
             }
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         }
         
         const std::shared_ptr<GLTexture> get_color_texture(int location) const
@@ -73,21 +75,22 @@ namespace gle
         
         void use(bool clear = true) const
         {
-            use(framebufferobject_id, clear);
+            use(framebufferobject_id, width, height, clear);
         }
         
-        static void use_default(bool clear = true)
+        static void use_default(int width, int height, bool clear = true)
         {
-            use(0, clear);
+            use(0, width, height, clear);
         }
         
     private:
-        static void use(GLenum fbo_id, bool clear)
+        static void use(GLenum fbo_id, int width, int height, bool clear)
         {
             static GLenum current_render_target = 0;
             if(current_render_target != fbo_id)
             {
                 glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo_id);
+                glViewport(0, 0, width, height);
                 current_render_target = fbo_id;
             }
             if(clear)

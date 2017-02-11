@@ -60,7 +60,7 @@ namespace gle
         
     public:
         
-        GLScene() : shadow_render_target(GLRenderTarget(2400, 1400, 0, true))
+        GLScene() : shadow_render_target(GLRenderTarget(1024, 1024, 0, true))
         {
             
         }
@@ -96,7 +96,7 @@ namespace gle
                 draw(SHADOW, view_position, light->get_view(target), light->get_projection());
                 
                 // Use default render target
-                GLRenderTarget::use_default(false);
+                GLRenderTarget::use_default(screen_size.x, screen_size.y, false);
                 
                 // Draw the scene
                 light->shine(screen_size, view_position, target,

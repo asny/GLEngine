@@ -21,8 +21,6 @@ namespace gle {
         
         int width;
         int height;
-        int x = 0;
-        int y = 0;
         
         GLRenderTarget deferred_render_target;
         
@@ -42,12 +40,6 @@ namespace gle {
             width = _width;
             height = _height;
             projection = glm::perspective(45.f, width/float(height), 0.1f, 100.f);
-        }
-        
-        void set_screen_position(int _x, int _y)
-        {
-            x = _x;
-            y = _y;
         }
         
         /**
@@ -71,14 +63,9 @@ namespace gle {
             }
         }
         
-        static void clear_screen()
-        {
-            GLRenderTarget::use_default();
-        }
-        
         void draw(const GLScene& scene)
         {
-            glViewport(x, y, width, height);
+            GLRenderTarget::use_default(width, height);
             
             deferred_pass(scene);
             forward_pass(scene);
@@ -89,7 +76,7 @@ namespace gle {
         void forward_pass(const GLScene& scene)
         {
             // Use default render target
-            GLRenderTarget::use_default(false);
+            GLRenderTarget::use_default(width, height, false);
             
             // Set up default blending
             glEnable(GL_BLEND);
