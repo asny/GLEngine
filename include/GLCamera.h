@@ -24,27 +24,16 @@ namespace gle {
         int x = 0;
         int y = 0;
         
-        GLuint framebufferobject_id;
-        
-        std::shared_ptr<GLTexture> position_texture;
-        std::shared_ptr<GLTexture> color_texture;
-        std::shared_ptr<GLTexture> normal_texture;
-        std::shared_ptr<GLTexture> depth_texture;
-        
+        GLRenderTarget deferred_render_target;
         GLRenderTarget shadow_render_target;
         
     public:
         
-        GLCamera(int screen_width, int screen_height) : shadow_render_target(GLRenderTarget(screen_width, screen_height, 0, true))
+        GLCamera(int screen_width, int screen_height) :
+            deferred_render_target(GLRenderTarget(screen_width, screen_height, 3, true)),
+            shadow_render_target(GLRenderTarget(screen_width, screen_height, 0, true))
         {
-            glGenFramebuffers(1, &framebufferobject_id);
-            
             set_screen_size(screen_width, screen_height);
-        }
-        
-        ~GLCamera()
-        {
-            glDeleteFramebuffers(1, &framebufferobject_id);
         }
         
         /**
@@ -55,7 +44,6 @@ namespace gle {
             width = _width;
             height = _height;
             projection = glm::perspective(45.f, width/float(height), 0.1f, 100.f);
-            resize_deferred_buffers();
         }
         
         void set_screen_position(int _x, int _y)
@@ -118,7 +106,7 @@ namespace gle {
         void geometry_pass(const GLScene& scene)
         {
             // Bind buffer
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebufferobject_id);
+            deferred_render_target.use();
             
             // Do not blend
             glDisable(GL_BLEND);
@@ -158,27 +146,12 @@ namespace gle {
                                  0.0, 0.0, 0.5, 0.0,
                                  0.5, 0.5, 0.5, 1.0
                                  );
-            scene.shine_light(glm::vec2(width, height), position, biasMatrix * depthProjectionMatrix * depthViewMatrix, position_texture, color_texture, normal_texture, depth_texture, shadow_render_target.get_depth_texture());
-        }
-        
-        void resize_deferred_buffers()
-        {
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebufferobject_id);
-            GLenum DrawBuffers[] = { GL_COLOR_ATTACHMENT0 , GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
-            glDrawBuffers(3, DrawBuffers);
-            
-            // Create the textures
-            position_texture = std::make_shared<GLFramebufferColorTexture>(width, height, 0);
-            color_texture = std::make_shared<GLFramebufferColorTexture>(width, height, 1);
-            normal_texture = std::make_shared<GLFramebufferColorTexture>(width, height, 2);
-            depth_texture = std::make_shared<GLFramebufferDepthTexture>(width, height);
-            
-            GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-            
-            if (Status != GL_FRAMEBUFFER_COMPLETE) {
-                printf("Framebuffer error, status: 0x%x\n", Status);
-            }
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+            scene.shine_light(glm::vec2(width, height), position, biasMatrix * depthProjectionMatrix * depthViewMatrix,
+                              deferred_render_target.get_color_texture(0),
+                              deferred_render_target.get_color_texture(1),
+                              deferred_render_target.get_color_texture(2),
+                              deferred_render_target.get_depth_texture(),
+                              shadow_render_target.get_depth_texture());
         }
     };
 }

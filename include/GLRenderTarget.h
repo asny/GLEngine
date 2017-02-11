@@ -25,6 +25,11 @@ namespace gle
             resize(width, height, no_color_textures, create_depth_texture);
         }
         
+        ~GLRenderTarget()
+        {
+            glDeleteFramebuffers(1, &framebufferobject_id);
+        }
+        
         void resize(int width, int height, int no_color_textures, bool create_depth_texture)
         {
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebufferobject_id);
