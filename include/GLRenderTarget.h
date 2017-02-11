@@ -84,7 +84,12 @@ namespace gle
     private:
         static void use(GLenum fbo_id, bool clear)
         {
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo_id);
+            static GLenum current_render_target = 0;
+            if(current_render_target != fbo_id)
+            {
+                glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo_id);
+                current_render_target = fbo_id;
+            }
             if(clear)
             {
                 GLState::depth_write(true); // If it is not possible to write to the depth buffer, we are not able to clear it.
