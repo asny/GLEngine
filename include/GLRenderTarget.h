@@ -61,17 +61,17 @@ namespace gle
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         }
         
-        const std::shared_ptr<GLTexture> get_color_texture(int location)
+        const std::shared_ptr<GLTexture> get_color_texture(int location) const
         {
             return color_textures.at(location);
         }
         
-        const std::shared_ptr<GLTexture> get_depth_texture()
+        const std::shared_ptr<GLTexture> get_depth_texture() const
         {
             return depth_texture;
         }
         
-        void use()
+        void use() const
         {
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebufferobject_id);
         }

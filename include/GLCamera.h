@@ -6,7 +6,6 @@
 #pragma once
 
 #include "GLScene.h"
-#include "GLRenderTarget.h"
 
 namespace gle {
     
@@ -25,13 +24,11 @@ namespace gle {
         int y = 0;
         
         GLRenderTarget deferred_render_target;
-        GLRenderTarget shadow_render_target;
         
     public:
         
         GLCamera(int screen_width, int screen_height) :
-            deferred_render_target(GLRenderTarget(screen_width, screen_height, 3, true)),
-            shadow_render_target(GLRenderTarget(screen_width, screen_height, 0, true))
+            deferred_render_target(GLRenderTarget(screen_width, screen_height, 3, true))
         {
             set_screen_size(screen_width, screen_height);
         }
@@ -120,38 +117,12 @@ namespace gle {
         
         void light_pass(const GLScene& scene)
         {
-            // Bind buffer
-            shadow_render_target.use();
-            
-            // Clear the buffer
-            GLState::depth_write(true);
-            glClear(GL_DEPTH_BUFFER_BIT);
-            
             // Draw the scene
-            glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,20);
-            glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(-5., 5., 0.), glm::vec3(0,0,0), glm::vec3(0,1,0));
-            scene.draw(SHADOW, position, depthViewMatrix, depthProjectionMatrix);
-            
-            // Bind buffer
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-            
-            // Set up blending
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_ONE, GL_ONE);
-            
-            // Draw the scene
-            glm::mat4 biasMatrix(
-                                 0.5, 0.0, 0.0, 0.0,
-                                 0.0, 0.5, 0.0, 0.0,
-                                 0.0, 0.0, 0.5, 0.0,
-                                 0.5, 0.5, 0.5, 1.0
-                                 );
-            scene.shine_light(glm::vec2(width, height), position, biasMatrix * depthProjectionMatrix * depthViewMatrix,
+            scene.shine_light(glm::vec2(width, height), position,
                               deferred_render_target.get_color_texture(0),
                               deferred_render_target.get_color_texture(1),
                               deferred_render_target.get_color_texture(2),
-                              deferred_render_target.get_depth_texture(),
-                              shadow_render_target.get_depth_texture());
+                              deferred_render_target.get_depth_texture());
         }
     };
 }

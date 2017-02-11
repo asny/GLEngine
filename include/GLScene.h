@@ -6,6 +6,7 @@
 #pragma once
 
 #include "GLObject.h"
+#include "GLRenderTarget.h"
 #include "lights/GLLight.h"
 
 namespace gle
@@ -55,10 +56,11 @@ namespace gle
     class GLScene : public GLNode
     {
         std::vector<std::shared_ptr<GLLight>> lights = std::vector<std::shared_ptr<GLLight>>();
+        GLRenderTarget shadow_render_target;
         
     public:
         
-        GLScene()
+        GLScene() : shadow_render_target(GLRenderTarget(2400, 1400, 0, true))
         {
             
         }
@@ -74,12 +76,41 @@ namespace gle
             GLNode::draw(draw_pass, camera_position, model, view, projection);
         }
         
-        void shine_light(const glm::vec2& screen_size, const glm::vec3& camera_position, const glm::mat4& depthMVP,
-                         const std::shared_ptr<GLTexture> position_texture, const std::shared_ptr<GLTexture> color_texture, const std::shared_ptr<GLTexture> normal_texture, const std::shared_ptr<GLTexture> depth_texture, const std::shared_ptr<GLTexture> shadow_texture) const
+        void shine_light(const glm::vec2& screen_size, const glm::vec3& camera_position,
+                         const std::shared_ptr<GLTexture> position_texture, const std::shared_ptr<GLTexture> color_texture, const std::shared_ptr<GLTexture> normal_texture, const std::shared_ptr<GLTexture> depth_texture) const
         {
             for(auto light : lights)
             {
-                light->shine(screen_size, camera_position, depthMVP, position_texture, color_texture, normal_texture, depth_texture, shadow_texture);
+                // Bind buffer
+                shadow_render_target.use();
+                
+                // Clear the buffer
+                GLState::depth_write(true);
+                glClear(GL_DEPTH_BUFFER_BIT);
+                
+                // Draw the scene
+                glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,20);
+                glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(-5., 5., 0.), glm::vec3(0,0,0), glm::vec3(0,1,0));
+                draw(SHADOW, camera_position, depthViewMatrix, depthProjectionMatrix);
+                
+                // Bind buffer
+                glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+                
+                // Set up blending
+                glEnable(GL_BLEND);
+                glBlendFunc(GL_ONE, GL_ONE);
+                
+                // Draw the scene
+                glm::mat4 biasMatrix(
+                                     0.5, 0.0, 0.0, 0.0,
+                                     0.0, 0.5, 0.0, 0.0,
+                                     0.0, 0.0, 0.5, 0.0,
+                                     0.5, 0.5, 0.5, 1.0
+                                     );
+                
+                light->shine(screen_size, camera_position, biasMatrix * depthProjectionMatrix * depthViewMatrix,
+                             position_texture, color_texture, normal_texture, depth_texture,
+                             shadow_render_target.get_depth_texture());
             }
         }
     };
