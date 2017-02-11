@@ -77,32 +77,30 @@ namespace gle
         }
         
         void shine_light(const glm::vec2& screen_size, const glm::vec3& camera_position,
-                         const std::shared_ptr<GLTexture> position_texture, const std::shared_ptr<GLTexture> color_texture, const std::shared_ptr<GLTexture> normal_texture, const std::shared_ptr<GLTexture> depth_texture) const
+                         const std::shared_ptr<GLTexture> position_texture,
+                         const std::shared_ptr<GLTexture> color_texture,
+                         const std::shared_ptr<GLTexture> normal_texture,
+                         const std::shared_ptr<GLTexture> depth_texture) const
         {
             for(auto light : lights)
             {
-                // Bind buffer
+                // Use shadow render target
                 shadow_render_target.use();
-                
-                // Clear the buffer
-                GLState::depth_write(true);
-                glClear(GL_DEPTH_BUFFER_BIT);
                 
                 // Draw the scene
                 glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,20);
                 glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(-5., 5., 0.), glm::vec3(0,0,0), glm::vec3(0,1,0));
                 draw(SHADOW, camera_position, depthViewMatrix, depthProjectionMatrix);
                 
-                // Bind buffer
-                glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+                // Use default render target
+                GLRenderTarget::use_default(false);
                 
                 // Set up blending
                 glEnable(GL_BLEND);
                 glBlendFunc(GL_ONE, GL_ONE);
                 
                 // Draw the scene
-                glm::mat4 biasMatrix(
-                                     0.5, 0.0, 0.0, 0.0,
+                glm::mat4 biasMatrix(0.5, 0.0, 0.0, 0.0,
                                      0.0, 0.5, 0.0, 0.0,
                                      0.0, 0.0, 0.5, 0.0,
                                      0.5, 0.5, 0.5, 1.0

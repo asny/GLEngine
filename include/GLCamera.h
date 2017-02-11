@@ -71,9 +71,7 @@ namespace gle {
         
         static void clear_screen()
         {
-            GLState::depth_write(true); // If it is not possible to write to the depth buffer, we are not able to clear it.
-            glClearColor(0., 0., 0., 0.);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            GLRenderTarget::use_default();
         }
         
         void draw(const GLScene& scene)
@@ -92,6 +90,9 @@ namespace gle {
     private:
         void forward_pass(const GLScene& scene)
         {
+            // Use default render target
+            GLRenderTarget::use_default(false);
+            
             // Set up default blending
             glEnable(GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -102,14 +103,11 @@ namespace gle {
         
         void geometry_pass(const GLScene& scene)
         {
-            // Bind buffer
+            // Use deferred render target
             deferred_render_target.use();
             
             // Do not blend
             glDisable(GL_BLEND);
-            
-            // Clear the buffer
-            clear_screen();
             
             // Draw the scene
             scene.draw(DEFERRED, position, view, projection);
@@ -117,7 +115,6 @@ namespace gle {
         
         void light_pass(const GLScene& scene)
         {
-            // Draw the scene
             scene.shine_light(glm::vec2(width, height), position,
                               deferred_render_target.get_color_texture(0),
                               deferred_render_target.get_color_texture(1),

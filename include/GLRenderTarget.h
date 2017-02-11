@@ -71,9 +71,26 @@ namespace gle
             return depth_texture;
         }
         
-        void use() const
+        void use(bool clear = true) const
         {
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebufferobject_id);
+            use(framebufferobject_id, clear);
+        }
+        
+        static void use_default(bool clear = true)
+        {
+            use(0, clear);
+        }
+        
+    private:
+        static void use(GLenum fbo_id, bool clear)
+        {
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo_id);
+            if(clear)
+            {
+                GLState::depth_write(true); // If it is not possible to write to the depth buffer, we are not able to clear it.
+                glClearColor(0., 0., 0., 0.);
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            }
         }
     };
 }
