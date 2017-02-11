@@ -70,8 +70,8 @@ void create_cube(GLScene& root, const vec3& translation, std::shared_ptr<GLMater
 
 void create_cubes(GLScene& root)
 {
-    root.add_light(std::make_shared<GLPointLight>(glm::vec3(1., 1., 1.)));
-    root.add_light(std::make_shared<GLDirectionalLight>(glm::vec3(1., -1., -1.)));
+    root.add_light(std::make_shared<GLPointLight>(glm::vec3(1., 5., 1.)));
+    root.add_light(std::make_shared<GLDirectionalLight>(glm::vec3(1., -1., 0.)));
     
     auto transformation_node = std::make_shared<GLTransformationNode>(glm::translate(glm::vec3(0., -3., 0.)) *
                                                                       glm::scale(glm::vec3(3., 3., 3.)) *
@@ -88,10 +88,10 @@ void create_cubes(GLScene& root)
     auto standard_material = make_shared<GLStandardMaterial>(vec3(0.2, 0.2, 0.2), vec3(0.5, 0.1, 0.7), vec3(0.5, 0.1, 0.7), 1.);
     
     create_cube(root, vec3(-1., 0., 1.), color_material);
-    create_cube(root, vec3(0., -1.0, 1.5), flat_material);
-    
-    create_cube(root, vec3(1., 0., -1.), flat_material);
-    create_cube(root, vec3(1.5, -1.0, 0.), color_material);
+//    create_cube(root, vec3(0., -1.0, 1.5), flat_material);
+//    
+//    create_cube(root, vec3(1., 0., -1.), flat_material);
+//    create_cube(root, vec3(1.5, -1.0, 0.), color_material);
 }
 
 int main(int argc, const char * argv[])
@@ -122,7 +122,7 @@ int main(int argc, const char * argv[])
     
     // Create camera
     auto camera = GLCamera(WIN_SIZE_X, WIN_SIZE_Y);
-    camera.set_view(vec3(5.,0.,5.), vec3(-1., 0., -1.));
+    camera.set_view(vec3(5.,0.,5.), vec3(-1., -0.2, -1.));
     
     // Create scene
     auto scene = GLScene();
