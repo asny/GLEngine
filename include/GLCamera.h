@@ -6,6 +6,7 @@
 #pragma once
 
 #include "GLScene.h"
+#include "GLRenderTarget.h"
 
 namespace gle {
     
@@ -24,20 +25,19 @@ namespace gle {
         int y = 0;
         
         GLuint framebufferobject_id;
-        GLuint shadow_framebufferobject;
         
         std::shared_ptr<GLTexture> position_texture;
         std::shared_ptr<GLTexture> color_texture;
         std::shared_ptr<GLTexture> normal_texture;
         std::shared_ptr<GLTexture> depth_texture;
-        std::shared_ptr<GLTexture> shadow_depth_texture;
+        
+        GLRenderTarget shadow_render_target;
         
     public:
         
-        GLCamera(int screen_width, int screen_height)
+        GLCamera(int screen_width, int screen_height) : shadow_render_target(GLRenderTarget(screen_width, screen_height, 0, true))
         {
             glGenFramebuffers(1, &framebufferobject_id);
-            glGenFramebuffers(1, &shadow_framebufferobject);
             
             set_screen_size(screen_width, screen_height);
         }
@@ -55,7 +55,6 @@ namespace gle {
             width = _width;
             height = _height;
             projection = glm::perspective(45.f, width/float(height), 0.1f, 100.f);
-            resize_shadow_buffer();
             resize_deferred_buffers();
         }
         
@@ -134,7 +133,7 @@ namespace gle {
         void light_pass(const GLScene& scene)
         {
             // Bind buffer
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, shadow_framebufferobject);
+            shadow_render_target.use();
             
             // Clear the buffer
             GLState::depth_write(true);
@@ -159,23 +158,7 @@ namespace gle {
                                  0.0, 0.0, 0.5, 0.0,
                                  0.5, 0.5, 0.5, 1.0
                                  );
-            scene.shine_light(glm::vec2(width, height), position, biasMatrix * depthProjectionMatrix * depthViewMatrix, position_texture, color_texture, normal_texture, depth_texture, shadow_depth_texture);
-        }
-        
-        void resize_shadow_buffer()
-        {
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, shadow_framebufferobject);
-            glDrawBuffer(GL_NONE);
-            
-            // Create the textures
-            shadow_depth_texture = std::make_shared<GLFramebufferDepthTexture>(width, height);
-            
-            GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-            
-            if (Status != GL_FRAMEBUFFER_COMPLETE) {
-                printf("Framebuffer error, status: 0x%x\n", Status);
-            }
-            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+            scene.shine_light(glm::vec2(width, height), position, biasMatrix * depthProjectionMatrix * depthViewMatrix, position_texture, color_texture, normal_texture, depth_texture, shadow_render_target.get_depth_texture());
         }
         
         void resize_deferred_buffers()

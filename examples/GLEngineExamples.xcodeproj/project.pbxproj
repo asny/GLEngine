@@ -58,6 +58,7 @@
 		4900D19F1E0DC4FB00F92EBD /* Property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Property.h; path = ../../Mesh/include/Property.h; sourceTree = "<group>"; };
 		493F8F161E4E1A0600D94AC1 /* shadow.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = shadow.frag; path = ../shaders/shadow.frag; sourceTree = "<group>"; };
 		493F8F171E4E1A0600D94AC1 /* shadow.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = shadow.vert; path = ../shaders/shadow.vert; sourceTree = "<group>"; };
+		4942D5B01E4F377100C4F61E /* GLRenderTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLRenderTarget.h; path = ../include/GLRenderTarget.h; sourceTree = "<group>"; };
 		49471A541E131A30006E8AD5 /* GLColorMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLColorMaterial.h; path = ../include/materials/GLColorMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		49471A551E131AB9006E8AD5 /* color_material.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = color_material.frag; path = ../shaders/color_material.frag; sourceTree = "<group>"; };
 		49471A561E131AB9006E8AD5 /* color_material.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = color_material.vert; path = ../shaders/color_material.vert; sourceTree = "<group>"; };
@@ -101,6 +102,7 @@
 				4900D1851E0A72D000F92EBD /* GLUtility.h */,
 				4900D1861E0A72D000F92EBD /* GLVertexAttribute.h */,
 				497D00901E22D1E400DC549A /* GLState.h */,
+				4942D5B01E4F377100C4F61E /* GLRenderTarget.h */,
 			);
 			name = GLEngine;
 			sourceTree = "<group>";
