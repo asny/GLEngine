@@ -53,7 +53,7 @@ namespace gle
         
     public:
         
-        void shine(const glm::vec2& screen_size, const glm::vec3& camera_position, const glm::mat4& depthMVP,
+        void shine(const glm::vec2& screen_size, const glm::vec3& camera_position,
                    const std::shared_ptr<GLTexture> position_texture,
                    const std::shared_ptr<GLTexture> color_texture,
                    const std::shared_ptr<GLTexture> normal_texture,
@@ -72,7 +72,7 @@ namespace gle
             depth_texture->use(3);
             shadow_texture->use(4);
             
-            GLUniform::use(shader, "shadowMVP", bias_matrix * depthMVP);
+            GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view());
             GLUniform::use(shader, "eyePosition", camera_position);
             GLUniform::use(shader, "screenSize", screen_size);
             GLUniform::use(shader, "positionMap", 0);
@@ -87,6 +87,16 @@ namespace gle
             shader->use();
             glBindVertexArray(array_id);
             glDrawArrays(GL_TRIANGLES, 0, 3);
+        }
+        
+        virtual glm::mat4 get_view()
+        {
+            return glm::lookAt(glm::vec3(-5., 5., 0.), glm::vec3(0,0,0), glm::vec3(0,1,0));
+        }
+        
+        virtual glm::mat4 get_projection()
+        {
+            return glm::ortho<float>(-10,10,-10,10,-10,20);
         }
     };
     

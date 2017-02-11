@@ -92,15 +92,13 @@ namespace gle
                 shadow_render_target.use();
                 
                 // Draw the scene
-                glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,20);
-                glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(-5., 5., 0.), glm::vec3(0,0,0), glm::vec3(0,1,0));
-                draw(SHADOW, camera_position, depthViewMatrix, depthProjectionMatrix);
+                draw(SHADOW, camera_position, light->get_view(), light->get_projection());
                 
                 // Use default render target
                 GLRenderTarget::use_default(false);
                 
                 // Draw the scene
-                light->shine(screen_size, camera_position, depthProjectionMatrix * depthViewMatrix,
+                light->shine(screen_size, camera_position,
                              position_texture, color_texture, normal_texture, depth_texture,
                              shadow_render_target.get_depth_texture());
             }
