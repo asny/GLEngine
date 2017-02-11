@@ -19,7 +19,6 @@ namespace gle
     {
         std::shared_ptr<mesh::Mesh> geometry;
         std::shared_ptr<GLMaterial> material;
-        std::shared_ptr<GLShader> shadow_shader = GLShader::create_or_get("../GLEngine/shaders/shadow.vert",  "../GLEngine/shaders/shadow.frag");
         
         GLuint array_id;
         std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>> vec2_vertex_attributes;
@@ -111,17 +110,7 @@ namespace gle
             }
             
             // Use material specific uniforms and states
-            if(draw_pass == SHADOW)
-            {
-                GLState::depth_test(true);
-                GLState::depth_write(true);
-                GLState::cull_back_faces(true);
-                
-                GLUniform::use(shadow_shader, "MVPMatrix", projection * view * model);
-            }
-            else {
-                material->pre_draw(camera_position, model, view, projection);
-            }
+            material->pre_draw(camera_position, model, view, projection);
             
             // Bind vertex array and draw
             glBindVertexArray(array_id);
