@@ -18,7 +18,7 @@ namespace gle
         std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> uv_coordinates;
     public:
         
-        GLTextureMaterial(std::shared_ptr<GLTexture> _texture, std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> _uv_coordinates) : texture(_texture), uv_coordinates(_uv_coordinates)
+        GLTextureMaterial(std::shared_ptr<GLTexture> _texture, std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> _uv_coordinates) : GLMaterial(DEFERRED), texture(_texture), uv_coordinates(_uv_coordinates)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/texture.vert",  "../GLEngine/shaders/texture.frag");
         }

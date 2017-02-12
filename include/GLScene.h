@@ -93,7 +93,7 @@ namespace gle
                 
                 // Draw the scene
                 glm::vec3 target = view_position + view_direction * 5.f;
-                draw(SHADOW, view_position, light->get_view(target), light->get_projection());
+                draw(DEFERRED, view_position, light->get_view(target), light->get_projection());
                 
                 // Use default render target
                 GLRenderTarget::use_default(screen_size.x, screen_size.y, false);

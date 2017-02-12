@@ -18,7 +18,7 @@ namespace gle
         glm::vec3 color;
     public:
         
-        GLFlatColorMaterial(const glm::vec3& _color) : color(_color)
+        GLFlatColorMaterial(const glm::vec3& _color) : GLMaterial(DEFERRED), color(_color)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/pre_geom.vert",  "../GLEngine/shaders/color_material.frag", "../GLEngine/shaders/flat.geom");
         }
