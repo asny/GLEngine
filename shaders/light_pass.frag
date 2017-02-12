@@ -54,6 +54,31 @@ uniform int lightType;
 const float specularIntensity = 0.f;
 const float specularPower = 5.f;
 
+float is_visible(vec4 shadow_coord, vec2 offset)
+{
+    if ( texture(shadowMap, shadow_coord.xy + offset).x < shadow_coord.z - 0.005){
+        return 0.5f;
+    }
+    return 1.f;
+}
+
+float calculate_shadow(vec3 position)
+{
+    vec4 shadow_coord = shadowMVP * vec4(position, 1.);
+    float visibility = 0.0;
+    vec2 poissonDisk[4] = vec2[](
+                                 vec2( -0.94201624, -0.39906216 ),
+                                 vec2( 0.94558609, -0.76890725 ),
+                                 vec2( -0.094184101, -0.92938870 ),
+                                 vec2( 0.34495938, 0.29387760 )
+                                 );
+    for (int i=0;i<4;i++)
+    {
+        visibility += is_visible(shadow_coord, poissonDisk[i] * 0.001f);
+    }
+    return visibility/4.f;
+}
+
 vec4 calculate_light(BaseLight light,
                        vec3 lightDirection,
                        vec3 position,
@@ -79,7 +104,7 @@ vec4 calculate_light(BaseLight light,
         }
     }
     
-    return (AmbientColor + DiffuseColor + SpecularColor);
+    return AmbientColor + calculate_shadow(position) * (DiffuseColor + SpecularColor);
 }
 
 vec4 calculate_directional_light(vec3 position, vec3 normal)
@@ -118,12 +143,6 @@ void main()
    	vec3 color = texture(colorMap, uv).xyz;
    	vec3 normal = normalize(texture(normalMap, uv).xyz);
     
-    // Shadow
-    vec4 shadow_coord = shadowMVP * vec4(pos, 1.);
-    float visibility = 1.0;
-    if ( texture(shadowMap, shadow_coord.xy).x  <  shadow_coord.z){
-        visibility = 0.5;
-    }
     vec4 light;
     if(lightType == 1)
     {
@@ -134,6 +153,6 @@ void main()
         light = calculate_point_light(pos, normal);
     }
     
-    fragColour = visibility * vec4(color, 1.0) * light;
+    fragColour = vec4(color, 1.0) * light;
     gl_FragDepth = depth;
 }
