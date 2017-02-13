@@ -56,7 +56,7 @@ const float specularPower = 5.f;
 
 float is_visible(vec4 shadow_coord, vec2 offset)
 {
-    if ( texture(shadowMap, shadow_coord.xy + offset).x < shadow_coord.z - 0.005){
+    if ( texture(shadowMap, (shadow_coord.xy + offset)/shadow_coord.w).x < (shadow_coord.z - 0.005)/shadow_coord.w){
         return 0.5f;
     }
     return 1.f;

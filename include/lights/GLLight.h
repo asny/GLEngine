@@ -92,10 +92,7 @@ namespace gle
         
         virtual glm::mat4 get_view(const glm::vec3& target) = 0;
         
-        virtual glm::mat4 get_projection()
-        {
-            return glm::ortho<float>(-10,10,-10,10,-10,20);
-        }
+        virtual glm::mat4 get_projection() = 0;
     };
     
     class GLDirectionalLight : public GLLight
@@ -114,6 +111,11 @@ namespace gle
             const float distance = 5.f;
             glm::vec3 up = normalize(cross(direction, glm::vec3(1., 0., 0.)));
             return glm::lookAt(target - distance * direction, target, up);
+        }
+        
+        glm::mat4 get_projection()
+        {
+            return glm::ortho<float>(-10,10,-10,10,-10,20);
         }
         
     protected:
@@ -141,6 +143,11 @@ namespace gle
         {
             glm::vec3 up = normalize(cross(target - position, glm::vec3(1., 0., 0.)));
             return glm::lookAt(position, target, up);
+        }
+        
+        glm::mat4 get_projection()
+        {
+            return glm::perspective<float>(45.0f, 1.0f, 1.0f, 50.0f);
         }
         
     protected:

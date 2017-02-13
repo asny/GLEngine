@@ -70,11 +70,11 @@ void create_cube(GLScene& root, const vec3& translation, std::shared_ptr<GLMater
 
 void create_cubes(GLScene& root)
 {
-    root.add_light(std::make_shared<GLPointLight>(glm::vec3(1., 5., 1.)));
+    root.add_light(std::make_shared<GLPointLight>(glm::vec3(-1., 5., 1.)));
     root.add_light(std::make_shared<GLDirectionalLight>(glm::vec3(1., -1., 0.)));
     
     auto transformation_node = std::make_shared<GLTransformationNode>(glm::translate(glm::vec3(0., -3., 0.)) *
-                                                                      glm::scale(glm::vec3(3., 3., 3.)) *
+                                                                      glm::scale(glm::vec3(10., 10., 10.)) *
                                                                       glm::rotate(-0.5f * glm::pi<float>(), glm::vec3(1.f, 0.f, 0.f)));
     root.add_child(transformation_node);
     std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> uv_attribute = std::make_shared<mesh::Attribute<mesh::VertexID, glm::vec2>>();
