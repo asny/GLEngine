@@ -39,6 +39,7 @@ namespace gle {
         {
             width = _width;
             height = _height;
+            GLDefaultRenderTarget::get().resize(width, height);
             projection = glm::perspective(45.f, width/float(height), 0.1f, 100.f);
         }
         
@@ -65,7 +66,7 @@ namespace gle {
         
         void draw(const GLScene& scene)
         {
-            GLRenderTarget::use_default(width, height);
+            GLDefaultRenderTarget::get().use(true);
             
             deferred_pass(scene);
             forward_pass(scene);
@@ -76,7 +77,7 @@ namespace gle {
         void forward_pass(const GLScene& scene)
         {
             // Use default render target
-            GLRenderTarget::use_default(width, height, false);
+            GLDefaultRenderTarget::get().use(false);
             
             // Set up default blending
             glEnable(GL_BLEND);
@@ -90,7 +91,7 @@ namespace gle {
         {
             // Geometry pass
             // Use deferred render target
-            deferred_render_target.use();
+            deferred_render_target.use(true);
             
             // Do not blend
             glDisable(GL_BLEND);

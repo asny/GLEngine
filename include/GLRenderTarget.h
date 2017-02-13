@@ -11,18 +11,64 @@
 
 namespace gle
 {
-    class GLRenderTarget
+    class GLDefaultRenderTarget
     {
+    protected:
         int width, height;
-        GLenum framebufferobject_id;
-        std::vector<std::shared_ptr<GLTexture>> color_textures;
-        std::shared_ptr<GLTexture> depth_texture;
+        GLenum framebufferobject_id = 0;
+        
+        GLDefaultRenderTarget()
+        {
+            
+        }
+        
     public:
         
-        GLRenderTarget(int width, int height, int no_color_textures, bool create_depth_texture)
+        static GLDefaultRenderTarget& get()
+        {
+            static GLDefaultRenderTarget target = GLDefaultRenderTarget();
+            return target;
+        }
+        
+        virtual void resize(int _width, int _height)
+        {
+            width = _width;
+            height = _height;
+        }
+        
+        void use(bool clear) const
+        {
+            static GLenum current_render_target = 0;
+            if(current_render_target != framebufferobject_id)
+            {
+                glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebufferobject_id);
+                glViewport(0, 0, width, height);
+                current_render_target = framebufferobject_id;
+            }
+            if(clear)
+            {
+                GLState::depth_write(true); // If it is not possible to write to the depth buffer, we are not able to clear it.
+                glClearColor(0., 0., 0., 0.);
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            }
+        }
+    };
+    
+    class GLRenderTarget : public GLDefaultRenderTarget
+    {
+        std::vector<std::shared_ptr<GLTexture>> color_textures;
+        std::shared_ptr<GLTexture> depth_texture;
+        
+    public:
+        
+        GLRenderTarget(int _width, int _height, int no_color_textures, bool create_depth_texture)
         {
             glGenFramebuffers(1, &framebufferobject_id);
-            resize(width, height, no_color_textures, create_depth_texture);
+            
+            width = _width;
+            height = _height;
+            
+            create_buffers(no_color_textures, create_depth_texture);
         }
         
         ~GLRenderTarget()
@@ -30,11 +76,31 @@ namespace gle
             glDeleteFramebuffers(1, &framebufferobject_id);
         }
         
-        void resize(int _width, int _height, int no_color_textures, bool create_depth_texture)
+        void resize(int _width, int _height)
         {
             width = _width;
             height = _height;
             
+            int no_color_textures = color_textures.size();
+            bool create_depth_texture = depth_texture != nullptr;
+            color_textures.clear();
+            depth_texture = nullptr;
+            create_buffers(no_color_textures, create_depth_texture);
+        }
+        
+        const std::shared_ptr<GLTexture> get_color_texture(int location) const
+        {
+            return color_textures.at(location);
+        }
+        
+        const std::shared_ptr<GLTexture> get_depth_texture() const
+        {
+            return depth_texture;
+        }
+        
+    private:
+        void create_buffers(int no_color_textures, bool create_depth_texture)
+        {
             use(false);
             
             GLenum DrawBuffers[no_color_textures];
@@ -60,44 +126,6 @@ namespace gle
             GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
             if (Status != GL_FRAMEBUFFER_COMPLETE) {
                 printf("Framebuffer error, status: 0x%x\n", Status);
-            }
-        }
-        
-        const std::shared_ptr<GLTexture> get_color_texture(int location) const
-        {
-            return color_textures.at(location);
-        }
-        
-        const std::shared_ptr<GLTexture> get_depth_texture() const
-        {
-            return depth_texture;
-        }
-        
-        void use(bool clear = true) const
-        {
-            use(framebufferobject_id, width, height, clear);
-        }
-        
-        static void use_default(int width, int height, bool clear = true)
-        {
-            use(0, width, height, clear);
-        }
-        
-    private:
-        static void use(GLenum fbo_id, int width, int height, bool clear)
-        {
-            static GLenum current_render_target = 0;
-            if(current_render_target != fbo_id)
-            {
-                glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo_id);
-                glViewport(0, 0, width, height);
-                current_render_target = fbo_id;
-            }
-            if(clear)
-            {
-                GLState::depth_write(true); // If it is not possible to write to the depth buffer, we are not able to clear it.
-                glClearColor(0., 0., 0., 0.);
-                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             }
         }
     };
