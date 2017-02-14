@@ -61,7 +61,8 @@ namespace gle {
         
         void draw(const GLScene& scene)
         {
-            GLDefaultRenderTarget::get().use(true);
+            GLDefaultRenderTarget::get().use();
+            GLDefaultRenderTarget::get().clear();
             
             deferred_pass(scene);
             forward_pass(scene);
@@ -72,7 +73,7 @@ namespace gle {
         void forward_pass(const GLScene& scene)
         {
             // Use default render target
-            GLDefaultRenderTarget::get().use(false);
+            GLDefaultRenderTarget::get().use();
             
             // Set up default blending
             glEnable(GL_BLEND);
@@ -86,7 +87,8 @@ namespace gle {
         {
             // Geometry pass
             // Use deferred render target
-            deferred_render_target.use(true);
+            deferred_render_target.use();
+            deferred_render_target.clear();
             
             // Do not blend
             glDisable(GL_BLEND);

@@ -89,14 +89,15 @@ namespace gle
             for(auto light : lights)
             {
                 // Use shadow render target
-                shadow_render_target.use(true);
+                shadow_render_target.use();
+                shadow_render_target.clear();
                 
                 // Draw the scene
                 glm::vec3 target = view_position + view_direction * 5.f;
                 draw(DEFERRED, view_position, light->get_view(target), light->get_projection());
                 
                 // Use default render target
-                GLDefaultRenderTarget::get().use(false);
+                GLDefaultRenderTarget::get().use();
                 
                 // Draw the scene
                 light->shine(view_position, target,

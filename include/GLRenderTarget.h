@@ -36,7 +36,7 @@ namespace gle
             height = _height;
         }
         
-        void use(bool clear) const
+        void use() const
         {
             static GLenum current_render_target = 0;
             if(current_render_target != framebufferobject_id)
@@ -45,12 +45,13 @@ namespace gle
                 glViewport(0, 0, width, height);
                 current_render_target = framebufferobject_id;
             }
-            if(clear)
-            {
-                GLState::depth_write(true); // If it is not possible to write to the depth buffer, we are not able to clear it.
-                glClearColor(0., 0., 0., 0.);
-                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            }
+        }
+        
+        virtual void clear() const
+        {
+            GLState::depth_write(true); // If it is not possible to write to the depth buffer, we are not able to clear it.
+            glClearColor(0., 0., 0., 0.);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         }
     };
     
@@ -84,6 +85,25 @@ namespace gle
             create_buffers(no_color_textures, create_depth_texture);
         }
         
+        void clear() const
+        {
+            if(color_textures.size() > 0)
+            {
+                if(depth_texture != nullptr) {
+                    GLDefaultRenderTarget::clear();
+                }
+                else {
+                    glClearColor(0., 0., 0., 0.);
+                    glClear(GL_COLOR_BUFFER_BIT);
+                }
+            }
+            else
+            {
+                GLState::depth_write(true); // If it is not possible to write to the depth buffer, we are not able to clear it.
+                glClear(GL_DEPTH_BUFFER_BIT);
+            }
+        }
+        
         const std::shared_ptr<GLTexture> get_color_texture(int location) const
         {
             return color_textures.at(location);
@@ -100,7 +120,7 @@ namespace gle
             color_textures.clear();
             depth_texture = nullptr;
             
-            use(false);
+            use();
             
             GLenum DrawBuffers[no_color_textures];
             color_textures = std::vector<std::shared_ptr<GLTexture>>(no_color_textures);
