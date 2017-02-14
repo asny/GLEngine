@@ -6,9 +6,10 @@ uniform sampler2D normalMap;
 uniform sampler2D depthMap;
 uniform sampler2D shadowMap;
 
-uniform vec2 screenSize;
 uniform vec3 eyePosition;
 uniform mat4 shadowMVP;
+
+in vec2 uv;
 
 out vec4 fragColour;
 
@@ -134,7 +135,6 @@ vec4 calculate_point_light(vec3 position, vec3 normal)
 
 void main()
 {
-   	vec2 uv = gl_FragCoord.xy / screenSize;
     float depth = texture(depthMap, uv).r;
     if(depth == 1.)
         discard;

@@ -19,9 +19,6 @@ namespace gle {
         glm::mat4 view = glm::mat4(1.);
         glm::mat4 projection = glm::mat4(1.);
         
-        int width;
-        int height;
-        
         GLRenderTarget deferred_render_target;
         
     public:
@@ -35,10 +32,8 @@ namespace gle {
         /**
          Reshape the window.
          */
-        void set_screen_size(int _width, int _height)
+        void set_screen_size(int width, int height)
         {
-            width = _width;
-            height = _height;
             GLDefaultRenderTarget::get().resize(width, height);
             projection = glm::perspective(45.f, width/float(height), 0.1f, 100.f);
         }
@@ -100,7 +95,7 @@ namespace gle {
             scene.draw(DEFERRED, position, view, projection);
             
             // Light pass
-            scene.shine_light(glm::vec2(width, height), position, direction,
+            scene.shine_light(position, direction,
                               deferred_render_target.get_color_texture(0),
                               deferred_render_target.get_color_texture(1),
                               deferred_render_target.get_color_texture(2),

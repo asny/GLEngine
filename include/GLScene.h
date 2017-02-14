@@ -76,7 +76,7 @@ namespace gle
             GLNode::draw(draw_pass, camera_position, model, view, projection);
         }
         
-        void shine_light(const glm::vec2& screen_size, const glm::vec3& view_position, const glm::vec3& view_direction,
+        void shine_light(const glm::vec3& view_position, const glm::vec3& view_direction,
                          const std::shared_ptr<GLTexture> position_texture,
                          const std::shared_ptr<GLTexture> color_texture,
                          const std::shared_ptr<GLTexture> normal_texture,
@@ -99,7 +99,7 @@ namespace gle
                 GLDefaultRenderTarget::get().use(false);
                 
                 // Draw the scene
-                light->shine(screen_size, view_position, target,
+                light->shine(view_position, target,
                              position_texture, color_texture, normal_texture, depth_texture,
                              shadow_render_target.get_depth_texture());
             }

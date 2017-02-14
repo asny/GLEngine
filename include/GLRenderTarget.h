@@ -81,7 +81,7 @@ namespace gle
             width = _width;
             height = _height;
             
-            int no_color_textures = color_textures.size();
+            int no_color_textures = static_cast<int>(color_textures.size());
             bool create_depth_texture = depth_texture != nullptr;
             color_textures.clear();
             depth_texture = nullptr;

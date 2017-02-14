@@ -38,12 +38,23 @@ namespace gle
             mesh::VertexID* v3 = mesh->create_vertex(glm::vec3(0., 2., 0.));
             mesh->create_face(v1, v3, v2);
             
+            auto uv_coordinates = std::make_shared<mesh::Attribute<mesh::VertexID, glm::vec2>>();
+            uv_coordinates->at(v1) = glm::vec2(-1., 0.);
+            uv_coordinates->at(v2) = glm::vec2(2., 0.);
+            uv_coordinates->at(v3) = glm::vec2(0.5, 1.5);
+            
             // Create attribute and send data.
-            auto attribute = shader->create_attribute("position", mesh->position());
-            attribute->add_data_at(*v1);
-            attribute->add_data_at(*v2);
-            attribute->add_data_at(*v3);
-            attribute->send_data();
+            auto position = shader->create_attribute("position", mesh->position());
+            position->add_data_at(*v1);
+            position->add_data_at(*v2);
+            position->add_data_at(*v3);
+            position->send_data();
+            
+            auto uv = shader->create_attribute("uv_coordinates", uv_coordinates);
+            uv->add_data_at(*v1);
+            uv->add_data_at(*v2);
+            uv->add_data_at(*v3);
+            uv->send_data();
         }
         
         virtual void use_light_properties()
@@ -53,7 +64,7 @@ namespace gle
         
     public:
         
-        void shine(const glm::vec2& screen_size, const glm::vec3& view_position,
+        void shine(const glm::vec3& view_position,
                    const glm::vec3& target,
                    const std::shared_ptr<GLTexture> position_texture,
                    const std::shared_ptr<GLTexture> color_texture,
@@ -75,7 +86,6 @@ namespace gle
             
             GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view(target));
             GLUniform::use(shader, "eyePosition", view_position);
-            GLUniform::use(shader, "screenSize", screen_size);
             GLUniform::use(shader, "positionMap", 0);
             GLUniform::use(shader, "colorMap", 1);
             GLUniform::use(shader, "normalMap", 2);
