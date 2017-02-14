@@ -61,14 +61,14 @@ namespace gle
         
     public:
         
-        GLRenderTarget(int _width, int _height, int no_color_textures, bool create_depth_texture)
+        GLRenderTarget()
         {
             glGenFramebuffers(1, &framebufferobject_id);
-            
-            width = _width;
-            height = _height;
-            
-            create_buffers(no_color_textures, create_depth_texture);
+        }
+        
+        GLRenderTarget(int _width, int _height, int no_color_textures, bool create_depth_texture) : GLRenderTarget()
+        {
+            resize(_width, _height, no_color_textures, create_depth_texture);
         }
         
         ~GLRenderTarget()
@@ -76,15 +76,11 @@ namespace gle
             glDeleteFramebuffers(1, &framebufferobject_id);
         }
         
-        void resize(int _width, int _height)
+        void resize(int _width, int _height, int no_color_textures, bool create_depth_texture)
         {
             width = _width;
             height = _height;
             
-            int no_color_textures = static_cast<int>(color_textures.size());
-            bool create_depth_texture = depth_texture != nullptr;
-            color_textures.clear();
-            depth_texture = nullptr;
             create_buffers(no_color_textures, create_depth_texture);
         }
         
@@ -101,6 +97,9 @@ namespace gle
     private:
         void create_buffers(int no_color_textures, bool create_depth_texture)
         {
+            color_textures.clear();
+            depth_texture = nullptr;
+            
             use(false);
             
             GLenum DrawBuffers[no_color_textures];

@@ -23,8 +23,7 @@ namespace gle {
         
     public:
         
-        GLCamera(int screen_width, int screen_height) :
-            deferred_render_target(GLRenderTarget(screen_width, screen_height, 3, true))
+        GLCamera(int screen_width, int screen_height)
         {
             set_screen_size(screen_width, screen_height);
         }
@@ -35,6 +34,7 @@ namespace gle {
         void set_screen_size(int width, int height)
         {
             GLDefaultRenderTarget::get().resize(width, height);
+            deferred_render_target.resize(width, height, 3, true);
             projection = glm::perspective(45.f, width/float(height), 0.1f, 100.f);
         }
         
