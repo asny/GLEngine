@@ -211,6 +211,11 @@ namespace gle
             glTexParameterf(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTexParameterf(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
             
+            bind_for_writing();
+        }
+        
+        void bind_for_writing()
+        {
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texture_id, 0);
         }
     };
@@ -224,7 +229,6 @@ namespace gle
             for(GLuint i = 0; i < 6; i++)
             {
                 glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT32F, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-                check_gl_error();
             }
             
             glTexParameterf(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -233,11 +237,10 @@ namespace gle
             glTexParameterf(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
             glTexParameterf(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
             
-            use(0); // Initially bind some texture to the framebuffer
-            check_gl_error();
+            bind_for_writing(0);
         }
         
-        void use(int layer)
+        void bind_for_writing(int layer)
         {
             glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_CUBE_MAP_POSITIVE_X + layer, texture_id, 0);
         }
