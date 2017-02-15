@@ -55,19 +55,25 @@ namespace gle
     
     class GLScene : public GLNode
     {
-        std::vector<std::shared_ptr<GLLight>> lights = std::vector<std::shared_ptr<GLLight>>();
+        std::vector<std::shared_ptr<GLDirectionalLight>> directional_lights;
+        std::vector<std::shared_ptr<GLPointLight>> point_lights;
         GLRenderTarget shadow_render_target;
         
     public:
         
         GLScene() : shadow_render_target(GLRenderTarget(1024, 1024, 0, true))
         {
-            
+            shadow_render_target.create_depth_cubemap(1024, 1024);
         }
         
-        void add_light(std::shared_ptr<GLLight> light)
+        void add_light(std::shared_ptr<GLPointLight> light)
         {
-            lights.push_back(light);
+            point_lights.push_back(light);
+        }
+        
+        void add_light(std::shared_ptr<GLDirectionalLight> light)
+        {
+            directional_lights.push_back(light);
         }
         
         void draw(DrawPassMode draw_pass, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection) const
@@ -82,27 +88,39 @@ namespace gle
                          const std::shared_ptr<GLTexture> normal_texture,
                          const std::shared_ptr<GLTexture> depth_texture) const
         {
+            glm::vec3 target = view_position + view_direction * 5.f;
+            
             // Set up blending
             glEnable(GL_BLEND);
             glBlendFunc(GL_ONE, GL_ONE);
             
-            for(auto light : lights)
+            for(auto light : point_lights)
             {
-                // Use shadow render target
+                // Cast shadows
                 shadow_render_target.use();
-                shadow_render_target.clear();
+                for (int i = 0; i < 6; i++)
+                {
+                    shadow_render_target.bind_for_writing(i);
+                    shadow_render_target.clear();
+                    draw(DEFERRED, view_position, light->get_view(i), light->get_projection());
+                }
                 
-                // Draw the scene
-                glm::vec3 target = view_position + view_direction * 5.f;
+                // Shine the light
+                GLDefaultRenderTarget::get().use();
+                light->shine(view_position, position_texture, color_texture, normal_texture, depth_texture, shadow_render_target);
+            }
+            
+            for(auto light : directional_lights)
+            {
+                // Cast shadows
+                shadow_render_target.use();
+                shadow_render_target.bind_for_writing();
+                shadow_render_target.clear();
                 draw(DEFERRED, view_position, light->get_view(target), light->get_projection());
                 
-                // Use default render target
+                // Shine the light
                 GLDefaultRenderTarget::get().use();
-                
-                // Draw the scene
-                light->shine(view_position, target,
-                             position_texture, color_texture, normal_texture, depth_texture,
-                             shadow_render_target.get_depth_texture());
+                light->shine(view_position, target, position_texture, color_texture, normal_texture, depth_texture, shadow_render_target);
             }
         }
     };

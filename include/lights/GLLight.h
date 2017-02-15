@@ -57,20 +57,11 @@ namespace gle
             uv->send_data();
         }
         
-        virtual void use_light_properties()
-        {
-            
-        }
-        
-    public:
-        
         void shine(const glm::vec3& view_position,
-                   const glm::vec3& target,
                    const std::shared_ptr<GLTexture> position_texture,
                    const std::shared_ptr<GLTexture> color_texture,
                    const std::shared_ptr<GLTexture> normal_texture,
-                   const std::shared_ptr<GLTexture> depth_texture,
-                   const std::shared_ptr<GLTexture> shadow_texture)
+                   const std::shared_ptr<GLTexture> depth_texture)
         {
             // Do not write or test with the depth buffer
             GLState::depth_write(true);
@@ -82,27 +73,18 @@ namespace gle
             color_texture->use(1);
             normal_texture->use(2);
             depth_texture->use(3);
-            shadow_texture->use(4);
             
-            GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view(target));
             GLUniform::use(shader, "eyePosition", view_position);
             GLUniform::use(shader, "positionMap", 0);
             GLUniform::use(shader, "colorMap", 1);
             GLUniform::use(shader, "normalMap", 2);
             GLUniform::use(shader, "depthMap", 3);
-            GLUniform::use(shader, "shadowMap", 4);
-            
-            use_light_properties();
             
             // Bind vertex array and draw
             shader->use();
             glBindVertexArray(array_id);
             glDrawArrays(GL_TRIANGLES, 0, 3);
         }
-        
-        virtual glm::mat4 get_view(const glm::vec3& target) = 0;
-        
-        virtual glm::mat4 get_projection() = 0;
     };
     
     class GLDirectionalLight : public GLLight
@@ -110,15 +92,14 @@ namespace gle
         glm::vec3 direction;
     public:
         
-        GLDirectionalLight(const glm::vec3& _direction) :
-            GLLight(), direction(_direction)
+        GLDirectionalLight(const glm::vec3& _direction) : GLLight(), direction(_direction)
         {
             
         }
         
         glm::mat4 get_view(const glm::vec3& target)
         {
-            const float distance = 5.f;
+            const float distance = 1.f;
             glm::vec3 up = normalize(cross(direction, glm::vec3(1., 0., 0.)));
             return glm::lookAt(target - distance * direction, target, up);
         }
@@ -128,14 +109,24 @@ namespace gle
             return glm::ortho<float>(-10,10,-10,10,-10,20);
         }
         
-    protected:
-        void use_light_properties()
+        void shine(const glm::vec3& view_position,
+                   const glm::vec3& target,
+                   const std::shared_ptr<GLTexture> position_texture,
+                   const std::shared_ptr<GLTexture> color_texture,
+                   const std::shared_ptr<GLTexture> normal_texture,
+                   const std::shared_ptr<GLTexture> depth_texture,
+                   const GLRenderTarget& shadow_render_target)
         {
+            shadow_render_target.get_depth_texture()->use(4);
+            GLUniform::use(shader, "shadowMap", 4);
+            GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view(target));
             GLUniform::use(shader, "lightType", 1);
             GLUniform::use(shader, "directionalLight.direction", direction);
             GLUniform::use(shader, "directionalLight.base.color", glm::vec3(1., 1., 1.));
             GLUniform::use(shader, "directionalLight.base.ambientIntensity", 0.2f);
             GLUniform::use(shader, "directionalLight.base.diffuseIntensity", 0.5f);
+            
+            GLLight::shine(view_position, position_texture, color_texture, normal_texture, depth_texture);
         }
     };
     
@@ -149,10 +140,23 @@ namespace gle
             
         }
         
-        glm::mat4 get_view(const glm::vec3& target)
+        glm::mat4 get_view(int layer)
         {
-            glm::vec3 up = normalize(cross(target - position, glm::vec3(1., 0., 0.)));
-            return glm::lookAt(position, target, up);
+            switch (layer) {
+                case 0:
+                    return glm::lookAt(position, position + glm::vec3(1.0,0.0,0.0), glm::vec3(0.0,-1.0,0.0));
+                case 1:
+                    return glm::lookAt(position, position + glm::vec3(-1.0,0.0,0.0), glm::vec3(0.0,-1.0,0.0));
+                case 2:
+                    return glm::lookAt(position, position + glm::vec3(0.0,1.0,0.0), glm::vec3(0.0,0.0,1.0));
+                case 3:
+                    return glm::lookAt(position, position + glm::vec3(0.0,-1.0,0.0), glm::vec3(0.0,0.0,-1.0));
+                case 4:
+                    return glm::lookAt(position, position + glm::vec3(0.0,0.0,1.0), glm::vec3(0.0,-1.0,0.0));
+                case 5:
+                    return glm::lookAt(position, position + glm::vec3(0.0,0.0,-1.0), glm::vec3(0.0,-1.0,0.0));
+            }
+            return glm::mat4(1.);
         }
         
         glm::mat4 get_projection()
@@ -160,17 +164,26 @@ namespace gle
             return glm::perspective<float>(45.0f, 1.0f, 1.0f, 50.0f);
         }
         
-    protected:
-        void use_light_properties()
+        void shine(const glm::vec3& view_position,
+                   const std::shared_ptr<GLTexture> position_texture,
+                   const std::shared_ptr<GLTexture> color_texture,
+                   const std::shared_ptr<GLTexture> normal_texture,
+                   const std::shared_ptr<GLTexture> depth_texture,
+                   const GLRenderTarget& shadow_render_target)
         {
+            shadow_render_target.get_depth_3d_texture()->use(5);
+            GLUniform::use(shader, "shadowCubeMap", 5);
+            GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view(0));
             GLUniform::use(shader, "lightType", 2);
             GLUniform::use(shader, "pointLight.position", position);
             GLUniform::use(shader, "pointLight.base.color", glm::vec3(1., 1., 1.));
             GLUniform::use(shader, "pointLight.base.ambientIntensity", 0.2f);
             GLUniform::use(shader, "pointLight.base.diffuseIntensity", 0.5f);
-            GLUniform::use(shader, "pointLight.attenuation.constant", 1.f);
-            GLUniform::use(shader, "pointLight.attenuation.linear", 0.1f);
-            GLUniform::use(shader, "pointLight.attenuation.exp", 0.01f);
+            GLUniform::use(shader, "pointLight.attenuation.constant", 0.1f);
+            GLUniform::use(shader, "pointLight.attenuation.linear", 0.01f);
+            GLUniform::use(shader, "pointLight.attenuation.exp", 0.001f);
+            
+            GLLight::shine(view_position, position_texture, color_texture, normal_texture, depth_texture);
         }
     };
 }

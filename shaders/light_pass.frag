@@ -5,6 +5,7 @@ uniform sampler2D colorMap;
 uniform sampler2D normalMap;
 uniform sampler2D depthMap;
 uniform sampler2D shadowMap;
+uniform samplerCube shadowCubeMap;
 
 uniform vec3 eyePosition;
 uniform mat4 shadowMVP;
@@ -83,7 +84,8 @@ float calculate_shadow(vec3 position)
 vec4 calculate_light(BaseLight light,
                        vec3 lightDirection,
                        vec3 position,
-                       vec3 normal)
+                       vec3 normal,
+                       float shadow)
 {
     vec4 AmbientColor = vec4(light.color * light.ambientIntensity, 1.0);
     float DiffuseFactor = dot(normal, -lightDirection);
@@ -105,15 +107,16 @@ vec4 calculate_light(BaseLight light,
         }
     }
     
-    return AmbientColor + calculate_shadow(position) * (DiffuseColor + SpecularColor);
+    return AmbientColor + shadow * ( DiffuseColor + SpecularColor );
 }
 
 vec4 calculate_directional_light(vec3 position, vec3 normal)
 {
+    float shadow = calculate_shadow(position);
     return calculate_light(directionalLight.base,
                              directionalLight.direction,
                              position,
-                             normal);
+                             normal, shadow);
 }
 
 vec4 calculate_point_light(vec3 position, vec3 normal)
@@ -122,7 +125,14 @@ vec4 calculate_point_light(vec3 position, vec3 normal)
     float distance = length(lightDirection);
     lightDirection = normalize(lightDirection);
     
-    vec4 color = calculate_light(pointLight.base, lightDirection, position, normal);
+    float shadow = 1.f;
+    vec4 shadow_coord = shadowMVP * vec4(position, 1.);
+    if ( texture(shadowCubeMap, lightDirection).x < shadow_coord.z )
+    {
+        shadow = 0.5f;
+    }
+    
+    vec4 color = calculate_light(pointLight.base, lightDirection, position, normal, shadow);
     
     float attenuation =  pointLight.attenuation.constant +
         pointLight.attenuation.linear * distance +
