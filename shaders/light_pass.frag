@@ -127,7 +127,7 @@ vec4 calculate_point_light(vec3 position, vec3 normal)
     
     float shadow = 1.f;
     vec4 shadow_coord = shadowMVP * vec4(position, 1.);
-    if ( texture(shadowCubeMap, lightDirection).x < shadow_coord.z )
+    if ( texture(shadowCubeMap, lightDirection).x < shadow_coord.z/shadow_coord.w)
     {
         shadow = 0.5f;
     }

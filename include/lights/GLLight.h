@@ -173,7 +173,7 @@ namespace gle
         {
             shadow_render_target.get_depth_3d_texture()->use(5);
             GLUniform::use(shader, "shadowCubeMap", 5);
-            GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view(0));
+            GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view(3));
             GLUniform::use(shader, "lightType", 2);
             GLUniform::use(shader, "pointLight.position", position);
             GLUniform::use(shader, "pointLight.base.color", glm::vec3(1., 1., 1.));
