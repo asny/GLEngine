@@ -45,7 +45,7 @@ void print_fps(double elapsedTime)
     }
 }
 
-void update()
+void update(GLCamera& camera)
 {
     static float last_time = glfwGetTime();
     float time = glfwGetTime();
@@ -53,6 +53,28 @@ void update()
     
     print_fps(elapsed_time);
     *cube_rotation = rotate(rotate(*cube_rotation, elapsed_time, vec3(0., 1., 0.)), elapsed_time, vec3(1., 0., 0.));
+    
+    static vec3 view_position = vec3(0., 0., 5.);
+    static vec3 view_direction = vec3(0., 0., -1.);
+    const float speed = 3.;
+    
+    if(glfwGetKey(gWindow, 'S'))
+    {
+        view_position -= speed * elapsed_time * view_direction;
+    }
+    else if(glfwGetKey(gWindow, 'W'))
+    {
+        view_position += speed * elapsed_time * view_direction;
+    }
+    if(glfwGetKey(gWindow, 'A'))
+    {
+        view_direction = vec3(glm::rotate(mat4(), elapsed_time, vec3(0.,1.,0.)) * vec4(view_direction, 1.));
+    }
+    else if(glfwGetKey(gWindow, 'D'))
+    {
+        view_direction = vec3(glm::rotate(mat4(), -elapsed_time, vec3(0.,1.,0.)) * vec4(view_direction, 1.));
+    }
+    camera.set_view(view_position, view_direction);
     
     last_time = time;
 }
@@ -82,7 +104,7 @@ void create_room(GLScene& root)
     root.add_child(floor_node);
     floor_node->add_leaf(geometry, texture_material);
     
-    auto color_material = make_shared<GLColorMaterial>(vec3(1., 1., 1.));
+    auto color_material = make_shared<GLColorMaterial>(vec3(0.5, 0.5, 0.5));
     auto box = MeshCreator::create_box(true);
     auto scale_node = std::make_shared<GLTransformationNode>(scale(vec3(10., 10., 10.)));
     root.add_child(scale_node);
@@ -95,7 +117,7 @@ void create_cubes(GLScene& root)
     auto color_material = make_shared<GLColorMaterial>(vec3(0.5, 0.1, 0.7));
     auto standard_material = make_shared<GLStandardMaterial>(vec3(0.2, 0.2, 0.2), vec3(0.5, 0.1, 0.7), vec3(0.5, 0.1, 0.7), 1.);
     
-    create_cube(root, vec3(-1., -2., 1.), color_material);
+    create_cube(root, vec3(0., 0., 0.), color_material);
 //    create_cube(root, vec3(0., -1.0, 1.5), flat_material);
 //    
 //    create_cube(root, vec3(1., 0., -1.), flat_material);
@@ -130,7 +152,7 @@ int main(int argc, const char * argv[])
     
     // Create camera
     auto camera = GLCamera(WIN_SIZE_X, WIN_SIZE_Y);
-    camera.set_view(vec3(0.,0.,10.), vec3(0., -0.5, -1.));
+    
     
     // Create scene
     auto scene = GLScene();
@@ -148,7 +170,7 @@ int main(int argc, const char * argv[])
         glfwPollEvents();
         
         // update the scene based on the time elapsed since last update
-        update();
+        update(camera);
         
         // draw one frame
         camera.draw(scene);
