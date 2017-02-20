@@ -74,6 +74,14 @@ void update(GLCamera& camera)
     {
         view_direction = vec3(glm::rotate(mat4(), -elapsed_time, vec3(0.,1.,0.)) * vec4(view_direction, 1.));
     }
+    else if(glfwGetKey(gWindow, 'E'))
+    {
+        view_direction = vec3(glm::rotate(mat4(), -elapsed_time, vec3(1.,0.,0.)) * vec4(view_direction, 1.));
+    }
+    else if(glfwGetKey(gWindow, 'Q'))
+    {
+        view_direction = vec3(glm::rotate(mat4(), elapsed_time, vec3(1.,0.,0.)) * vec4(view_direction, 1.));
+    }
     camera.set_view(view_position, view_direction);
     
     last_time = time;
