@@ -93,8 +93,9 @@ namespace gle
             
         }
         
-        glm::mat4 get_view(const glm::vec3& target)
+        glm::mat4 get_view(const glm::vec3& view_position, const glm::vec3& view_direction)
         {
+            auto target = view_position + view_direction * 5.f;
             const float distance = 1.f;
             glm::vec3 up = normalize(cross(direction, glm::vec3(1., 0., 0.)));
             return glm::lookAt(target - distance * direction, target, up);
@@ -105,11 +106,11 @@ namespace gle
             return glm::ortho<float>(-10,10,-10,10,-10,20);
         }
         
-        void shine(const glm::vec3& view_position, const glm::vec3& target, const GLRenderTarget& deferred_render_target, const GLRenderTarget& shadow_render_target)
+        void shine(const glm::vec3& view_position, const glm::vec3& view_direction, const GLRenderTarget& deferred_render_target, const GLRenderTarget& shadow_render_target)
         {
             shadow_render_target.get_depth_texture()->use(4);
             GLUniform::use(shader, "shadowMap", 4);
-            GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view(target));
+            GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view(view_position, view_direction));
             GLUniform::use(shader, "lightType", 1);
             GLUniform::use(shader, "directionalLight.direction", direction);
             GLUniform::use(shader, "directionalLight.base.color", glm::vec3(1., 1., 1.));

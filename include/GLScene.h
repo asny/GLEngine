@@ -96,18 +96,17 @@ namespace gle
                 light->shine(view_position, deferred_render_target);
             }
             
-            glm::vec3 target = view_position + view_direction * 5.f;
             for(auto light : directional_lights)
             {
                 // Cast shadows
                 shadow_render_target.use();
                 shadow_render_target.bind_for_writing();
                 shadow_render_target.clear();
-                draw(DEFERRED, view_position, light->get_view(target), light->get_projection());
+                draw(DEFERRED, view_position, light->get_view(view_position, view_direction), light->get_projection());
                 
                 // Shine the light
                 GLDefaultRenderTarget::get().use();
-                light->shine(view_position, target, deferred_render_target, shadow_render_target);
+                light->shine(view_position, view_direction, deferred_render_target, shadow_render_target);
             }
         }
     };
