@@ -57,11 +57,7 @@ namespace gle
             uv->send_data();
         }
         
-        void shine(const glm::vec3& view_position,
-                   const std::shared_ptr<GLTexture> position_texture,
-                   const std::shared_ptr<GLTexture> color_texture,
-                   const std::shared_ptr<GLTexture> normal_texture,
-                   const std::shared_ptr<GLTexture> depth_texture)
+        void shine(const glm::vec3& view_position, const GLRenderTarget& deferred_render_target)
         {
             // Do not write or test with the depth buffer
             GLState::depth_write(true);
@@ -69,10 +65,10 @@ namespace gle
             GLState::cull_back_faces(true);
             glDepthFunc(GL_LEQUAL);
             
-            position_texture->use(0);
-            color_texture->use(1);
-            normal_texture->use(2);
-            depth_texture->use(3);
+            deferred_render_target.get_color_texture(0)->use(0);
+            deferred_render_target.get_color_texture(1)->use(1);
+            deferred_render_target.get_color_texture(2)->use(2);
+            deferred_render_target.get_depth_texture()->use(3);
             
             GLUniform::use(shader, "eyePosition", view_position);
             GLUniform::use(shader, "positionMap", 0);
@@ -109,13 +105,7 @@ namespace gle
             return glm::ortho<float>(-10,10,-10,10,-10,20);
         }
         
-        void shine(const glm::vec3& view_position,
-                   const glm::vec3& target,
-                   const std::shared_ptr<GLTexture> position_texture,
-                   const std::shared_ptr<GLTexture> color_texture,
-                   const std::shared_ptr<GLTexture> normal_texture,
-                   const std::shared_ptr<GLTexture> depth_texture,
-                   const GLRenderTarget& shadow_render_target)
+        void shine(const glm::vec3& view_position, const glm::vec3& target, const GLRenderTarget& deferred_render_target, const GLRenderTarget& shadow_render_target)
         {
             shadow_render_target.get_depth_texture()->use(4);
             GLUniform::use(shader, "shadowMap", 4);
@@ -126,7 +116,7 @@ namespace gle
             GLUniform::use(shader, "directionalLight.base.ambientIntensity", 0.2f);
             GLUniform::use(shader, "directionalLight.base.diffuseIntensity", 0.5f);
             
-            GLLight::shine(view_position, position_texture, color_texture, normal_texture, depth_texture);
+            GLLight::shine(view_position, deferred_render_target);
         }
     };
     
@@ -169,11 +159,7 @@ namespace gle
             return glm::perspective<float>(45.0f, 1.0f, 1.0f, 50.0f);
         }
         
-        void shine(const glm::vec3& view_position,
-                   const std::shared_ptr<GLTexture> position_texture,
-                   const std::shared_ptr<GLTexture> color_texture,
-                   const std::shared_ptr<GLTexture> normal_texture,
-                   const std::shared_ptr<GLTexture> depth_texture)
+        void shine(const glm::vec3& view_position, const GLRenderTarget& deferred_render_target)
         {
             GLUniform::use(shader, "lightType", 2);
             GLUniform::use(shader, "pointLight.position", *position);
@@ -184,7 +170,7 @@ namespace gle
             GLUniform::use(shader, "pointLight.attenuation.linear", 0.01f);
             GLUniform::use(shader, "pointLight.attenuation.exp", 0.001f);
             
-            GLLight::shine(view_position, position_texture, color_texture, normal_texture, depth_texture);
+            GLLight::shine(view_position, deferred_render_target);
         }
     };
 }

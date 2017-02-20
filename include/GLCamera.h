@@ -97,11 +97,7 @@ namespace gle {
             scene.draw(DEFERRED, position, view, projection);
             
             // Light pass
-            scene.shine_light(position, direction,
-                              deferred_render_target.get_color_texture(0),
-                              deferred_render_target.get_color_texture(1),
-                              deferred_render_target.get_color_texture(2),
-                              deferred_render_target.get_depth_texture());
+            scene.shine_light(position, direction, deferred_render_target);
         }
     };
 }

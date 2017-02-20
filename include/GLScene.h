@@ -83,10 +83,7 @@ namespace gle
         }
         
         void shine_light(const glm::vec3& view_position, const glm::vec3& view_direction,
-                         const std::shared_ptr<GLTexture> position_texture,
-                         const std::shared_ptr<GLTexture> color_texture,
-                         const std::shared_ptr<GLTexture> normal_texture,
-                         const std::shared_ptr<GLTexture> depth_texture) const
+                         const GLRenderTarget& deferred_render_target) const
         {
             // Set up blending
             glEnable(GL_BLEND);
@@ -96,7 +93,7 @@ namespace gle
             {
                 // Shine the light
                 GLDefaultRenderTarget::get().use();
-                light->shine(view_position, position_texture, color_texture, normal_texture, depth_texture);
+                light->shine(view_position, deferred_render_target);
             }
             
             glm::vec3 target = view_position + view_direction * 5.f;
@@ -110,7 +107,7 @@ namespace gle
                 
                 // Shine the light
                 GLDefaultRenderTarget::get().use();
-                light->shine(view_position, target, position_texture, color_texture, normal_texture, depth_texture, shadow_render_target);
+                light->shine(view_position, target, deferred_render_target, shadow_render_target);
             }
         }
     };
