@@ -63,7 +63,7 @@ namespace gle
         
         GLScene() : shadow_render_target(GLRenderTarget(1024, 1024, 0, true))
         {
-            shadow_render_target.create_depth_cubemap(1024, 1024);
+            
         }
         
         void add_light(std::shared_ptr<GLPointLight> light)

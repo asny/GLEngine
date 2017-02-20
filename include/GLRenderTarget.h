@@ -59,7 +59,6 @@ namespace gle
     {
         std::vector<std::shared_ptr<GLTexture>> color_textures;
         std::shared_ptr<GLFramebufferDepthTexture> depth_texture;
-        std::shared_ptr<GLFramebufferDepthTextureCubeMap> depth_texture_3d;
         
     public:
         
@@ -113,33 +112,6 @@ namespace gle
         const std::shared_ptr<GLTexture> get_depth_texture() const
         {
             return depth_texture;
-        }
-        
-        const std::shared_ptr<GLTexture> get_depth_3d_texture() const
-        {
-            return depth_texture_3d;
-        }
-        
-        void create_depth_cubemap(int _width, int _height)
-        {
-            width = _width;
-            height = _height;
-            
-            use();
-            
-            glDrawBuffer(GL_NONE);
-            
-            depth_texture_3d = std::make_shared<GLFramebufferDepthTextureCubeMap>(width, height);
-            
-            GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-            if (Status != GL_FRAMEBUFFER_COMPLETE) {
-                printf("Framebuffer error, status: 0x%x\n", Status);
-            }
-        }
-        
-        void bind_for_writing(int layer) const
-        {
-            depth_texture_3d->bind_for_writing(layer);
         }
         
         void bind_for_writing() const
