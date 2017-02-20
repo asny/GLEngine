@@ -88,28 +88,18 @@ namespace gle
                          const std::shared_ptr<GLTexture> normal_texture,
                          const std::shared_ptr<GLTexture> depth_texture) const
         {
-            glm::vec3 target = view_position + view_direction * 5.f;
-            
             // Set up blending
             glEnable(GL_BLEND);
             glBlendFunc(GL_ONE, GL_ONE);
             
             for(auto light : point_lights)
             {
-                // Cast shadows
-                shadow_render_target.use();
-                for (int i = 0; i < 6; i++)
-                {
-                    shadow_render_target.bind_for_writing(i);
-                    shadow_render_target.clear();
-                    draw(DEFERRED, view_position, light->get_view(i), light->get_projection());
-                }
-                
                 // Shine the light
                 GLDefaultRenderTarget::get().use();
-                light->shine(view_position, position_texture, color_texture, normal_texture, depth_texture, shadow_render_target);
+                light->shine(view_position, position_texture, color_texture, normal_texture, depth_texture);
             }
             
+            glm::vec3 target = view_position + view_direction * 5.f;
             for(auto light : directional_lights)
             {
                 // Cast shadows

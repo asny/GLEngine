@@ -5,7 +5,6 @@ uniform sampler2D colorMap;
 uniform sampler2D normalMap;
 uniform sampler2D depthMap;
 uniform sampler2D shadowMap;
-uniform samplerCube shadowCubeMap;
 
 uniform vec3 eyePosition;
 uniform mat4 shadowMVP;
@@ -125,14 +124,7 @@ vec4 calculate_point_light(vec3 position, vec3 normal)
     float distance = length(lightDirection);
     lightDirection = normalize(lightDirection);
     
-    float shadow = 1.f;
-    vec4 shadow_coord = shadowMVP * vec4(position, 1.);
-    if ( texture(shadowCubeMap, lightDirection).x < shadow_coord.z/shadow_coord.w)
-    {
-        shadow = 0.5f;
-    }
-    
-    vec4 color = calculate_light(pointLight.base, lightDirection, position, normal, shadow);
+    vec4 color = calculate_light(pointLight.base, lightDirection, position, normal, 1.f);
     
     float attenuation =  pointLight.attenuation.constant +
         pointLight.attenuation.linear * distance +
