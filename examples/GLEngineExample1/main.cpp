@@ -66,21 +66,24 @@ void update(GLCamera& camera)
     {
         view_position += speed * elapsed_time * view_direction;
     }
+    
+    auto side = normalize(cross(view_direction, vec3(0.,1.,0.)));
+    auto up = normalize(cross(side, view_direction));
     if(glfwGetKey(gWindow, 'A'))
     {
-        view_direction = vec3(glm::rotate(mat4(), elapsed_time, vec3(0.,1.,0.)) * vec4(view_direction, 1.));
+        view_direction = vec3(glm::rotate(mat4(), elapsed_time, up) * vec4(view_direction, 1.));
     }
     else if(glfwGetKey(gWindow, 'D'))
     {
-        view_direction = vec3(glm::rotate(mat4(), -elapsed_time, vec3(0.,1.,0.)) * vec4(view_direction, 1.));
+        view_direction = vec3(glm::rotate(mat4(), -elapsed_time, up) * vec4(view_direction, 1.));
     }
     else if(glfwGetKey(gWindow, 'E'))
     {
-        view_direction = vec3(glm::rotate(mat4(), -elapsed_time, vec3(1.,0.,0.)) * vec4(view_direction, 1.));
+        view_direction = vec3(glm::rotate(mat4(), -elapsed_time, side) * vec4(view_direction, 1.));
     }
     else if(glfwGetKey(gWindow, 'Q'))
     {
-        view_direction = vec3(glm::rotate(mat4(), elapsed_time, vec3(1.,0.,0.)) * vec4(view_direction, 1.));
+        view_direction = vec3(glm::rotate(mat4(), elapsed_time, side) * vec4(view_direction, 1.));
     }
     camera.set_view(view_position, view_direction);
     
