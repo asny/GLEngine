@@ -114,11 +114,6 @@ namespace gle
             return depth_texture;
         }
         
-        void bind_for_writing() const
-        {
-            depth_texture->bind_for_writing();
-        }
-        
     private:
         void create_buffers(int no_color_textures, bool create_depth_texture)
         {

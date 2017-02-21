@@ -100,7 +100,6 @@ namespace gle
             {
                 // Cast shadows
                 shadow_render_target.use();
-                shadow_render_target.bind_for_writing();
                 shadow_render_target.clear();
                 draw(DEFERRED, view_position, light->get_view(view_position, view_direction), light->get_projection());
                 
