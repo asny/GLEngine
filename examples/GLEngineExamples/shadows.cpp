@@ -109,7 +109,7 @@ void create_room(GLScene& root)
     auto texture_material = make_shared<GLTextureMaterial>(texture, uv_attribute);
     
     auto floor_node = std::make_shared<GLTransformationNode>(glm::translate(glm::vec3(0., -9.99, 0.)) *
-                                                                      glm::scale(glm::vec3(10., 10., 10.)) *
+                                                             glm::scale(glm::vec3(10., 10., 10.)) *
                                                              glm::rotate(-0.5f * glm::pi<float>(), glm::vec3(1.f, 0.f, 0.f)));
     
     root.add_child(floor_node);
@@ -129,10 +129,6 @@ void create_cubes(GLScene& root)
     auto standard_material = make_shared<GLStandardMaterial>(vec3(0.2, 0.2, 0.2), vec3(0.5, 0.1, 0.7), vec3(0.5, 0.1, 0.7), 1.);
     
     create_cube(root, vec3(0., 0., 0.), color_material);
-//    create_cube(root, vec3(0., -1.0, 1.5), flat_material);
-//    
-//    create_cube(root, vec3(1., 0., -1.), flat_material);
-//    create_cube(root, vec3(1.5, -1.0, 0.), color_material);
 }
 
 int main(int argc, const char * argv[])
@@ -153,7 +149,7 @@ int main(int argc, const char * argv[])
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     gWindow = glfwCreateWindow(WIN_SIZE_X, WIN_SIZE_Y, "GLEngine example 1", NULL, NULL);
     if(!gWindow)
-        throw std::runtime_error("glfwCreateWindow failed. Can your hardware handle OpenGL 3.2?");
+        throw std::runtime_error("glfwCreateWindow failed. Can your hardware handle OpenGL 3.3?");
     
     // GLFW settings
     glfwSetInputMode(gWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -163,7 +159,6 @@ int main(int argc, const char * argv[])
     
     // Create camera
     auto camera = GLCamera(WIN_SIZE_X, WIN_SIZE_Y);
-    
     
     // Create scene
     auto scene = GLScene();
