@@ -8,10 +8,7 @@
 
 #include "GLCamera.h"
 #include "MeshCreator.h"
-#include "materials/GLFlatColorMaterial.h"
 #include "materials/GLColorMaterial.h"
-#include "materials/GLStandardMaterial.h"
-#include "materials/GLTextureMaterial.h"
 #include "gtx/rotate_vector.hpp"
 
 #define GLFW_INCLUDE_NONE
@@ -90,45 +87,23 @@ void update(GLCamera& camera)
     last_time = time;
 }
 
-void create_cube(GLScene& root, const vec3& translation, std::shared_ptr<GLMaterial> material)
+void create_cube(GLScene& root)
 {
+    auto material = make_shared<GLColorMaterial>(vec3(0.5, 0.1, 0.7));
     auto geometry = MeshCreator::create_box(false);
     
-    auto translation_node = std::make_shared<GLTransformationNode>(translate(translation));
-    root.add_child(translation_node);
     auto rotation_node = std::make_shared<GLTransformationNode>(cube_rotation);
-    translation_node->add_child(rotation_node);
+    root.add_child(rotation_node);
     rotation_node->add_leaf(geometry, material);
 }
 
 void create_room(GLScene& root)
 {
-    std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> uv_attribute = std::make_shared<mesh::Attribute<mesh::VertexID, glm::vec2>>();
-    auto geometry = MeshCreator::create_quad(uv_attribute);
-    auto texture = make_shared<GLTexture2D>(std::string("test_texture.jpg"));
-    auto texture_material = make_shared<GLTextureMaterial>(texture, uv_attribute);
-    
-    auto floor_node = std::make_shared<GLTransformationNode>(glm::translate(glm::vec3(0., -9.99, 0.)) *
-                                                             glm::scale(glm::vec3(10., 10., 10.)) *
-                                                             glm::rotate(-0.5f * glm::pi<float>(), glm::vec3(1.f, 0.f, 0.f)));
-    
-    root.add_child(floor_node);
-    floor_node->add_leaf(geometry, texture_material);
-    
     auto color_material = make_shared<GLColorMaterial>(vec3(0.5, 0.5, 0.5));
     auto box = MeshCreator::create_box(true);
     auto scale_node = std::make_shared<GLTransformationNode>(scale(vec3(10., 10., 10.)));
     root.add_child(scale_node);
     scale_node->add_leaf(box, color_material);
-}
-
-void create_cubes(GLScene& root)
-{
-    auto flat_material = make_shared<GLFlatColorMaterial>(vec3(0.5, 0.1, 0.7));
-    auto color_material = make_shared<GLColorMaterial>(vec3(0.5, 0.1, 0.7));
-    auto standard_material = make_shared<GLStandardMaterial>(vec3(0.2, 0.2, 0.2), vec3(0.5, 0.1, 0.7), vec3(0.5, 0.1, 0.7), 1.);
-    
-    create_cube(root, vec3(0., 0., 0.), color_material);
 }
 
 int main(int argc, const char * argv[])
@@ -162,12 +137,10 @@ int main(int argc, const char * argv[])
     
     // Create scene
     auto scene = GLScene();
-    
+    create_room(scene);
+    create_cube(scene);
     scene.add_light(std::make_shared<GLPointLight>(glm::vec3(-1., 5., 1.)));
     scene.add_light(std::make_shared<GLDirectionalLight>(glm::vec3(1., -1., 0.)));
-    
-    create_room(scene);
-    create_cubes(scene);
     
     // run while the window is open
     while(!glfwWindowShouldClose(gWindow))

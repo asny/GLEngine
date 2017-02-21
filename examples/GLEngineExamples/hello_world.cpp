@@ -7,9 +7,6 @@
 #include "MeshCreator.h"
 #include "materials/GLFlatColorMaterial.h"
 #include "materials/GLColorMaterial.h"
-#include "materials/GLStandardMaterial.h"
-#include "materials/GLTextureMaterial.h"
-#include "gtx/rotate_vector.hpp"
 
 #define GLFW_INCLUDE_NONE
 #include "glfw3.h"
@@ -108,11 +105,7 @@ int main(int argc, const char * argv[])
     
     // Create scene
     auto scene = GLScene();
-    
-    // Create light
     scene.add_light(std::make_shared<GLDirectionalLight>(glm::vec3(1., -1., 0.)));
-    
-    // Create scene
     create_cubes(scene);
     
     // run while the window is open
