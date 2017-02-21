@@ -4,9 +4,12 @@ uniform sampler2D positionMap;
 uniform sampler2D colorMap;
 uniform sampler2D normalMap;
 uniform sampler2D depthMap;
+uniform sampler2D shadowMap;
 
-uniform vec2 screenSize;
 uniform vec3 eyePosition;
+uniform mat4 shadowMVP;
+
+in vec2 uv;
 
 out vec4 fragColour;
 
@@ -52,10 +55,36 @@ uniform int lightType;
 const float specularIntensity = 0.f;
 const float specularPower = 5.f;
 
+float is_visible(vec4 shadow_coord, vec2 offset)
+{
+    if ( texture(shadowMap, (shadow_coord.xy + offset)/shadow_coord.w).x < (shadow_coord.z - 0.005)/shadow_coord.w){
+        return 0.5f;
+    }
+    return 1.f;
+}
+
+float calculate_shadow(vec3 position)
+{
+    vec4 shadow_coord = shadowMVP * vec4(position, 1.);
+    float visibility = 0.0;
+    vec2 poissonDisk[4] = vec2[](
+                                 vec2( -0.94201624, -0.39906216 ),
+                                 vec2( 0.94558609, -0.76890725 ),
+                                 vec2( -0.094184101, -0.92938870 ),
+                                 vec2( 0.34495938, 0.29387760 )
+                                 );
+    for (int i=0;i<4;i++)
+    {
+        visibility += is_visible(shadow_coord, poissonDisk[i] * 0.001f);
+    }
+    return visibility/4.f;
+}
+
 vec4 calculate_light(BaseLight light,
                        vec3 lightDirection,
                        vec3 position,
-                       vec3 normal)
+                       vec3 normal,
+                       float shadow)
 {
     vec4 AmbientColor = vec4(light.color * light.ambientIntensity, 1.0);
     float DiffuseFactor = dot(normal, -lightDirection);
@@ -77,15 +106,16 @@ vec4 calculate_light(BaseLight light,
         }
     }
     
-    return (AmbientColor + DiffuseColor + SpecularColor);
+    return AmbientColor + shadow * ( DiffuseColor + SpecularColor );
 }
 
 vec4 calculate_directional_light(vec3 position, vec3 normal)
 {
+    float shadow = calculate_shadow(position);
     return calculate_light(directionalLight.base,
                              directionalLight.direction,
                              position,
-                             normal);
+                             normal, shadow);
 }
 
 vec4 calculate_point_light(vec3 position, vec3 normal)
@@ -94,7 +124,7 @@ vec4 calculate_point_light(vec3 position, vec3 normal)
     float distance = length(lightDirection);
     lightDirection = normalize(lightDirection);
     
-    vec4 color = calculate_light(pointLight.base, lightDirection, position, normal);
+    vec4 color = calculate_light(pointLight.base, lightDirection, position, normal, 1.f);
     
     float attenuation =  pointLight.attenuation.constant +
         pointLight.attenuation.linear * distance +
@@ -107,7 +137,6 @@ vec4 calculate_point_light(vec3 position, vec3 normal)
 
 void main()
 {
-   	vec2 uv = gl_FragCoord.xy / screenSize;
     float depth = texture(depthMap, uv).r;
     if(depth == 1.)
         discard;

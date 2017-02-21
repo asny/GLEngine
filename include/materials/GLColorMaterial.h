@@ -21,14 +21,9 @@ namespace gle
     public:
         
         GLColorMaterial(const glm::vec3& _color, const std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec3>> _normals = nullptr)
-            : normals(_normals), color(_color)
+            : GLMaterial(DEFERRED), normals(_normals), color(_color)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/color_material.vert",  "../GLEngine/shaders/color_material.frag");
-        }
-        
-        bool should_draw(DrawPassMode draw_pass)
-        {
-            return draw_pass == DEFERRED;
         }
         
         void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>>& vec2_vertex_attributes,

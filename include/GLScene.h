@@ -6,6 +6,7 @@
 #pragma once
 
 #include "GLObject.h"
+#include "GLRenderTarget.h"
 #include "lights/GLLight.h"
 
 namespace gle
@@ -54,18 +55,25 @@ namespace gle
     
     class GLScene : public GLNode
     {
-        std::vector<std::shared_ptr<GLLight>> lights = std::vector<std::shared_ptr<GLLight>>();
+        std::vector<std::shared_ptr<GLDirectionalLight>> directional_lights;
+        std::vector<std::shared_ptr<GLPointLight>> point_lights;
+        GLRenderTarget shadow_render_target;
         
     public:
         
-        GLScene()
+        GLScene() : shadow_render_target(GLRenderTarget(1024, 1024, 0, true))
         {
             
         }
         
-        void add_light(std::shared_ptr<GLLight> light)
+        void add_light(std::shared_ptr<GLPointLight> light)
         {
-            lights.push_back(light);
+            point_lights.push_back(light);
+        }
+        
+        void add_light(std::shared_ptr<GLDirectionalLight> light)
+        {
+            directional_lights.push_back(light);
         }
         
         void draw(DrawPassMode draw_pass, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection) const
@@ -74,11 +82,30 @@ namespace gle
             GLNode::draw(draw_pass, camera_position, model, view, projection);
         }
         
-        void shine_light(const glm::vec2& screen_size, const glm::vec3& camera_position, const std::shared_ptr<GLTexture> position_texture, const std::shared_ptr<GLTexture> color_texture, const std::shared_ptr<GLTexture> normal_texture, const std::shared_ptr<GLTexture> depth_texture) const
+        void shine_light(const glm::vec3& view_position, const glm::vec3& view_direction,
+                         const GLRenderTarget& deferred_render_target) const
         {
-            for(auto light : lights)
+            // Set up blending
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_ONE, GL_ONE);
+            
+            for(auto light : point_lights)
             {
-                light->shine(screen_size, camera_position, position_texture, color_texture, normal_texture, depth_texture);
+                // Shine the light
+                GLDefaultRenderTarget::get().use();
+                light->shine(view_position, deferred_render_target);
+            }
+            
+            for(auto light : directional_lights)
+            {
+                // Cast shadows
+                shadow_render_target.use();
+                shadow_render_target.clear();
+                draw(DEFERRED, view_position, light->get_view(view_position, view_direction), light->get_projection());
+                
+                // Shine the light
+                GLDefaultRenderTarget::get().use();
+                light->shine(view_position, view_direction, deferred_render_target, shadow_render_target);
             }
         }
     };
