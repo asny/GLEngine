@@ -21,14 +21,14 @@ namespace gle
             objects.push_back(object);
         }
         
-        void add_child(std::shared_ptr<GLNode> node)
+        std::shared_ptr<GLNode> add_child(std::shared_ptr<GLNode> node)
         {
             children.push_back(node);
+            return node;
         }
         
         void remove_child(std::shared_ptr<GLNode> node)
         {
-            
             auto pointer = std::find(children.begin(), children.end(), node);
             if(pointer == children.end())
                 std::runtime_error("The node cannot be removed since it is not a child.");

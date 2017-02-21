@@ -19,7 +19,7 @@ using namespace mesh;
 
 GLFWwindow* gWindow = NULL;
 
-shared_ptr<mat4> cube_rotation = make_shared<mat4>(1.);
+shared_ptr<float> cube_rotation_angle = make_shared<float>(0.f);
 
 void on_error(int errorCode, const char* msg)
 {
@@ -47,7 +47,7 @@ void update()
     float elapsed_time = time - last_time;
     
     print_fps(elapsed_time);
-    *cube_rotation = rotate(rotate(*cube_rotation, elapsed_time, vec3(0., 1., 0.)), elapsed_time, vec3(1., 0., 0.));
+    *cube_rotation_angle = time;
     
     last_time = time;
 }
@@ -56,11 +56,10 @@ void create_cube(GLScene& root, const vec3& translation, std::shared_ptr<GLMater
 {
     auto geometry = MeshCreator::create_box(false);
     
-    auto translation_node = std::make_shared<GLTransformationNode>(translate(translation));
-    root.add_child(translation_node);
-    auto rotation_node = std::make_shared<GLTransformationNode>(cube_rotation);
-    translation_node->add_child(rotation_node);
-    rotation_node->add_leaf(geometry, material);
+    auto translation_node = std::make_shared<GLTranslationNode>(translation);
+    auto rotation_node = std::make_shared<GLRotationNode>(vec3(1., 1., 0.), cube_rotation_angle);
+    
+    root.add_child(translation_node)->add_child(rotation_node)->add_leaf(geometry, material);
 }
 
 void create_cubes(GLScene& root)

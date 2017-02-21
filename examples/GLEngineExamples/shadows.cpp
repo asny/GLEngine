@@ -21,7 +21,7 @@ using namespace mesh;
 
 GLFWwindow* gWindow = NULL;
 
-shared_ptr<mat4> cube_rotation = make_shared<mat4>(1.);
+shared_ptr<float> cube_rotation_angle = make_shared<float>(0.f);
 
 void on_error(int errorCode, const char* msg)
 {
@@ -49,7 +49,7 @@ void update(GLCamera& camera)
     float elapsed_time = time - last_time;
     
     print_fps(elapsed_time);
-    *cube_rotation = rotate(rotate(*cube_rotation, elapsed_time, vec3(0., 1., 0.)), elapsed_time, vec3(1., 0., 0.));
+    *cube_rotation_angle = time;
     
     static vec3 view_position = vec3(0., 0., 5.);
     static vec3 view_direction = vec3(0., 0., -1.);
@@ -92,9 +92,9 @@ void create_cube(GLScene& root)
     auto material = make_shared<GLColorMaterial>(vec3(0.5, 0.1, 0.7));
     auto geometry = MeshCreator::create_box(false);
     
-    auto rotation_node = std::make_shared<GLTransformationNode>(cube_rotation);
-    root.add_child(rotation_node);
-    rotation_node->add_leaf(geometry, material);
+    auto rotation_node = std::make_shared<GLRotationNode>(vec3(1., 1., 0.), cube_rotation_angle);
+    
+    root.add_child(rotation_node)->add_leaf(geometry, material);
 }
 
 void create_room(GLScene& root)
@@ -102,8 +102,7 @@ void create_room(GLScene& root)
     auto color_material = make_shared<GLColorMaterial>(vec3(0.5, 0.5, 0.5));
     auto box = MeshCreator::create_box(true);
     auto scale_node = std::make_shared<GLTransformationNode>(scale(vec3(10., 10., 10.)));
-    root.add_child(scale_node);
-    scale_node->add_leaf(box, color_material);
+    root.add_child(scale_node)->add_leaf(box, color_material);
 }
 
 int main(int argc, const char * argv[])
