@@ -18,23 +18,9 @@ namespace gle
     protected:
         GLuint texture_id;
         GLenum target;
-        GLenum minMagFilter = GL_LINEAR; // GL_NEAREST or GL_LINEAR
         GLenum wrapMode = GL_REPEAT; // GL_REPEAT, GL_MIRRORED_REPEAT, GL_CLAMP_TO_EDGE, or GL_CLAMP_TO_BORDER
         
-        void bind_image(unsigned char* data, unsigned int width, unsigned int height, GLenum format, GLenum target)
-        {
-            glTexImage2D(target,
-                         0,
-                         format,
-                         (GLsizei)width,
-                         (GLsizei)height,
-                         0,
-                         format,
-                         GL_UNSIGNED_BYTE,
-                         data);
-        }
-        
-        void bind_image(std::string filename, GLenum target, bool invert = true)
+        bool bind_image(std::string filename, GLenum target, bool invert)
         {
             auto image = IMG_Load( filename.c_str() );
             if( image == NULL )
@@ -50,7 +36,7 @@ namespace gle
                 std::runtime_error("Unknown image format.");
             }
             
-            char *pixels = static_cast<char *>(image->pixels);
+            unsigned char *pixels = static_cast<unsigned char *>(image->pixels);
             
             if(invert)
             {
@@ -71,6 +57,7 @@ namespace gle
             
             SDL_FreeSurface(image);
             check_gl_error();
+            return is_power_of_two(width) && is_power_of_two(height);
         }
         
         /**
@@ -135,35 +122,38 @@ namespace gle
                        width);
             }
         }
+        
+        bool is_power_of_two(unsigned int x)
+        {
+            return ((x != 0) && !(x & (x - 1)));
+        }
     };
     
-    /**
-     Represents an OpenGL texture
-     */
     class GLTexture2D : public GLTexture
     {
     public:
         GLTexture2D(std::string filename) : GLTexture(GL_TEXTURE_2D)
         {
             bind();
-            bind_image(filename, GL_TEXTURE_2D);
+            bool can_generate_mip_maps = bind_image(filename, GL_TEXTURE_2D, true);
+            if(can_generate_mip_maps)
+            {
+                glGenerateMipmap(GL_TEXTURE_2D);
+            }
+            else {
+                std::cerr << "Ignore mipmaps for " + filename + " since it is not power of two." << std::endl;
+            }
             
-            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minMagFilter);
-            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, minMagFilter);
+            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, can_generate_mip_maps ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
+            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapMode);
             glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapMode);
         }
     };
     
-    /**
-     Represents an OpenGL cubemap texture
-     */
     class GLTexture3D : public GLTexture
     {
     public:
-        /**
-         Creates a 3D texture from a set of bitmaps.
-         */
         GLTexture3D(const std::vector<std::string>& filenames) : GLTexture(GL_TEXTURE_CUBE_MAP)
         {
             bind();
@@ -172,8 +162,8 @@ namespace gle
                 bind_image(filenames[i], GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, false);
             }
             
-            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minMagFilter);
-            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, minMagFilter);
+            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapMode);
             glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapMode);
             glTexParameteri(target, GL_TEXTURE_WRAP_R, wrapMode);
