@@ -7,6 +7,7 @@
 #include "MeshCreator.h"
 #include "materials/GLFlatColorMaterial.h"
 #include "materials/GLColorMaterial.h"
+#include "gtx/rotate_vector.hpp"
 
 #define GLFW_INCLUDE_NONE
 #include "glfw3.h"
