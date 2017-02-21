@@ -34,10 +34,10 @@ namespace gle
             GLState::cull_back_faces(true);
             glDepthFunc(GL_LEQUAL);
             
-            deferred_render_target.get_color_texture(0)->use(0);
-            deferred_render_target.get_color_texture(1)->use(1);
-            deferred_render_target.get_color_texture(2)->use(2);
-            deferred_render_target.get_depth_texture()->use(3);
+            deferred_render_target.bind_color_texture_for_reading(0, 0);
+            deferred_render_target.bind_color_texture_for_reading(1, 1);
+            deferred_render_target.bind_color_texture_for_reading(2, 2);
+            deferred_render_target.bind_depth_texture_for_reading(3);
             
             GLUniform::use(shader, "eyePosition", view_position);
             GLUniform::use(shader, "positionMap", 0);
@@ -115,7 +115,7 @@ namespace gle
         
         void shine(const glm::vec3& view_position, const glm::vec3& view_direction, const GLRenderTarget& deferred_render_target, const GLRenderTarget& shadow_render_target)
         {
-            shadow_render_target.get_depth_texture()->use(4);
+            shadow_render_target.bind_depth_texture_for_reading(4);
             GLUniform::use(shader, "shadowMap", 4);
             GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view(view_position, view_direction));
             GLUniform::use(shader, "lightType", 1);

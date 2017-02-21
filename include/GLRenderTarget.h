@@ -104,14 +104,14 @@ namespace gle
             }
         }
         
-        const std::shared_ptr<GLTexture> get_color_texture(int location) const
+        void bind_color_texture_for_reading(int layout_location, int texture_location) const
         {
-            return color_textures.at(location);
+            color_textures.at(layout_location)->use(texture_location);
         }
         
-        const std::shared_ptr<GLTexture> get_depth_texture() const
+        void bind_depth_texture_for_reading(int texture_location) const
         {
-            return depth_texture;
+            depth_texture->use(texture_location);
         }
         
     private:
