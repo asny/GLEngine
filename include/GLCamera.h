@@ -64,9 +64,6 @@ namespace gle {
         
         void draw(const GLScene& scene)
         {
-            light_pass_render_target.use();
-            light_pass_render_target.clear();
-            
             deferred_pass(scene);
             forward_pass(scene);
             post_effect_pass(scene);
@@ -92,13 +89,14 @@ namespace gle {
             geometry_pass_render_target.use();
             geometry_pass_render_target.clear();
             
-            // Do not blend
             glDisable(GL_BLEND);
             
-            // Draw the scene
             scene.draw(DEFERRED, position, view, projection);
             
             // Light pass
+            light_pass_render_target.use();
+            light_pass_render_target.clear();
+            
             scene.shine_light(position, direction, geometry_pass_render_target, light_pass_render_target);
         }
         
