@@ -25,10 +25,8 @@ namespace gle
         void apply(const GLRenderTarget& source_render_target)
         {
             source_render_target.bind_color_texture_for_reading(0, 0);
-            source_render_target.bind_depth_texture_for_reading(1);
             
             GLUniform::use(shader, "colorMap", 0);
-            GLUniform::use(shader, "depthMap", 1);
             
             // Bind vertex array and draw
             shader->use();
