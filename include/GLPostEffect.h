@@ -17,9 +17,9 @@ namespace gle
         std::shared_ptr<GLShader> shader;
         
     public:
-        GLPostEffect()
+        GLPostEffect(const std::string& vertex_shader, const std::string& fragment_shader)
         {
-            shader = GLShader::create_or_get("../GLEngine/shaders/post_effect_pass.vert",  "../GLEngine/shaders/post_effect_pass.frag");
+            shader = GLShader::create_or_get(vertex_shader, fragment_shader);
         }
         
         void apply(const GLRenderTarget& source_render_target)
@@ -76,9 +76,8 @@ namespace gle
     class GLFogEffect : GLPostEffect
     {
     public:
-        GLFogEffect()
+        GLFogEffect() : GLPostEffect("../GLEngine/shaders/fog_effect.vert",  "../GLEngine/shaders/fog_effect.frag")
         {
-            shader = GLShader::create_or_get("../GLEngine/shaders/fog_effect.vert",  "../GLEngine/shaders/fog_effect.frag");
             
         }
         

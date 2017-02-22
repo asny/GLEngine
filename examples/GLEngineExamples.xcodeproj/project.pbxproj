@@ -73,8 +73,6 @@
 		491B8E261E5CDA1900BE362A /* shadows */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = shadows; sourceTree = BUILT_PRODUCTS_DIR; };
 		491B8E361E5CDC7700BE362A /* hello_world */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hello_world; sourceTree = BUILT_PRODUCTS_DIR; };
 		491B8E421E5D798C00BE362A /* GLPostEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLPostEffect.h; path = ../include/GLPostEffect.h; sourceTree = "<group>"; };
-		491B8E431E5D7AAF00BE362A /* post_effect_pass.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = post_effect_pass.frag; path = ../shaders/post_effect_pass.frag; sourceTree = "<group>"; };
-		491B8E441E5D7AAF00BE362A /* post_effect_pass.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = post_effect_pass.vert; path = ../shaders/post_effect_pass.vert; sourceTree = "<group>"; };
 		491B8E451E5E0B3D00BE362A /* fog_effect.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = fog_effect.frag; path = ../shaders/fog_effect.frag; sourceTree = "<group>"; };
 		491B8E461E5E0B3D00BE362A /* fog_effect.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = fog_effect.vert; path = ../shaders/fog_effect.vert; sourceTree = "<group>"; };
 		4942D5B01E4F377100C4F61E /* GLRenderTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLRenderTarget.h; path = ../include/GLRenderTarget.h; sourceTree = "<group>"; };
@@ -153,8 +151,6 @@
 			children = (
 				491B8E451E5E0B3D00BE362A /* fog_effect.frag */,
 				491B8E461E5E0B3D00BE362A /* fog_effect.vert */,
-				491B8E431E5D7AAF00BE362A /* post_effect_pass.frag */,
-				491B8E441E5D7AAF00BE362A /* post_effect_pass.vert */,
 				49471A571E14591C006E8AD5 /* light_pass.frag */,
 				49471A581E14591C006E8AD5 /* light_pass.vert */,
 				49471A551E131AB9006E8AD5 /* color_material.frag */,
