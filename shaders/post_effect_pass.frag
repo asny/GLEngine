@@ -5,9 +5,9 @@ uniform sampler2D depthMap;
 
 in vec2 uv;
 
-out vec4 fragColour;
+layout (location = 0) out vec4 color;
 
 void main()
 {
-   	fragColour = texture(colorMap, uv).rgba;
+   	color = texture(colorMap, uv);
 }
