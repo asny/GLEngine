@@ -74,6 +74,9 @@
 		491B8E1E1E5CD8CD00BE362A /* shadows.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = shadows.cpp; path = GLEngineExamples/shadows.cpp; sourceTree = SOURCE_ROOT; };
 		491B8E261E5CDA1900BE362A /* shadows */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = shadows; sourceTree = BUILT_PRODUCTS_DIR; };
 		491B8E361E5CDC7700BE362A /* hello_world */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hello_world; sourceTree = BUILT_PRODUCTS_DIR; };
+		491B8E421E5D798C00BE362A /* GLPostEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLPostEffect.h; path = ../include/GLPostEffect.h; sourceTree = "<group>"; };
+		491B8E431E5D7AAF00BE362A /* post_effect_pass.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = post_effect_pass.frag; path = ../shaders/post_effect_pass.frag; sourceTree = "<group>"; };
+		491B8E441E5D7AAF00BE362A /* post_effect_pass.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = post_effect_pass.vert; path = ../shaders/post_effect_pass.vert; sourceTree = "<group>"; };
 		4942D5B01E4F377100C4F61E /* GLRenderTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLRenderTarget.h; path = ../include/GLRenderTarget.h; sourceTree = "<group>"; };
 		49471A541E131A30006E8AD5 /* GLColorMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLColorMaterial.h; path = ../include/materials/GLColorMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		49471A551E131AB9006E8AD5 /* color_material.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = color_material.frag; path = ../shaders/color_material.frag; sourceTree = "<group>"; };
@@ -128,6 +131,7 @@
 				4900D1861E0A72D000F92EBD /* GLVertexAttribute.h */,
 				497D00901E22D1E400DC549A /* GLState.h */,
 				4942D5B01E4F377100C4F61E /* GLRenderTarget.h */,
+				491B8E421E5D798C00BE362A /* GLPostEffect.h */,
 			);
 			name = GLEngine;
 			sourceTree = "<group>";
@@ -147,6 +151,8 @@
 		4900D18E1E0C57A600F92EBD /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				491B8E431E5D7AAF00BE362A /* post_effect_pass.frag */,
+				491B8E441E5D7AAF00BE362A /* post_effect_pass.vert */,
 				49471A571E14591C006E8AD5 /* light_pass.frag */,
 				49471A581E14591C006E8AD5 /* light_pass.vert */,
 				49471A551E131AB9006E8AD5 /* color_material.frag */,
