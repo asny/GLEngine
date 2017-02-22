@@ -55,8 +55,6 @@
 		4900D18A1E0B224700F92EBD /* GLTextureMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLTextureMaterial.h; path = ../include/materials/GLTextureMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4900D18B1E0B22DE00F92EBD /* GLSkyboxMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLSkyboxMaterial.h; path = ../include/materials/GLSkyboxMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4900D18F1E0C57BF00F92EBD /* flat.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = flat.geom; path = ../shaders/flat.geom; sourceTree = "<group>"; };
-		4900D1901E0C57BF00F92EBD /* gouraud.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = gouraud.frag; path = ../shaders/gouraud.frag; sourceTree = "<group>"; };
-		4900D1911E0C57BF00F92EBD /* gouraud.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = gouraud.vert; path = ../shaders/gouraud.vert; sourceTree = "<group>"; };
 		4900D1921E0C57BF00F92EBD /* particle.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = particle.geom; path = ../shaders/particle.geom; sourceTree = "<group>"; };
 		4900D1931E0C57BF00F92EBD /* phong.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = phong.frag; path = ../shaders/phong.frag; sourceTree = "<group>"; };
 		4900D1941E0C57BF00F92EBD /* phong.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = phong.vert; path = ../shaders/phong.vert; sourceTree = "<group>"; };
@@ -158,8 +156,6 @@
 				49471A551E131AB9006E8AD5 /* color_material.frag */,
 				49471A561E131AB9006E8AD5 /* color_material.vert */,
 				4900D18F1E0C57BF00F92EBD /* flat.geom */,
-				4900D1901E0C57BF00F92EBD /* gouraud.frag */,
-				4900D1911E0C57BF00F92EBD /* gouraud.vert */,
 				4900D1921E0C57BF00F92EBD /* particle.geom */,
 				4900D1931E0C57BF00F92EBD /* phong.frag */,
 				4900D1941E0C57BF00F92EBD /* phong.vert */,
@@ -513,6 +509,7 @@
 				491B8E2C1E5CDA1900BE362A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		491B8E3A1E5CDC7700BE362A /* Build configuration list for PBXNativeTarget "hello_world" */ = {
 			isa = XCConfigurationList;
@@ -521,6 +518,7 @@
 				491B8E3C1E5CDC7700BE362A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4954F2321E06EF8D005B5739 /* Build configuration list for PBXProject "GLEngineExamples" */ = {
 			isa = XCConfigurationList;
