@@ -21,7 +21,7 @@ namespace gle {
         glm::mat4 projection = glm::mat4(1.);
         
         GLRenderTarget geometry_pass_render_target, light_pass_render_target;
-        GLPostEffect post_effect;
+        std::shared_ptr<GLPostEffect> post_effect = nullptr;
         
     public:
         
@@ -64,16 +64,28 @@ namespace gle {
         
         void draw(const GLScene& scene)
         {
-            deferred_pass(scene);
-            forward_pass(scene);
-            post_effect_pass(scene);
+            auto render_target = post_effect ? light_pass_render_target : GLDefaultRenderTarget::get();
+            
+            deferred_pass(scene, render_target);
+            forward_pass(scene, render_target);
+            
+            if(post_effect)
+            {
+                post_effect_pass();
+            }
             
             check_gl_error();
         }
-    private:
-        void forward_pass(const GLScene& scene)
+        
+        void set_post_effect(std::shared_ptr<GLPostEffect> _post_effect)
         {
-            light_pass_render_target.use();
+            post_effect = _post_effect;
+        }
+        
+    private:
+        void forward_pass(const GLScene& scene, const GLDefaultRenderTarget& render_target)
+        {
+            render_target.use();
             
             // Set up default blending
             glEnable(GL_BLEND);
@@ -83,7 +95,7 @@ namespace gle {
             scene.draw(FORWARD, position, view, projection);
         }
         
-        void deferred_pass(const GLScene& scene)
+        void deferred_pass(const GLScene& scene, const GLDefaultRenderTarget& render_target)
         {
             // Geometry pass
             geometry_pass_render_target.use();
@@ -94,18 +106,18 @@ namespace gle {
             scene.draw(DEFERRED, position, view, projection);
             
             // Light pass
-            light_pass_render_target.use();
-            light_pass_render_target.clear();
+            render_target.use();
+            render_target.clear();
             
-            scene.shine_light(position, direction, geometry_pass_render_target, light_pass_render_target);
+            scene.shine_light(position, direction, geometry_pass_render_target, render_target);
         }
         
-        void post_effect_pass(const GLScene& scene)
+        void post_effect_pass()
         {
             GLDefaultRenderTarget::get().use();
             GLDefaultRenderTarget::get().clear();
             
-            post_effect.apply(light_pass_render_target);
+            post_effect->apply(light_pass_render_target);
         }
     };
 }

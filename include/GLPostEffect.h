@@ -22,7 +22,7 @@ namespace gle
             shader = GLShader::create_or_get(vertex_shader, fragment_shader);
         }
         
-        void apply(const GLRenderTarget& source_render_target)
+        virtual void apply(const GLRenderTarget& source_render_target)
         {
             source_render_target.bind_color_texture_for_reading(0, 0);
             
@@ -73,7 +73,7 @@ namespace gle
         }
     };
     
-    class GLFogEffect : GLPostEffect
+    class GLFogEffect : public GLPostEffect
     {
     public:
         GLFogEffect() : GLPostEffect("../GLEngine/shaders/fog_effect.vert",  "../GLEngine/shaders/fog_effect.frag")

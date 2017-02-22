@@ -83,7 +83,7 @@ namespace gle
         }
         
         void shine_light(const glm::vec3& view_position, const glm::vec3& view_direction,
-                         const GLRenderTarget& source_render_target, const GLRenderTarget& render_target) const
+                         const GLRenderTarget& source_render_target, const GLDefaultRenderTarget& render_target) const
         {
             // Set up blending
             glEnable(GL_BLEND);
