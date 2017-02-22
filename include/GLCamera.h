@@ -6,6 +6,7 @@
 #pragma once
 
 #include "GLScene.h"
+#include "GLPostEffect.h"
 
 namespace gle {
     
@@ -19,7 +20,8 @@ namespace gle {
         glm::mat4 view = glm::mat4(1.);
         glm::mat4 projection = glm::mat4(1.);
         
-        GLRenderTarget deferred_render_target;
+        GLRenderTarget geometry_pass_render_target, light_pass_render_target;
+        GLPostEffect post_effect;
         
     public:
         
@@ -34,7 +36,8 @@ namespace gle {
         void set_screen_size(int width, int height)
         {
             GLDefaultRenderTarget::get().resize(width, height);
-            deferred_render_target.resize(width, height, 3, true);
+            geometry_pass_render_target.resize(width, height, 3, true);
+            light_pass_render_target.resize(width, height, 1, true);
             projection = glm::perspective(45.f, width/float(height), 0.1f, 100.f);
         }
         
@@ -61,19 +64,19 @@ namespace gle {
         
         void draw(const GLScene& scene)
         {
-            GLDefaultRenderTarget::get().use();
-            GLDefaultRenderTarget::get().clear();
+            light_pass_render_target.use();
+            light_pass_render_target.clear();
             
             deferred_pass(scene);
             forward_pass(scene);
+            post_effect_pass(scene);
             
             check_gl_error();
         }
     private:
         void forward_pass(const GLScene& scene)
         {
-            // Use default render target
-            GLDefaultRenderTarget::get().use();
+            light_pass_render_target.use();
             
             // Set up default blending
             glEnable(GL_BLEND);
@@ -86,9 +89,8 @@ namespace gle {
         void deferred_pass(const GLScene& scene)
         {
             // Geometry pass
-            // Use deferred render target
-            deferred_render_target.use();
-            deferred_render_target.clear();
+            geometry_pass_render_target.use();
+            geometry_pass_render_target.clear();
             
             // Do not blend
             glDisable(GL_BLEND);
@@ -97,7 +99,15 @@ namespace gle {
             scene.draw(DEFERRED, position, view, projection);
             
             // Light pass
-            scene.shine_light(position, direction, deferred_render_target);
+            scene.shine_light(position, direction, geometry_pass_render_target, light_pass_render_target);
+        }
+        
+        void post_effect_pass(const GLScene& scene)
+        {
+            GLDefaultRenderTarget::get().use();
+            GLDefaultRenderTarget::get().clear();
+            
+            post_effect.apply(light_pass_render_target);
         }
     };
 }

@@ -6,12 +6,12 @@ uniform sampler2D normalMap;
 uniform sampler2D depthMap;
 uniform sampler2D shadowMap;
 
+layout (location = 0) out vec4 color;
+
 uniform vec3 eyePosition;
 uniform mat4 shadowMVP;
 
 in vec2 uv;
-
-out vec4 fragColour;
 
 struct BaseLight
 {
@@ -142,7 +142,7 @@ void main()
         discard;
     
    	vec3 pos = texture(positionMap, uv).xyz;
-   	vec3 color = texture(colorMap, uv).xyz;
+   	vec3 col = texture(colorMap, uv).xyz;
    	vec3 normal = normalize(texture(normalMap, uv).xyz);
     
     vec4 light;
@@ -155,6 +155,6 @@ void main()
         light = calculate_point_light(pos, normal);
     }
     
-    fragColour = vec4(color, 1.0) * light;
+    color = vec4(col, 1.0) * light;
     gl_FragDepth = depth;
 }

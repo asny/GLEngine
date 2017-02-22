@@ -4,8 +4,8 @@ uniform samplerCube texture0;
 
 in vec3 coords;
 
-out vec4 fragColour;
+layout (location = 0) out vec4 color;
 
 void main() {
-    fragColour = texture(texture0, coords);
+    color = texture(texture0, coords);
 }

@@ -9,10 +9,5 @@ out vec4 fragColour;
 
 void main()
 {
-    float depth = texture(depthMap, uv).r;
-    if(depth == 1.)
-        discard;
-    
    	fragColour = texture(colorMap, uv).rgba;
-    gl_FragDepth = depth;
 }
