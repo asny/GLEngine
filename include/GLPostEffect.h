@@ -72,4 +72,23 @@ namespace gle
             glDrawArrays(GL_TRIANGLES, 0, 3);
         }
     };
+    
+    class GLFogEffect : GLPostEffect
+    {
+    public:
+        GLFogEffect()
+        {
+            shader = GLShader::create_or_get("../GLEngine/shaders/fog_effect.vert",  "../GLEngine/shaders/fog_effect.frag");
+            
+        }
+        
+        void apply(const GLRenderTarget& source_render_target)
+        {
+            source_render_target.bind_depth_texture_for_reading(1);
+            
+            GLUniform::use(shader, "depthMap", 1);
+            
+            GLPostEffect::apply(source_render_target);
+        }
+    };
 }
