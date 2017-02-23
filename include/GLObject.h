@@ -25,38 +25,6 @@ namespace gle
         std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>> vec2_vertex_attributes;
         std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>> vec3_vertex_attributes;
         
-        template<class T>
-        static void update_attribute(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLVertexAttribute<T>> attribute)
-        {
-            if(attribute->is_up_to_date())
-                return;
-            if(geometry->get_no_faces() > 0)
-            {
-                for(auto face = geometry->faces_begin(); face != geometry->faces_end(); face = face->next())
-                {
-                    attribute->add_data_at(*face->v1());
-                    attribute->add_data_at(*face->v2());
-                    attribute->add_data_at(*face->v3());
-                }
-            }
-            else if(geometry->get_no_edges() > 0)
-            {
-                for(auto edge = geometry->edges_begin(); edge != geometry->edges_end(); edge = edge->next())
-                {
-                    attribute->add_data_at(*edge->v1());
-                    attribute->add_data_at(*edge->v2());
-                }
-            }
-            else if(geometry->get_no_vertices() > 0)
-            {
-                for(auto vertex = geometry->vertices_begin(); vertex != geometry->vertices_end(); vertex = vertex->next())
-                {
-                    attribute->add_data_at(*vertex);
-                }
-            }
-            attribute->send_data();
-        }
-        
     public:
         
         GLObject(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLMaterial> material) : material(material), geometry(geometry)
@@ -142,6 +110,39 @@ namespace gle
             }
             glBindVertexArray(array_id);
             glDrawArrays(GL_TRIANGLES, 0, 6);
+        }
+        
+    private:
+        template<class T>
+        static void update_attribute(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLVertexAttribute<T>> attribute)
+        {
+            if(attribute->is_up_to_date())
+                return;
+            if(geometry->get_no_faces() > 0)
+            {
+                for(auto face = geometry->faces_begin(); face != geometry->faces_end(); face = face->next())
+                {
+                    attribute->add_data_at(*face->v1());
+                    attribute->add_data_at(*face->v2());
+                    attribute->add_data_at(*face->v3());
+                }
+            }
+            else if(geometry->get_no_edges() > 0)
+            {
+                for(auto edge = geometry->edges_begin(); edge != geometry->edges_end(); edge = edge->next())
+                {
+                    attribute->add_data_at(*edge->v1());
+                    attribute->add_data_at(*edge->v2());
+                }
+            }
+            else if(geometry->get_no_vertices() > 0)
+            {
+                for(auto vertex = geometry->vertices_begin(); vertex != geometry->vertices_end(); vertex = vertex->next())
+                {
+                    attribute->add_data_at(*vertex);
+                }
+            }
+            attribute->send_data();
         }
     };
 }
