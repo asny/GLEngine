@@ -15,6 +15,9 @@ namespace gle {
      */
     class GLCamera
     {
+        const float z_near = 0.1f;
+        const float z_far = 100.f;
+        
         glm::vec3 position = glm::vec3(0.);
         glm::vec3 direction = glm::vec3(0., 0., -1.);
         glm::mat4 view = glm::mat4(1.);
@@ -38,7 +41,7 @@ namespace gle {
             GLDefaultRenderTarget::get().resize(width, height);
             geometry_pass_render_target.resize(width, height, 3, true);
             light_pass_render_target.resize(width, height, 1, true);
-            projection = glm::perspective(45.f, width/float(height), 0.1f, 100.f);
+            projection = glm::perspective(45.f, width/float(height), z_near, z_far);
         }
         
         /**
@@ -117,7 +120,7 @@ namespace gle {
             GLDefaultRenderTarget::get().use();
             GLDefaultRenderTarget::get().clear();
             
-            post_effect->apply(light_pass_render_target);
+            post_effect->apply(light_pass_render_target, z_near, z_far);
         }
     };
 }

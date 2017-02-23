@@ -22,7 +22,7 @@ namespace gle
             shader = GLShader::create_or_get(vertex_shader, fragment_shader);
         }
         
-        virtual void apply(const GLRenderTarget& source_render_target)
+        virtual void apply(const GLRenderTarget& source_render_target, float z_near, float z_far)
         {
             source_render_target.bind_color_texture_for_reading(0, 0);
             
@@ -85,7 +85,7 @@ namespace gle
             
         }
         
-        void apply(const GLRenderTarget& source_render_target)
+        void apply(const GLRenderTarget& source_render_target, float z_near, float z_far)
         {
             source_render_target.bind_depth_texture_for_reading(1);
             noise_texture->use(2);
@@ -93,8 +93,10 @@ namespace gle
             GLUniform::use(shader, "depthMap", 1);
             GLUniform::use(shader, "noiseTexture", 2);
             GLUniform::use(shader, "time", *time);
+            GLUniform::use(shader, "zNear", z_near);
+            GLUniform::use(shader, "zFar", z_far);
             
-            GLPostEffect::apply(source_render_target);
+            GLPostEffect::apply(source_render_target, z_near, z_far);
         }
     };
 }

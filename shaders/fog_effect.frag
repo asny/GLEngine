@@ -4,6 +4,8 @@ uniform sampler2D colorMap;
 uniform sampler2D depthMap;
 uniform sampler2D noiseTexture;
 uniform float time;
+uniform float zNear;
+uniform float zFar;
 
 in vec2 uv;
 
@@ -15,8 +17,6 @@ const float min_visibility = 0.05;
 
 float linear_depth(float depth)
 {
-    float zNear = 0.1f;
-    float zFar = 100.f;
     depth = 2.0 * depth - 1.0;
     return 2.0 * zNear * zFar / (zFar + zNear - depth * (zFar - zNear));
 }
