@@ -6,6 +6,7 @@
 #pragma once
 
 #include "Mesh.h"
+#include "MeshCreator.h"
 #include "GLMaterial.h"
 #include "GLVertexAttribute.h"
 #include "GLUniform.h"
@@ -25,7 +26,7 @@ namespace gle
         std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>> vec3_vertex_attributes;
         
         template<class T>
-        void update_attribute(std::shared_ptr<GLVertexAttribute<T>> attribute) const
+        static void update_attribute(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLVertexAttribute<T>> attribute)
         {
             if(attribute->is_up_to_date())
                 return;
@@ -101,12 +102,12 @@ namespace gle
             // Update buffers if necessary
             for (auto glAttribute : vec2_vertex_attributes)
             {
-                update_attribute(glAttribute);
+                update_attribute(geometry, glAttribute);
             }
             
             for (auto glAttribute : vec3_vertex_attributes)
             {
-                update_attribute(glAttribute);
+                update_attribute(geometry, glAttribute);
             }
             
             // Use material specific uniforms and states
@@ -129,32 +130,18 @@ namespace gle
                 glBindVertexArray(array_id);
                 
                 // Create mesh
-                auto mesh = std::make_shared<mesh::Mesh>();
-                mesh::VertexID* v1 = mesh->create_vertex(glm::vec3(-3., -1., 0.));
-                mesh::VertexID* v2 = mesh->create_vertex(glm::vec3(3., -1., 0.));
-                mesh::VertexID* v3 = mesh->create_vertex(glm::vec3(0., 2., 0.));
-                mesh->create_face(v1, v3, v2);
-                
                 auto uv_coordinates = std::make_shared<mesh::Attribute<mesh::VertexID, glm::vec2>>();
-                uv_coordinates->at(v1) = glm::vec2(-1., 0.);
-                uv_coordinates->at(v2) = glm::vec2(2., 0.);
-                uv_coordinates->at(v3) = glm::vec2(0.5, 1.5);
+                auto mesh = MeshCreator::create_quad(uv_coordinates);
                 
                 // Create attribute and send data.
                 auto position = shader->create_attribute("position", mesh->position());
-                position->add_data_at(*v1);
-                position->add_data_at(*v2);
-                position->add_data_at(*v3);
-                position->send_data();
+                update_attribute(mesh, position);
                 
                 auto uv = shader->create_attribute("uv_coordinates", uv_coordinates);
-                uv->add_data_at(*v1);
-                uv->add_data_at(*v2);
-                uv->add_data_at(*v3);
-                uv->send_data();
+                update_attribute(mesh, uv);
             }
             glBindVertexArray(array_id);
-            glDrawArrays(GL_TRIANGLES, 0, 3);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
         }
     };
 }
