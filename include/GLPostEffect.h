@@ -75,8 +75,12 @@ namespace gle
     
     class GLFogEffect : public GLPostEffect
     {
+        std::shared_ptr<GLTexture> noise_texture;
+        std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> uv_coordinates;
+        std::shared_ptr<float> time;
     public:
-        GLFogEffect() : GLPostEffect("../GLEngine/shaders/fog_effect.vert",  "../GLEngine/shaders/fog_effect.frag")
+        GLFogEffect(std::shared_ptr<GLTexture> _noise_texture, std::shared_ptr<float> _time)
+            : GLPostEffect("../GLEngine/shaders/fog_effect.vert",  "../GLEngine/shaders/fog_effect.frag"), time(_time), noise_texture(_noise_texture)
         {
             
         }
@@ -84,8 +88,11 @@ namespace gle
         void apply(const GLRenderTarget& source_render_target)
         {
             source_render_target.bind_depth_texture_for_reading(1);
+            noise_texture->use(2);
             
             GLUniform::use(shader, "depthMap", 1);
+            GLUniform::use(shader, "noiseTexture", 2);
+            GLUniform::use(shader, "time", *time);
             
             GLPostEffect::apply(source_render_target);
         }
