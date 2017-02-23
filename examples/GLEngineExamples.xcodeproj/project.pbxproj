@@ -55,8 +55,6 @@
 		4900D18A1E0B224700F92EBD /* GLTextureMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLTextureMaterial.h; path = ../include/materials/GLTextureMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4900D18B1E0B22DE00F92EBD /* GLSkyboxMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLSkyboxMaterial.h; path = ../include/materials/GLSkyboxMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4900D18F1E0C57BF00F92EBD /* flat.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = flat.geom; path = ../shaders/flat.geom; sourceTree = "<group>"; };
-		4900D1901E0C57BF00F92EBD /* gouraud.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = gouraud.frag; path = ../shaders/gouraud.frag; sourceTree = "<group>"; };
-		4900D1911E0C57BF00F92EBD /* gouraud.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = gouraud.vert; path = ../shaders/gouraud.vert; sourceTree = "<group>"; };
 		4900D1921E0C57BF00F92EBD /* particle.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = particle.geom; path = ../shaders/particle.geom; sourceTree = "<group>"; };
 		4900D1931E0C57BF00F92EBD /* phong.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = phong.frag; path = ../shaders/phong.frag; sourceTree = "<group>"; };
 		4900D1941E0C57BF00F92EBD /* phong.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = phong.vert; path = ../shaders/phong.vert; sourceTree = "<group>"; };
@@ -74,6 +72,10 @@
 		491B8E1E1E5CD8CD00BE362A /* shadows.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = shadows.cpp; path = GLEngineExamples/shadows.cpp; sourceTree = SOURCE_ROOT; };
 		491B8E261E5CDA1900BE362A /* shadows */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = shadows; sourceTree = BUILT_PRODUCTS_DIR; };
 		491B8E361E5CDC7700BE362A /* hello_world */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hello_world; sourceTree = BUILT_PRODUCTS_DIR; };
+		491B8E421E5D798C00BE362A /* GLPostEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLPostEffect.h; path = ../include/GLPostEffect.h; sourceTree = "<group>"; };
+		491B8E451E5E0B3D00BE362A /* fog_effect.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = fog_effect.frag; path = ../shaders/fog_effect.frag; sourceTree = "<group>"; };
+		491B8E461E5E0B3D00BE362A /* fog_effect.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = fog_effect.vert; path = ../shaders/fog_effect.vert; sourceTree = "<group>"; };
+		493E30911E5F5DA4001924E5 /* GLFogEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLFogEffect.h; path = ../include/effects/GLFogEffect.h; sourceTree = "<group>"; };
 		4942D5B01E4F377100C4F61E /* GLRenderTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLRenderTarget.h; path = ../include/GLRenderTarget.h; sourceTree = "<group>"; };
 		49471A541E131A30006E8AD5 /* GLColorMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLColorMaterial.h; path = ../include/materials/GLColorMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		49471A551E131AB9006E8AD5 /* color_material.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = color_material.frag; path = ../shaders/color_material.frag; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				4900D1861E0A72D000F92EBD /* GLVertexAttribute.h */,
 				497D00901E22D1E400DC549A /* GLState.h */,
 				4942D5B01E4F377100C4F61E /* GLRenderTarget.h */,
+				491B8E421E5D798C00BE362A /* GLPostEffect.h */,
 			);
 			name = GLEngine;
 			sourceTree = "<group>";
@@ -147,13 +150,13 @@
 		4900D18E1E0C57A600F92EBD /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				491B8E451E5E0B3D00BE362A /* fog_effect.frag */,
+				491B8E461E5E0B3D00BE362A /* fog_effect.vert */,
 				49471A571E14591C006E8AD5 /* light_pass.frag */,
 				49471A581E14591C006E8AD5 /* light_pass.vert */,
 				49471A551E131AB9006E8AD5 /* color_material.frag */,
 				49471A561E131AB9006E8AD5 /* color_material.vert */,
 				4900D18F1E0C57BF00F92EBD /* flat.geom */,
-				4900D1901E0C57BF00F92EBD /* gouraud.frag */,
-				4900D1911E0C57BF00F92EBD /* gouraud.vert */,
 				4900D1921E0C57BF00F92EBD /* particle.geom */,
 				4900D1931E0C57BF00F92EBD /* phong.frag */,
 				4900D1941E0C57BF00F92EBD /* phong.vert */,
@@ -178,6 +181,14 @@
 			name = Mesh;
 			sourceTree = "<group>";
 		};
+		493E30901E5F5D5F001924E5 /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				493E30911E5F5DA4001924E5 /* GLFogEffect.h */,
+			);
+			name = Effects;
+			sourceTree = "<group>";
+		};
 		49471A591E152619006E8AD5 /* Lights */ = {
 			isa = PBXGroup;
 			children = (
@@ -193,6 +204,7 @@
 				4900D19A1E0DC4DE00F92EBD /* Mesh */,
 				4900D17D1E0A72A600F92EBD /* GLEngine */,
 				4900D18E1E0C57A600F92EBD /* Shaders */,
+				493E30901E5F5D5F001924E5 /* Effects */,
 				49471A591E152619006E8AD5 /* Lights */,
 				4900D1871E0AD83800F92EBD /* Materials */,
 				4954F2391E06EF8D005B5739 /* GLEngineExamples */,
@@ -507,6 +519,7 @@
 				491B8E2C1E5CDA1900BE362A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		491B8E3A1E5CDC7700BE362A /* Build configuration list for PBXNativeTarget "hello_world" */ = {
 			isa = XCConfigurationList;
@@ -515,6 +528,7 @@
 				491B8E3C1E5CDC7700BE362A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4954F2321E06EF8D005B5739 /* Build configuration list for PBXProject "GLEngineExamples" */ = {
 			isa = XCConfigurationList;

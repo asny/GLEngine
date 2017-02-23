@@ -26,7 +26,7 @@ namespace gle
             shader = GLShader::create_or_get("../GLEngine/shaders/light_pass.vert",  "../GLEngine/shaders/light_pass.frag");
         }
         
-        void shine(const glm::vec3& view_position, const GLRenderTarget& deferred_render_target)
+        void shine(const glm::vec3& view_position, const GLRenderTarget& source_render_target)
         {
             // Do not write or test with the depth buffer
             GLState::depth_write(true);
@@ -34,10 +34,10 @@ namespace gle
             GLState::cull_back_faces(true);
             glDepthFunc(GL_LEQUAL);
             
-            deferred_render_target.bind_color_texture_for_reading(0, 0);
-            deferred_render_target.bind_color_texture_for_reading(1, 1);
-            deferred_render_target.bind_color_texture_for_reading(2, 2);
-            deferred_render_target.bind_depth_texture_for_reading(3);
+            source_render_target.bind_color_texture_for_reading(0, 0);
+            source_render_target.bind_color_texture_for_reading(1, 1);
+            source_render_target.bind_color_texture_for_reading(2, 2);
+            source_render_target.bind_depth_texture_for_reading(3);
             
             GLUniform::use(shader, "eyePosition", view_position);
             GLUniform::use(shader, "positionMap", 0);
@@ -45,48 +45,7 @@ namespace gle
             GLUniform::use(shader, "normalMap", 2);
             GLUniform::use(shader, "depthMap", 3);
             
-            // Bind vertex array and draw
-            shader->use();
-            draw_full_screen_quad();
-        }
-        
-    private:
-        void draw_full_screen_quad()
-        {
-            static GLuint array_id = NULL_LOCATION;
-            if(array_id == NULL_LOCATION)
-            {
-                // Generate and bind array
-                glGenVertexArrays(1, &array_id);
-                glBindVertexArray(array_id);
-                
-                // Create mesh
-                auto mesh = std::make_shared<mesh::Mesh>();
-                mesh::VertexID* v1 = mesh->create_vertex(glm::vec3(-3., -1., 0.));
-                mesh::VertexID* v2 = mesh->create_vertex(glm::vec3(3., -1., 0.));
-                mesh::VertexID* v3 = mesh->create_vertex(glm::vec3(0., 2., 0.));
-                mesh->create_face(v1, v3, v2);
-                
-                auto uv_coordinates = std::make_shared<mesh::Attribute<mesh::VertexID, glm::vec2>>();
-                uv_coordinates->at(v1) = glm::vec2(-1., 0.);
-                uv_coordinates->at(v2) = glm::vec2(2., 0.);
-                uv_coordinates->at(v3) = glm::vec2(0.5, 1.5);
-                
-                // Create attribute and send data.
-                auto position = shader->create_attribute("position", mesh->position());
-                position->add_data_at(*v1);
-                position->add_data_at(*v2);
-                position->add_data_at(*v3);
-                position->send_data();
-                
-                auto uv = shader->create_attribute("uv_coordinates", uv_coordinates);
-                uv->add_data_at(*v1);
-                uv->add_data_at(*v2);
-                uv->add_data_at(*v3);
-                uv->send_data();
-            }
-            glBindVertexArray(array_id);
-            glDrawArrays(GL_TRIANGLES, 0, 3);
+            GLObject::draw_full_screen_quad(shader);
         }
     };
     
@@ -113,7 +72,7 @@ namespace gle
             return glm::ortho<float>(-10,10,-10,10,-10,20);
         }
         
-        void shine(const glm::vec3& view_position, const glm::vec3& view_direction, const GLRenderTarget& deferred_render_target, const GLRenderTarget& shadow_render_target)
+        void shine(const glm::vec3& view_position, const glm::vec3& view_direction, const GLRenderTarget& source_render_target, const GLRenderTarget& shadow_render_target)
         {
             shadow_render_target.bind_depth_texture_for_reading(4);
             GLUniform::use(shader, "shadowMap", 4);
@@ -124,7 +83,7 @@ namespace gle
             GLUniform::use(shader, "directionalLight.base.ambientIntensity", 0.2f);
             GLUniform::use(shader, "directionalLight.base.diffuseIntensity", 0.5f);
             
-            GLLight::shine(view_position, deferred_render_target);
+            GLLight::shine(view_position, source_render_target);
         }
     };
     
@@ -167,7 +126,7 @@ namespace gle
             return glm::perspective<float>(45.0f, 1.0f, 1.0f, 50.0f);
         }
         
-        void shine(const glm::vec3& view_position, const GLRenderTarget& deferred_render_target)
+        void shine(const glm::vec3& view_position, const GLRenderTarget& source_render_target)
         {
             GLUniform::use(shader, "lightType", 2);
             GLUniform::use(shader, "pointLight.position", *position);
@@ -178,7 +137,7 @@ namespace gle
             GLUniform::use(shader, "pointLight.attenuation.linear", 0.01f);
             GLUniform::use(shader, "pointLight.attenuation.exp", 0.001f);
             
-            GLLight::shine(view_position, deferred_render_target);
+            GLLight::shine(view_position, source_render_target);
         }
     };
 }

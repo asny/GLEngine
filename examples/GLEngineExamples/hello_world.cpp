@@ -7,6 +7,7 @@
 #include "MeshCreator.h"
 #include "materials/GLFlatColorMaterial.h"
 #include "materials/GLColorMaterial.h"
+#include "materials/GLStandardMaterial.h"
 #include "gtx/rotate_vector.hpp"
 
 #define GLFW_INCLUDE_NONE
@@ -66,10 +67,11 @@ void create_cubes(GLScene& root)
 {
     auto flat_material = make_shared<GLFlatColorMaterial>(vec3(0.5, 0.1, 0.7));
     auto color_material = make_shared<GLColorMaterial>(vec3(0.5, 0.1, 0.7));
+    auto standard_material = make_shared<GLStandardMaterial>(vec3(0.2, 0.2, 0.2), vec3(0.5, 0.1, 0.7), vec3(0.5, 0.1, 0.7), 1.);
     
     create_cube(root, vec3(-2., 2., 0.), color_material);
-    create_cube(root, vec3(-2., -2., 0.), flat_material);
-    create_cube(root, vec3(2., 2., 0.), flat_material);
+    create_cube(root, vec3(-2., -2., 0.), standard_material);
+    create_cube(root, vec3(2., 2., 0.), standard_material);
     create_cube(root, vec3(2., -2., 0.), color_material);
 }
 

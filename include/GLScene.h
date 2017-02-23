@@ -83,7 +83,7 @@ namespace gle
         }
         
         void shine_light(const glm::vec3& view_position, const glm::vec3& view_direction,
-                         const GLRenderTarget& deferred_render_target) const
+                         const GLRenderTarget& source_render_target, const GLDefaultRenderTarget& render_target) const
         {
             // Set up blending
             glEnable(GL_BLEND);
@@ -92,8 +92,8 @@ namespace gle
             for(auto light : point_lights)
             {
                 // Shine the light
-                GLDefaultRenderTarget::get().use();
-                light->shine(view_position, deferred_render_target);
+                render_target.use();
+                light->shine(view_position, source_render_target);
             }
             
             for(auto light : directional_lights)
@@ -104,8 +104,8 @@ namespace gle
                 draw(DEFERRED, view_position, light->get_view(view_position, view_direction), light->get_projection());
                 
                 // Shine the light
-                GLDefaultRenderTarget::get().use();
-                light->shine(view_position, view_direction, deferred_render_target, shadow_render_target);
+                render_target.use();
+                light->shine(view_position, view_direction, source_render_target, shadow_render_target);
             }
         }
     };
