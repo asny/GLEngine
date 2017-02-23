@@ -13,10 +13,14 @@ namespace gle
     {
         std::shared_ptr<GLTexture> noise_texture;
         std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> uv_coordinates;
-        std::shared_ptr<float> time;
     public:
-        GLFogEffect(std::shared_ptr<GLTexture> _noise_texture, std::shared_ptr<float> _time)
-        : GLPostEffect("../GLEngine/shaders/fog_effect.vert",  "../GLEngine/shaders/fog_effect.frag"), time(_time), noise_texture(_noise_texture)
+        glm::vec3 color = glm::vec3(0.8, 0.8, 0.8);
+        float density = 0.2;
+        float min_visibility = 0.05;
+        float time = 0.f;
+        
+        GLFogEffect(std::shared_ptr<GLTexture> _noise_texture)
+        : GLPostEffect("../GLEngine/shaders/fog_effect.vert",  "../GLEngine/shaders/fog_effect.frag"), noise_texture(_noise_texture)
         {
             
         }
@@ -28,7 +32,12 @@ namespace gle
             
             GLUniform::use(shader, "depthMap", 1);
             GLUniform::use(shader, "noiseTexture", 2);
-            GLUniform::use(shader, "time", *time);
+            
+            GLUniform::use(shader, "fogColor", color);
+            GLUniform::use(shader, "fogDensity", density);
+            GLUniform::use(shader, "minVisibility", min_visibility);
+            GLUniform::use(shader, "time", time);
+            
             GLUniform::use(shader, "zNear", z_near);
             GLUniform::use(shader, "zFar", z_far);
             

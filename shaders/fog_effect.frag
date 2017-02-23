@@ -3,17 +3,17 @@
 uniform sampler2D colorMap;
 uniform sampler2D depthMap;
 uniform sampler2D noiseTexture;
+
 uniform float time;
+uniform float fogDensity;
+uniform vec3 fogColor;
+uniform float minVisibility;
 uniform float zNear;
 uniform float zFar;
 
 in vec2 uv;
 
 layout (location = 0) out vec4 color;
-
-const vec3 fog_color = vec3(0.8, 0.8, 0.8);
-const float fog_density = 0.2;
-const float min_visibility = 0.05;
 
 float linear_depth(float depth)
 {
@@ -28,9 +28,9 @@ void main()
     float dist = linear_depth(depth);
     float noise = texture(noiseTexture, uv).r;
     
-    float x = dist * fog_density + 0.15 * noise * cos(time + noise * 3.14f);
+    float x = dist * fogDensity + 0.15 * noise * cos(time + noise * 3.14f);
     float factor = 1.0 / exp(x * x);
-    factor = clamp( factor, min_visibility, 1.0 );
+    factor = clamp( factor, minVisibility, 1.0 );
     
-    color = vec4(mix(fog_color, light_color, factor), 1.);
+    color = vec4(mix(fogColor, light_color, factor), 1.);
 }
