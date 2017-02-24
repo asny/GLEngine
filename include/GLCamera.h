@@ -54,17 +54,6 @@ namespace gle {
             view = lookAt(position, position + direction, glm::vec3(0., 1., 0.));
         }
         
-        void wireframe(bool on)
-        {
-            if(on)
-            {
-                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            }
-            else {
-                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            }
-        }
-        
         void draw(const GLScene& scene)
         {
             auto render_target = post_effect ? light_pass_render_target : GLDefaultRenderTarget::get();
