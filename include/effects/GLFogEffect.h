@@ -12,7 +12,6 @@ namespace gle
     class GLFogEffect : public GLPostEffect
     {
         std::shared_ptr<GLTexture> noise_texture;
-        std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> uv_coordinates;
     public:
         glm::vec3 color = glm::vec3(0.8, 0.8, 0.8);
         float density = 0.2;
@@ -20,7 +19,7 @@ namespace gle
         float time = 0.f;
         
         GLFogEffect(std::shared_ptr<GLTexture> _noise_texture)
-        : GLPostEffect("../GLEngine/shaders/fog_effect.vert",  "../GLEngine/shaders/fog_effect.frag"), noise_texture(_noise_texture)
+        : GLPostEffect("../GLEngine/shaders/effect.vert",  "../GLEngine/shaders/fog_effect.frag"), noise_texture(_noise_texture)
         {
             
         }
