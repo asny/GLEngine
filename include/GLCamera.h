@@ -109,7 +109,7 @@ namespace gle {
             GLDefaultRenderTarget::get().use();
             GLDefaultRenderTarget::get().clear();
             
-            post_effect->apply(light_pass_render_target, z_near, z_far);
+            post_effect->apply(light_pass_render_target, geometry_pass_render_target, z_near, z_far);
         }
     };
 }
