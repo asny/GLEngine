@@ -23,10 +23,10 @@ namespace gle
             
         }
         
-        void apply(const GLRenderTarget& source_render_target1, const GLRenderTarget& source_render_target2, float z_near, float z_far)
+        void apply(const GLRenderTarget& source_render_target, float z_near, float z_far)
         {
-            noise_texture->use(4);
-            GLUniform::use(shader, "noiseTexture", 4);
+            noise_texture->use(3);
+            GLUniform::use(shader, "noiseTexture", 3);
             
             GLUniform::use(shader, "fogColor", color);
             GLUniform::use(shader, "fogDensity", density);
@@ -36,7 +36,7 @@ namespace gle
             GLUniform::use(shader, "zNear", z_near);
             GLUniform::use(shader, "zFar", z_far);
             
-            GLPostEffect::apply(source_render_target1, source_render_target2, z_near, z_far);
+            GLPostEffect::apply(source_render_target, z_near, z_far);
         }
     };
 }

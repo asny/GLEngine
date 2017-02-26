@@ -22,18 +22,18 @@ namespace gle
             shader = GLShader::create_or_get(vertex_shader, fragment_shader);
         }
         
-        virtual void apply(const GLRenderTarget& source_render_target1, const GLRenderTarget& source_render_target2, float z_near, float z_far)
+        virtual void apply(const GLRenderTarget& source_render_target, float z_near, float z_far)
         {
             GLState::depth_write(false);
             GLState::depth_test(false);
             
-            source_render_target2.bind_color_texture_for_reading(1, 1);
-            source_render_target2.bind_color_texture_for_reading(2, 2);
-            source_render_target2.bind_depth_texture_for_reading(3);
+            source_render_target.bind_color_texture_for_reading(1, 0);
+            source_render_target.bind_color_texture_for_reading(2, 1);
+            source_render_target.bind_depth_texture_for_reading(2);
             
-            GLUniform::use(shader, "positionMap", 1);
-            GLUniform::use(shader, "normalMap", 2);
-            GLUniform::use(shader, "depthMap", 3);
+            GLUniform::use(shader, "positionMap", 0);
+            GLUniform::use(shader, "normalMap", 1);
+            GLUniform::use(shader, "depthMap", 2);
             
             GLObject::draw_full_screen_quad(shader);
         }

@@ -21,15 +21,15 @@ namespace gle
             create_noise_texture();
         }
         
-        void apply(const GLRenderTarget& source_render_target1, const GLRenderTarget& source_render_target2, float z_near, float z_far)
+        void apply(const GLRenderTarget& source_render_target, float z_near, float z_far)
         {
-            sample_texture->use(4);
-            noise_texture->use(5);
+            sample_texture->use(3);
+            noise_texture->use(4);
             
-            GLUniform::use(shader, "sampleTexture", 4);
-            GLUniform::use(shader, "noiseTexture", 5);
+            GLUniform::use(shader, "sampleTexture", 3);
+            GLUniform::use(shader, "noiseTexture", 4);
             
-            GLPostEffect::apply(source_render_target1, source_render_target2, z_near, z_far);
+            GLPostEffect::apply(source_render_target, z_near, z_far);
         }
         
     private:

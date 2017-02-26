@@ -23,7 +23,7 @@ namespace gle {
         glm::mat4 view = glm::mat4(1.);
         glm::mat4 projection = glm::mat4(1.);
         
-        GLRenderTarget geometry_pass_render_target, light_pass_render_target;
+        GLRenderTarget geometry_pass_render_target;
         std::shared_ptr<GLPostEffect> post_effect = nullptr;
         
     public:
@@ -40,7 +40,6 @@ namespace gle {
         {
             GLDefaultRenderTarget::get().resize(width, height);
             geometry_pass_render_target.resize(width, height, 3, true);
-            light_pass_render_target.resize(width, height, 1, true);
             projection = glm::perspective(45.f, width/float(height), z_near, z_far);
         }
         
@@ -109,7 +108,7 @@ namespace gle {
             glEnable(GL_BLEND);
             glBlendFunc (GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
             
-            post_effect->apply(light_pass_render_target, geometry_pass_render_target, z_near, z_far);
+            post_effect->apply(geometry_pass_render_target, z_near, z_far);
         }
     };
 }
