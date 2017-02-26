@@ -30,5 +30,5 @@ void main()
     float factor = 1.0 / exp(x * x);
     factor = clamp( factor, minVisibility, 1.0 );
     
-    color = vec4(fogColor, factor);
+    color = vec4(fogColor, 1. - factor);
 }

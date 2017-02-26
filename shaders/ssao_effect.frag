@@ -23,5 +23,5 @@ void main()
     
     
     vec3 kernel_sample = texture(sampleTexture, uv).xyz;
-    color = vec4(0., 0., 0., 1.);
+    color = vec4(0., 0., 0., 0.);
 }
