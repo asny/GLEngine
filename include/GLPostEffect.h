@@ -24,12 +24,13 @@ namespace gle
         
         virtual void apply(const GLRenderTarget& source_render_target1, const GLRenderTarget& source_render_target2, float z_near, float z_far)
         {
-            source_render_target1.bind_color_texture_for_reading(0, 0);
+            GLState::depth_write(false);
+            GLState::depth_test(false);
+            
             source_render_target2.bind_color_texture_for_reading(1, 1);
             source_render_target2.bind_color_texture_for_reading(2, 2);
-            source_render_target1.bind_depth_texture_for_reading(3);
+            source_render_target2.bind_depth_texture_for_reading(3);
             
-            GLUniform::use(shader, "colorMap", 0);
             GLUniform::use(shader, "positionMap", 1);
             GLUniform::use(shader, "normalMap", 2);
             GLUniform::use(shader, "depthMap", 3);

@@ -1,6 +1,5 @@
 #version 330
 
-uniform sampler2D colorMap;
 uniform sampler2D depthMap;
 uniform sampler2D noiseTexture;
 
@@ -23,7 +22,6 @@ float linear_depth(float depth)
 
 void main()
 {
-   	vec3 light_color = texture(colorMap, uv).rgb;
     float depth = texture(depthMap, uv).r;
     float dist = linear_depth(depth);
     float noise = texture(noiseTexture, uv).r;
@@ -32,5 +30,5 @@ void main()
     float factor = 1.0 / exp(x * x);
     factor = clamp( factor, minVisibility, 1.0 );
     
-    color = vec4(mix(fogColor, light_color, factor), 1.);
+    color = vec4(fogColor, factor);
 }

@@ -28,7 +28,6 @@ namespace gle
         
         void shine(const glm::vec3& view_position, const GLRenderTarget& source_render_target)
         {
-            // Do not write or test with the depth buffer
             GLState::depth_write(true);
             GLState::depth_test(true);
             GLState::cull_back_faces(true);

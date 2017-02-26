@@ -1,6 +1,5 @@
 #version 330
 
-uniform sampler2D colorMap;
 uniform sampler2D normalMap;
 uniform sampler2D depthMap;
 
@@ -14,7 +13,6 @@ layout (location = 0) out vec4 color;
 
 void main()
 {
-   	vec3 light_color = texture(colorMap, uv).rgb;
    	vec3 normal = normalize(texture(normalMap, uv).xyz);
     float depth = texture(depthMap, uv).r;
     
@@ -25,5 +23,5 @@ void main()
     
     
     vec3 kernel_sample = texture(sampleTexture, uv).xyz;
-    color = vec4(normal, 1.);
+    color = vec4(0., 0., 0., 1.);
 }

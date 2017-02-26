@@ -56,10 +56,8 @@ namespace gle {
         
         void draw(const GLScene& scene)
         {
-            auto render_target = post_effect ? light_pass_render_target : GLDefaultRenderTarget::get();
-            
-            deferred_pass(scene, render_target);
-            forward_pass(scene, render_target);
+            deferred_pass(scene);
+            forward_pass(scene);
             
             if(post_effect)
             {
@@ -75,9 +73,9 @@ namespace gle {
         }
         
     private:
-        void forward_pass(const GLScene& scene, const GLDefaultRenderTarget& render_target)
+        void forward_pass(const GLScene& scene)
         {
-            render_target.use();
+            GLDefaultRenderTarget::get().use();
             
             // Set up default blending
             glEnable(GL_BLEND);
@@ -87,7 +85,7 @@ namespace gle {
             scene.draw(FORWARD, position, view, projection);
         }
         
-        void deferred_pass(const GLScene& scene, const GLDefaultRenderTarget& render_target)
+        void deferred_pass(const GLScene& scene)
         {
             // Geometry pass
             geometry_pass_render_target.use();
@@ -98,16 +96,18 @@ namespace gle {
             scene.draw(DEFERRED, position, view, projection);
             
             // Light pass
-            render_target.use();
-            render_target.clear();
+            GLDefaultRenderTarget::get().use();
+            GLDefaultRenderTarget::get().clear();
             
-            scene.shine_light(position, direction, geometry_pass_render_target, render_target);
+            scene.shine_light(position, direction, geometry_pass_render_target, GLDefaultRenderTarget::get());
         }
         
         void post_effect_pass()
         {
             GLDefaultRenderTarget::get().use();
-            GLDefaultRenderTarget::get().clear();
+            
+            glEnable(GL_BLEND);
+            glBlendFunc (GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
             
             post_effect->apply(light_pass_render_target, geometry_pass_render_target, z_near, z_far);
         }
