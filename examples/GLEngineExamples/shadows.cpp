@@ -10,6 +10,7 @@
 #include "MeshCreator.h"
 #include "materials/GLColorMaterial.h"
 #include "gtx/rotate_vector.hpp"
+#include "GLAmbientOcclusionEffect.h"
 
 #define GLFW_INCLUDE_NONE
 #include "glfw3.h"
@@ -133,6 +134,7 @@ int main(int argc, const char * argv[])
     
     // Create camera
     auto camera = GLCamera(WIN_SIZE_X, WIN_SIZE_Y);
+    camera.add_post_effect(make_shared<GLAmbientOcclusionEffect>());
     
     // Create scene
     auto scene = GLScene();

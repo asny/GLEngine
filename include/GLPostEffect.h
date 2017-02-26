@@ -24,9 +24,8 @@ namespace gle
         
         virtual void apply(const GLRenderTarget& source_render_target, float z_near, float z_far)
         {
-            source_render_target.bind_color_texture_for_reading(0, 0);
-            
-            GLUniform::use(shader, "colorMap", 0);
+            GLState::depth_write(false);
+            GLState::depth_test(false);
             
             GLObject::draw_full_screen_quad(shader);
         }

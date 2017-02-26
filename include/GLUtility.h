@@ -53,4 +53,9 @@ namespace gle {
         auto current_time = std::chrono::high_resolution_clock::now();
         return 0.001f * std::chrono::duration_cast<std::chrono::milliseconds>(current_time - start_time).count();
     }
+    
+    static double random(double min, double max)
+    {
+        return (max - min) * (double)rand()/(double)RAND_MAX + min;
+    }
 }
