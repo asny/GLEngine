@@ -149,6 +149,25 @@ namespace gle
             glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapMode);
             glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapMode);
         }
+        
+        GLTexture2D(float *pixels, int width, int height, GLenum format = GL_RGB) : GLTexture(GL_TEXTURE_2D)
+        {
+            bind();
+            glTexImage2D(target,
+                         0,
+                         (GLint) format,
+                         (GLsizei)width,
+                         (GLsizei)height,
+                         0,
+                         format,
+                         GL_FLOAT,
+                         pixels);
+            
+            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapMode);
+            glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapMode);
+        }
     };
     
     class GLTexture3D : public GLTexture
