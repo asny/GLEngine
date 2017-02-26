@@ -40,8 +40,8 @@ namespace gle
             source_render_target.bind_depth_texture_for_reading(3);
             
             GLUniform::use(shader, "eyePosition", view_position);
-            GLUniform::use(shader, "positionMap", 0);
-            GLUniform::use(shader, "colorMap", 1);
+            GLUniform::use(shader, "colorMap", 0);
+            GLUniform::use(shader, "positionMap", 1);
             GLUniform::use(shader, "normalMap", 2);
             GLUniform::use(shader, "depthMap", 3);
             
