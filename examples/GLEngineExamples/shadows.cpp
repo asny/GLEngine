@@ -134,7 +134,7 @@ int main(int argc, const char * argv[])
     
     // Create camera
     auto camera = GLCamera(WIN_SIZE_X, WIN_SIZE_Y);
-    camera.set_post_effect(make_shared<GLAmbientOcclusionEffect>());
+    camera.add_post_effect(make_shared<GLAmbientOcclusionEffect>());
     
     // Create scene
     auto scene = GLScene();

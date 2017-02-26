@@ -24,7 +24,7 @@ namespace gle {
         glm::mat4 projection = glm::mat4(1.);
         
         GLRenderTarget geometry_pass_render_target;
-        std::shared_ptr<GLPostEffect> post_effect = nullptr;
+        std::vector<std::shared_ptr<GLPostEffect>> post_effects;
         
     public:
         
@@ -57,18 +57,14 @@ namespace gle {
         {
             deferred_pass(scene);
             forward_pass(scene);
-            
-            if(post_effect)
-            {
-                post_effect_pass();
-            }
+            post_effect_pass();
             
             check_gl_error();
         }
         
-        void set_post_effect(std::shared_ptr<GLPostEffect> _post_effect)
+        void add_post_effect(std::shared_ptr<GLPostEffect> post_effect)
         {
-            post_effect = _post_effect;
+            post_effects.push_back(post_effect);
         }
         
     private:
@@ -108,7 +104,10 @@ namespace gle {
             glEnable(GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
-            post_effect->apply(geometry_pass_render_target, z_near, z_far);
+            for(auto post_effect : post_effects)
+            {
+                post_effect->apply(geometry_pass_render_target, z_near, z_far);
+            }
         }
     };
 }
