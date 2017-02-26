@@ -27,14 +27,6 @@ namespace gle
             GLState::depth_write(false);
             GLState::depth_test(false);
             
-            source_render_target.bind_color_texture_for_reading(1, 0);
-            source_render_target.bind_color_texture_for_reading(2, 1);
-            source_render_target.bind_depth_texture_for_reading(2);
-            
-            GLUniform::use(shader, "positionMap", 0);
-            GLUniform::use(shader, "normalMap", 1);
-            GLUniform::use(shader, "depthMap", 2);
-            
             GLObject::draw_full_screen_quad(shader);
         }
     };

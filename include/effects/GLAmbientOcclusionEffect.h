@@ -23,11 +23,17 @@ namespace gle
         
         void apply(const GLRenderTarget& source_render_target, float z_near, float z_far)
         {
-            sample_texture->use(3);
-            noise_texture->use(4);
+            sample_texture->use(0);
+            GLUniform::use(shader, "sampleTexture", 0);
             
-            GLUniform::use(shader, "sampleTexture", 3);
-            GLUniform::use(shader, "noiseTexture", 4);
+            noise_texture->use(1);
+            GLUniform::use(shader, "noiseTexture", 1);
+            
+            source_render_target.bind_color_texture_for_reading(2, 2);
+            GLUniform::use(shader, "normalMap", 2);
+            
+            source_render_target.bind_depth_texture_for_reading(3);
+            GLUniform::use(shader, "depthMap", 3);
             
             GLPostEffect::apply(source_render_target, z_near, z_far);
         }

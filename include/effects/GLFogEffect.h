@@ -25,8 +25,14 @@ namespace gle
         
         void apply(const GLRenderTarget& source_render_target, float z_near, float z_far)
         {
-            noise_texture->use(3);
-            GLUniform::use(shader, "noiseTexture", 3);
+            noise_texture->use(0);
+            GLUniform::use(shader, "noiseTexture", 0);
+            
+//            source_render_target.bind_color_texture_for_reading(1, 1);
+//            GLUniform::use(shader, "positionMap", 1);
+            
+            source_render_target.bind_depth_texture_for_reading(1);
+            GLUniform::use(shader, "depthMap", 1);
             
             GLUniform::use(shader, "fogColor", color);
             GLUniform::use(shader, "fogDensity", density);
