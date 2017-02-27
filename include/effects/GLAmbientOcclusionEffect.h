@@ -13,6 +13,7 @@ namespace gle
     {
         std::unique_ptr<GLTexture2D> sample_texture, noise_texture;
         const int noise_size = 4;
+        const int sample_size = 16;
         glm::mat4 bias_matrix = glm::mat4(
                                           0.5, 0.0, 0.0, 0.0,
                                           0.0, 0.5, 0.0, 0.0,
@@ -48,6 +49,7 @@ namespace gle
             const float WIN_SIZE_X = 2400;
             const float WIN_SIZE_Y = 1400;
             GLUniform::use(shader, "noiseUvScale", glm::vec2(WIN_SIZE_X / noise_size, WIN_SIZE_Y / noise_size));
+            GLUniform::use(shader, "sampleSize", sample_size);
             
             draw();
         }
@@ -56,13 +58,12 @@ namespace gle
         
         void create_sample_kernel()
         {
-            const int kernel_size = 4;
-            auto kernel = std::vector<float>(kernel_size * kernel_size * 3);
-            for (int i = 0; i < kernel_size * kernel_size; ++i)
+            auto kernel = std::vector<float>(sample_size * 3);
+            for (int i = 0; i < sample_size; ++i)
             {
                 auto sample = glm::normalize(glm::vec3(random(-1.0f, 1.0f), random(-1.0f, 1.0f), random(0.0f, 1.0f)));
                 sample *= random(0.0f, 1.0f);
-                float scale = float(i) / float(kernel_size);
+                float scale = float(i) / float(sample_size);
                 float t = scale * scale;
                 sample *= (1. - t) * 0.1 + t;
                 
@@ -70,7 +71,7 @@ namespace gle
                 kernel[i*3+1] = sample.y;
                 kernel[i*3+2] = sample.z;
             }
-            sample_texture = std::unique_ptr<GLTexture2D>(new GLTexture2D(&kernel[0], kernel_size, kernel_size));
+            sample_texture = std::unique_ptr<GLTexture2D>(new GLTexture2D(&kernel[0], sample_size, 1));
         }
         
         void create_noise_texture()

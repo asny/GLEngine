@@ -8,13 +8,13 @@ uniform sampler2D sampleTexture;
 uniform sampler2D noiseTexture;
 uniform mat4 VPBMatrix;
 uniform vec2 noiseUvScale;
+uniform int sampleSize;
 
 in vec2 uv;
 
 layout (location = 0) out vec4 color;
 
-const int sample_size = 4;
-const float radius = 0.1f;
+const float radius = 1.f;
 
 void main()
 {
@@ -29,12 +29,10 @@ void main()
     mat3 tbn = mat3(tangent, bitangent, normal);
     
     float occlusion = 0.0;
-    for (int i = 0; i < sample_size*sample_size; i++)
+    for (int i = 0; i < sampleSize; i++)
     {
         // get sample position:
-        float x = mod(i, sample_size) / sample_size;
-        float y = (i - mod(i, sample_size)) / (sample_size * sample_size);
-        vec3 sample_pos = pos + radius * tbn * texture(sampleTexture, vec2(x,y)).xyz;
+        vec3 sample_pos = pos + radius * tbn * texture(sampleTexture, vec2((i + 0.5)/sampleSize, 0.5)).xyz;
         vec4 screen_sample_pos = VPBMatrix * vec4(sample_pos, 1.);
         float sample_pos_depth = screen_sample_pos.z / screen_sample_pos.w;
         
@@ -50,7 +48,7 @@ void main()
             occlusion += 1.0;
         }
     }
-    occlusion = occlusion / (sample_size * sample_size);
+    occlusion = occlusion / sampleSize;
     
     color = vec4(0., 0., 0., occlusion);
 }
