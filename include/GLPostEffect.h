@@ -13,16 +13,18 @@ namespace gle
 {
     class GLPostEffect
     {
-    protected:
-        std::shared_ptr<GLShader> shader;
-        
     public:
         GLPostEffect(const std::string& vertex_shader, const std::string& fragment_shader)
         {
             shader = GLShader::create_or_get(vertex_shader, fragment_shader);
         }
         
-        virtual void apply(const GLRenderTarget& source_render_target, float z_near, float z_far)
+        virtual void apply(const GLRenderTarget& source_render_target, float z_near, float z_far, const glm::mat4& view, const glm::mat4& projection) = 0;
+        
+    protected:
+        std::shared_ptr<GLShader> shader;
+        
+        void draw()
         {
             GLState::depth_write(false);
             GLState::depth_test(false);

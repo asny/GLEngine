@@ -21,7 +21,7 @@ namespace gle
             create_noise_texture();
         }
         
-        void apply(const GLRenderTarget& source_render_target, float z_near, float z_far)
+        void apply(const GLRenderTarget& source_render_target, float z_near, float z_far, const glm::mat4& view, const glm::mat4& projection)
         {
             sample_texture->use(0);
             GLUniform::use(shader, "sampleTexture", 0);
@@ -29,13 +29,19 @@ namespace gle
             noise_texture->use(1);
             GLUniform::use(shader, "noiseTexture", 1);
             
-            source_render_target.bind_color_texture_for_reading(2, 2);
-            GLUniform::use(shader, "normalMap", 2);
+            source_render_target.bind_color_texture_for_reading(1, 2);
+            GLUniform::use(shader, "positionMap", 2);
             
-            source_render_target.bind_depth_texture_for_reading(3);
-            GLUniform::use(shader, "depthMap", 3);
+            source_render_target.bind_color_texture_for_reading(2, 3);
+            GLUniform::use(shader, "normalMap", 3);
             
-            GLPostEffect::apply(source_render_target, z_near, z_far);
+            source_render_target.bind_depth_texture_for_reading(4);
+            GLUniform::use(shader, "depthMap", 4);
+            
+            GLUniform::use(shader, "VMatrix", view);
+            GLUniform::use(shader, "PMatrix", projection);
+            
+            draw();
         }
         
     private:

@@ -23,7 +23,7 @@ namespace gle
             
         }
         
-        void apply(const GLRenderTarget& source_render_target, float z_near, float z_far)
+        void apply(const GLRenderTarget& source_render_target, float z_near, float z_far, const glm::mat4& view, const glm::mat4& projection)
         {
             noise_texture->use(0);
             GLUniform::use(shader, "noiseTexture", 0);
@@ -42,7 +42,7 @@ namespace gle
             GLUniform::use(shader, "zNear", z_near);
             GLUniform::use(shader, "zFar", z_far);
             
-            GLPostEffect::apply(source_render_target, z_near, z_far);
+            draw();
         }
     };
 }

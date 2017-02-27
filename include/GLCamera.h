@@ -106,7 +106,7 @@ namespace gle {
             
             for(auto post_effect : post_effects)
             {
-                post_effect->apply(geometry_pass_render_target, z_near, z_far);
+                post_effect->apply(geometry_pass_render_target, z_near, z_far, view, projection);
             }
         }
     };
