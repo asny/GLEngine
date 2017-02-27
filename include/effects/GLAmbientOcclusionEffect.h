@@ -12,6 +12,11 @@ namespace gle
     class GLAmbientOcclusionEffect : public GLPostEffect
     {
         std::unique_ptr<GLTexture2D> sample_texture, noise_texture;
+        glm::mat4 bias_matrix = glm::mat4(
+                                          0.5, 0.0, 0.0, 0.0,
+                                          0.0, 0.5, 0.0, 0.0,
+                                          0.0, 0.0, 0.5, 0.0,
+                                          0.5, 0.5, 0.5, 1.0);
     public:
         
         GLAmbientOcclusionEffect()
@@ -38,8 +43,7 @@ namespace gle
             source_render_target.bind_depth_texture_for_reading(4);
             GLUniform::use(shader, "depthMap", 4);
             
-            GLUniform::use(shader, "VMatrix", view);
-            GLUniform::use(shader, "PMatrix", projection);
+            GLUniform::use(shader, "VPBMatrix", bias_matrix * projection * view);
             
             draw();
         }

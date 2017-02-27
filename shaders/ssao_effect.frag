@@ -6,8 +6,7 @@ uniform sampler2D depthMap;
 
 uniform sampler2D sampleTexture;
 uniform sampler2D noiseTexture;
-uniform mat4 VMatrix;
-uniform mat4 PMatrix;
+uniform mat4 VPBMatrix;
 
 in vec2 uv;
 
@@ -21,7 +20,7 @@ const int WIN_SIZE_Y = 1400;
 void main()
 {
     vec3 pos = texture(positionMap, uv).xyz;
-    vec4 screen_pos = PMatrix * VMatrix * vec4(pos, 1.f);
+    vec4 screen_pos = VPBMatrix * vec4(pos, 1.f);
     float depth = screen_pos.z / screen_pos.w;
     
    	vec3 normal = normalize(texture(normalMap, uv).xyz);
@@ -37,11 +36,11 @@ void main()
         float x = mod(i, sample_size) / sample_size;
         float y = (i - mod(i, sample_size)) / (sample_size * sample_size);
         vec3 sample_pos = pos + radius * tbn * texture(sampleTexture, vec2(x,y)).xyz;
-        vec4 screen_sample_pos = PMatrix * VMatrix * vec4(sample_pos, 1.);
+        vec4 screen_sample_pos = VPBMatrix * vec4(sample_pos, 1.);
         float sample_pos_depth = screen_sample_pos.z / screen_sample_pos.w;
         
         // project sample position:
-        vec2 offset = 0.5 * screen_sample_pos.xy/screen_sample_pos.w + 0.5;
+        vec2 offset = screen_sample_pos.xy/screen_sample_pos.w;
         
         // get sample depth:
         float sample_depth = texture(depthMap, offset.xy).r;
