@@ -12,6 +12,7 @@ namespace gle
     class GLAmbientOcclusionEffect : public GLPostEffect
     {
         std::unique_ptr<GLTexture2D> sample_texture, noise_texture;
+        const int noise_size = 4;
         glm::mat4 bias_matrix = glm::mat4(
                                           0.5, 0.0, 0.0, 0.0,
                                           0.0, 0.5, 0.0, 0.0,
@@ -44,6 +45,9 @@ namespace gle
             GLUniform::use(shader, "depthMap", 4);
             
             GLUniform::use(shader, "VPBMatrix", bias_matrix * projection * view);
+            const float WIN_SIZE_X = 2400;
+            const float WIN_SIZE_Y = 1400;
+            GLUniform::use(shader, "noiseUvScale", glm::vec2(WIN_SIZE_X / noise_size, WIN_SIZE_Y / noise_size));
             
             draw();
         }
@@ -71,7 +75,6 @@ namespace gle
         
         void create_noise_texture()
         {
-            const int noise_size = 4;
             auto noise = std::vector<float>(noise_size * noise_size * 3);
             for (int i = 0; i < noise_size * noise_size; ++i)
             {

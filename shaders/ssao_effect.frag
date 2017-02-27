@@ -7,6 +7,7 @@ uniform sampler2D depthMap;
 uniform sampler2D sampleTexture;
 uniform sampler2D noiseTexture;
 uniform mat4 VPBMatrix;
+uniform vec2 noiseUvScale;
 
 in vec2 uv;
 
@@ -14,8 +15,6 @@ layout (location = 0) out vec4 color;
 
 const int sample_size = 4;
 const float radius = 0.1f;
-const int WIN_SIZE_X = 2400;
-const int WIN_SIZE_Y = 1400;
 
 void main()
 {
@@ -24,7 +23,7 @@ void main()
     float depth = screen_pos.z / screen_pos.w;
     
    	vec3 normal = normalize(texture(normalMap, uv).xyz);
-    vec3 random_dir = texture(noiseTexture, vec2(uv.x * WIN_SIZE_X / sample_size, uv.y * WIN_SIZE_Y / sample_size)).xyz;
+    vec3 random_dir = texture(noiseTexture, uv * noiseUvScale).xyz;
     vec3 tangent = normalize(random_dir - normal * dot(random_dir, normal));
     vec3 bitangent = cross(normal, tangent);
     mat3 tbn = mat3(tangent, bitangent, normal);
