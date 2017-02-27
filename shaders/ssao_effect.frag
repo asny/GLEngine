@@ -31,19 +31,14 @@ void main()
     float occlusion = 0.0;
     for (int i = 0; i < sampleSize; i++)
     {
-        // get sample position:
+        // get sample position and depth
         vec3 sample_pos = pos + radius * tbn * texture(sampleTexture, vec2((i + 0.5)/sampleSize, 0.5)).xyz;
         vec4 screen_sample_pos = VPBMatrix * vec4(sample_pos, 1.);
-        float sample_pos_depth = screen_sample_pos.z / screen_sample_pos.w;
+        float sample_depth = screen_sample_pos.z / screen_sample_pos.w;
+        float true_depth = texture(depthMap, screen_sample_pos.xy / screen_sample_pos.w).r;
         
-        // project sample position:
-        vec2 offset = screen_sample_pos.xy/screen_sample_pos.w;
-        
-        // get sample depth:
-        float sample_depth = texture(depthMap, offset.xy).r;
-        
-        // range check & accumulate:
-        if(abs(depth - sample_depth) < radius && sample_depth <= sample_pos_depth)
+        // range check & accumulate
+        if(abs(depth - true_depth) < radius && true_depth <= sample_depth)
         {
             occlusion += 1.0;
         }
