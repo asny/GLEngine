@@ -79,10 +79,8 @@ namespace gle
             auto noise = std::vector<float>(noise_size * noise_size * 3);
             for (int i = 0; i < noise_size * noise_size; ++i)
             {
-                auto n = normalize(glm::vec3(
-                                random(-1.0f, 1.0f),
-                                random(-1.0f, 1.0f),
-                                0.0f));
+                double angle = random(0., 2. * M_PI);
+                auto n = glm::normalize(glm::vec3(cos(angle), sin(angle), 0.f));
                 noise[i*3] = n.x;
                 noise[i*3+1] = n.y;
                 noise[i*3+2] = n.z;

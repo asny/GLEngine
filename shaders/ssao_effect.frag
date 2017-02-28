@@ -38,7 +38,7 @@ void main()
         float true_depth = texture(depthMap, screen_sample_pos.xy / screen_sample_pos.w).r;
         
         // range check & accumulate
-        if(abs(depth - true_depth) < radius && true_depth <= sample_depth)
+        if(abs(depth - true_depth) < radius/99.9f && true_depth <= sample_depth)
         {
             occlusion += 1.0;
         }
