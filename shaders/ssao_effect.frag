@@ -37,7 +37,7 @@ void main()
         float true_depth = abs((VMatrix * vec4(texture(positionMap, screen_sample_pos.xy / screen_sample_pos.w).xyz, 1.)).z);
         
         // range check & accumulate
-        if(abs(depth - true_depth) < radius && true_depth <= sample_depth)
+        if(abs(depth - true_depth) < radius && true_depth + 0.025 <= sample_depth)
         {
             occlusion += 1.0;
         }
