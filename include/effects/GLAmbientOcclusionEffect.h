@@ -11,6 +11,7 @@ namespace gle
 {
     class GLAmbientOcclusionEffect : public GLPostEffect
     {
+        float radius;
         std::unique_ptr<GLTexture2D> sample_texture, noise_texture;
         const int noise_size = 4;
         const int sample_size = 16;
@@ -21,8 +22,8 @@ namespace gle
                                           0.5, 0.5, 0.5, 1.0);
     public:
         
-        GLAmbientOcclusionEffect()
-        : GLPostEffect("../GLEngine/shaders/effect.vert",  "../GLEngine/shaders/ssao_effect.frag")
+        GLAmbientOcclusionEffect(float _radius = 1.f)
+            : GLPostEffect("../GLEngine/shaders/effect.vert",  "../GLEngine/shaders/ssao_effect.frag"), radius(_radius)
         {
             create_sample_kernel();
             create_noise_texture();
@@ -48,6 +49,7 @@ namespace gle
             const float WIN_SIZE_Y = 1400;
             GLUniform::use(shader, "noiseUvScale", glm::vec2(WIN_SIZE_X / noise_size, WIN_SIZE_Y / noise_size));
             GLUniform::use(shader, "sampleSize", sample_size);
+            GLUniform::use(shader, "radius", radius);
             
             draw();
         }

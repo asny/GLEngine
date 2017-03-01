@@ -9,12 +9,11 @@ uniform mat4 VPBMatrix;
 uniform mat4 VMatrix;
 uniform vec2 noiseUvScale;
 uniform int sampleSize;
+uniform float radius;
 
 in vec2 uv;
 
 layout (location = 0) out vec4 color;
-
-const float radius = 1.f;
 
 void main()
 {
