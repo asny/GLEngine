@@ -42,10 +42,8 @@ namespace gle
             source_render_target.bind_color_texture_for_reading(2, 3);
             GLUniform::use(shader, "normalMap", 3);
             
-            source_render_target.bind_depth_texture_for_reading(4);
-            GLUniform::use(shader, "depthMap", 4);
-            
             GLUniform::use(shader, "VPBMatrix", bias_matrix * projection * view);
+            GLUniform::use(shader, "VMatrix", view);
             const float WIN_SIZE_X = 2400;
             const float WIN_SIZE_Y = 1400;
             GLUniform::use(shader, "noiseUvScale", glm::vec2(WIN_SIZE_X / noise_size, WIN_SIZE_Y / noise_size));
