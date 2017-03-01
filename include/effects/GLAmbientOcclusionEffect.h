@@ -59,11 +59,10 @@ namespace gle
             auto kernel = std::vector<float>(sample_size * 3);
             for (int i = 0; i < sample_size; ++i)
             {
-                auto sample = glm::normalize(glm::vec3(random(-1.0f, 1.0f), random(-1.0f, 1.0f), random(0.0f, 1.0f)));
-                sample *= random(0.0f, 1.0f);
-                float scale = float(i) / float(sample_size);
-                float t = scale * scale;
-                sample *= (1. - t) * 0.1 + t;
+                float radius = random(0., 1.);
+                double theta = random(0., 2. * M_PI);
+                double phi = random(0., 0.5 * M_PI);
+                auto sample = radius * radius * glm::vec3(cos(theta) * sin(phi), sin(theta) * sin(phi), cos(phi));
                 
                 kernel[i*3] = sample.x;
                 kernel[i*3+1] = sample.y;
