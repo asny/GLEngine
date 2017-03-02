@@ -19,7 +19,7 @@ namespace gle
             shader = GLShader::create_or_get(vertex_shader, fragment_shader);
         }
         
-        virtual void apply(const GLRenderTarget& source_render_target, float z_near, float z_far, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection) = 0;
+        virtual void apply(const GLRenderTarget& source_render_target, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection) = 0;
         
     protected:
         std::shared_ptr<GLShader> shader;

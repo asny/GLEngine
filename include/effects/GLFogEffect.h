@@ -23,24 +23,19 @@ namespace gle
             
         }
         
-        void apply(const GLRenderTarget& source_render_target, float z_near, float z_far, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection)
+        void apply(const GLRenderTarget& source_render_target, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection)
         {
             noise_texture->use(0);
             GLUniform::use(shader, "noiseTexture", 0);
             
-//            source_render_target.bind_color_texture_for_reading(1, 1);
-//            GLUniform::use(shader, "positionMap", 1);
-            
-            source_render_target.bind_depth_texture_for_reading(1);
-            GLUniform::use(shader, "depthMap", 1);
+            source_render_target.bind_color_texture_for_reading(1, 1);
+            GLUniform::use(shader, "positionMap", 1);
             
             GLUniform::use(shader, "fogColor", color);
             GLUniform::use(shader, "fogDensity", density);
             GLUniform::use(shader, "minVisibility", min_visibility);
             GLUniform::use(shader, "time", time());
-            
-            GLUniform::use(shader, "zNear", z_near);
-            GLUniform::use(shader, "zFar", z_far);
+            GLUniform::use(shader, "eyePosition", camera_position);
             
             draw();
         }
