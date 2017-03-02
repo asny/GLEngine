@@ -23,8 +23,8 @@ namespace gle {
         glm::mat4 view = glm::mat4(1.);
         glm::mat4 projection = glm::mat4(1.);
         
-        GLRenderTarget geometry_pass_render_target, light_pass_render_target;
-        std::shared_ptr<GLPostEffect> post_effect = nullptr;
+        GLRenderTarget geometry_pass_render_target;
+        std::vector<std::shared_ptr<GLPostEffect>> post_effects;
         
     public:
         
@@ -40,7 +40,6 @@ namespace gle {
         {
             GLDefaultRenderTarget::get().resize(width, height);
             geometry_pass_render_target.resize(width, height, 3, true);
-            light_pass_render_target.resize(width, height, 1, true);
             projection = glm::perspective(45.f, width/float(height), z_near, z_far);
         }
         
@@ -54,41 +53,24 @@ namespace gle {
             view = lookAt(position, position + direction, glm::vec3(0., 1., 0.));
         }
         
-        void wireframe(bool on)
-        {
-            if(on)
-            {
-                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            }
-            else {
-                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            }
-        }
-        
         void draw(const GLScene& scene)
         {
-            auto render_target = post_effect ? light_pass_render_target : GLDefaultRenderTarget::get();
-            
-            deferred_pass(scene, render_target);
-            forward_pass(scene, render_target);
-            
-            if(post_effect)
-            {
-                post_effect_pass();
-            }
+            deferred_pass(scene);
+            forward_pass(scene);
+            post_effect_pass();
             
             check_gl_error();
         }
         
-        void set_post_effect(std::shared_ptr<GLPostEffect> _post_effect)
+        void add_post_effect(std::shared_ptr<GLPostEffect> post_effect)
         {
-            post_effect = _post_effect;
+            post_effects.push_back(post_effect);
         }
         
     private:
-        void forward_pass(const GLScene& scene, const GLDefaultRenderTarget& render_target)
+        void forward_pass(const GLScene& scene)
         {
-            render_target.use();
+            GLDefaultRenderTarget::get().use();
             
             // Set up default blending
             glEnable(GL_BLEND);
@@ -98,7 +80,7 @@ namespace gle {
             scene.draw(FORWARD, position, view, projection);
         }
         
-        void deferred_pass(const GLScene& scene, const GLDefaultRenderTarget& render_target)
+        void deferred_pass(const GLScene& scene)
         {
             // Geometry pass
             geometry_pass_render_target.use();
@@ -109,18 +91,23 @@ namespace gle {
             scene.draw(DEFERRED, position, view, projection);
             
             // Light pass
-            render_target.use();
-            render_target.clear();
+            GLDefaultRenderTarget::get().use();
+            GLDefaultRenderTarget::get().clear();
             
-            scene.shine_light(position, direction, geometry_pass_render_target, render_target);
+            scene.shine_light(position, direction, geometry_pass_render_target, GLDefaultRenderTarget::get());
         }
         
         void post_effect_pass()
         {
             GLDefaultRenderTarget::get().use();
-            GLDefaultRenderTarget::get().clear();
             
-            post_effect->apply(light_pass_render_target, z_near, z_far);
+            glEnable(GL_BLEND);
+            glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            
+            for(auto post_effect : post_effects)
+            {
+                post_effect->apply(geometry_pass_render_target, z_near, z_far, position, view, projection);
+            }
         }
     };
 }

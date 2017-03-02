@@ -74,7 +74,6 @@
 		491B8E361E5CDC7700BE362A /* hello_world */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hello_world; sourceTree = BUILT_PRODUCTS_DIR; };
 		491B8E421E5D798C00BE362A /* GLPostEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLPostEffect.h; path = ../include/GLPostEffect.h; sourceTree = "<group>"; };
 		491B8E451E5E0B3D00BE362A /* fog_effect.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = fog_effect.frag; path = ../shaders/fog_effect.frag; sourceTree = "<group>"; };
-		491B8E461E5E0B3D00BE362A /* fog_effect.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = fog_effect.vert; path = ../shaders/fog_effect.vert; sourceTree = "<group>"; };
 		493E30911E5F5DA4001924E5 /* GLFogEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLFogEffect.h; path = ../include/effects/GLFogEffect.h; sourceTree = "<group>"; };
 		4942D5B01E4F377100C4F61E /* GLRenderTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLRenderTarget.h; path = ../include/GLRenderTarget.h; sourceTree = "<group>"; };
 		49471A541E131A30006E8AD5 /* GLColorMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLColorMaterial.h; path = ../include/materials/GLColorMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -85,6 +84,9 @@
 		49471A5B1E152693006E8AD5 /* GLLight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLLight.h; path = ../include/lights/GLLight.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4954F2421E06F459005B5739 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		4954F2441E06F47C005B5739 /* libglfw.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.dylib; path = ../../../../../opt/local/lib/libglfw.dylib; sourceTree = "<group>"; };
+		495DABC91E621AF700AD5816 /* GLAmbientOcclusionEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLAmbientOcclusionEffect.h; path = ../include/effects/GLAmbientOcclusionEffect.h; sourceTree = "<group>"; };
+		495DABCA1E621C0700AD5816 /* effect.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = effect.vert; path = ../shaders/effect.vert; sourceTree = "<group>"; };
+		495DABCB1E621C0700AD5816 /* ssao_effect.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ssao_effect.frag; path = ../shaders/ssao_effect.frag; sourceTree = "<group>"; };
 		497D00901E22D1E400DC549A /* GLState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLState.h; path = ../include/GLState.h; sourceTree = "<group>"; };
 		49EBFAED1E4382F000503199 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		49EBFAEF1E43870000503199 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
@@ -150,8 +152,9 @@
 		4900D18E1E0C57A600F92EBD /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				495DABCA1E621C0700AD5816 /* effect.vert */,
+				495DABCB1E621C0700AD5816 /* ssao_effect.frag */,
 				491B8E451E5E0B3D00BE362A /* fog_effect.frag */,
-				491B8E461E5E0B3D00BE362A /* fog_effect.vert */,
 				49471A571E14591C006E8AD5 /* light_pass.frag */,
 				49471A581E14591C006E8AD5 /* light_pass.vert */,
 				49471A551E131AB9006E8AD5 /* color_material.frag */,
@@ -185,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				493E30911E5F5DA4001924E5 /* GLFogEffect.h */,
+				495DABC91E621AF700AD5816 /* GLAmbientOcclusionEffect.h */,
 			);
 			name = Effects;
 			sourceTree = "<group>";
