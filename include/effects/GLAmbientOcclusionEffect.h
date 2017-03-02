@@ -41,12 +41,11 @@ namespace gle
             GLUniform::use(shader, "normalMap", 2);
             
             GLUniform::use(shader, "samples", samples[0], sample_size);
+            GLUniform::use(shader, "sampleSize", sample_size);
+            GLUniform::use(shader, "noiseSize", noise_size);
+            
             GLUniform::use(shader, "VPBMatrix", bias_matrix * projection * view);
             GLUniform::use(shader, "eyePosition", camera_position);
-            const float WIN_SIZE_X = 2400;
-            const float WIN_SIZE_Y = 1400;
-            GLUniform::use(shader, "noiseUvScale", glm::vec2(WIN_SIZE_X / noise_size, WIN_SIZE_Y / noise_size));
-            GLUniform::use(shader, "sampleSize", sample_size);
             GLUniform::use(shader, "radius", radius);
             
             draw();
