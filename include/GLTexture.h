@@ -196,7 +196,7 @@ namespace gle
         {
             bind();
             
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
             
             glTexParameterf(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTexParameterf(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
