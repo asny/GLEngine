@@ -29,14 +29,13 @@ void main()
     float occlusion = 0.0;
     for (int i = 0; i < sampleSize; i++)
     {
-        // get sample position and depth
+        // Sample position and depth
         vec3 sample_pos = pos + radius * tbn * texture(sampleTexture, vec2((i + 0.5)/sampleSize, 0.5)).xyz;
         vec4 screen_sample_pos = VPBMatrix * vec4(sample_pos, 1.);
-        float sample_depth = distance(sample_pos, eyePosition);
-        float true_depth = distance(texture(positionMap, screen_sample_pos.xy / screen_sample_pos.w).xyz, eyePosition);
+        float sample_depth = distance(texture(positionMap, screen_sample_pos.xy / screen_sample_pos.w).xyz, eyePosition);
         
-        // range check & accumulate
-        if(abs(depth - true_depth) < radius && true_depth + 0.025 <= sample_depth)
+        // Range check and accumulate
+        if(abs(depth - sample_depth) < radius && sample_depth + 0.025 <= distance(sample_pos, eyePosition))
         {
             occlusion += 1.0;
         }
