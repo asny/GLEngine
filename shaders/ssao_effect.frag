@@ -3,7 +3,7 @@
 uniform sampler2D positionMap;
 uniform sampler2D normalMap;
 
-uniform sampler2D sampleTexture;
+uniform vec3 samples[64];
 uniform sampler2D noiseTexture;
 uniform mat4 VPBMatrix;
 uniform vec3 eyePosition;
@@ -30,7 +30,7 @@ void main()
     for (int i = 0; i < sampleSize; i++)
     {
         // Sample position and depth
-        vec3 sample_pos = pos + radius * tbn * texture(sampleTexture, vec2((i + 0.5)/sampleSize, 0.5)).xyz;
+        vec3 sample_pos = pos + radius * tbn * samples[i];
         vec4 screen_sample_pos = VPBMatrix * vec4(sample_pos, 1.);
         float sample_depth = distance(texture(positionMap, screen_sample_pos.xy / screen_sample_pos.w).xyz, eyePosition);
         

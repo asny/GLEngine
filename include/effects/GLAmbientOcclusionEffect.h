@@ -12,11 +12,11 @@ namespace gle
     class GLAmbientOcclusionEffect : public GLPostEffect
     {
         float radius;
-        std::unique_ptr<GLTexture2D> sample_texture, noise_texture;
+        std::unique_ptr<GLTexture2D> noise_texture;
+        std::vector<glm::vec3> samples;
         const int noise_size = 4;
         const int sample_size = 16;
-        glm::mat4 bias_matrix = glm::mat4(
-                                          0.5, 0.0, 0.0, 0.0,
+        glm::mat4 bias_matrix = glm::mat4(0.5, 0.0, 0.0, 0.0,
                                           0.0, 0.5, 0.0, 0.0,
                                           0.0, 0.0, 0.5, 0.0,
                                           0.5, 0.5, 0.5, 1.0);
@@ -31,18 +31,16 @@ namespace gle
         
         void apply(const GLRenderTarget& source_render_target, float z_near, float z_far, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection)
         {
-            sample_texture->use(0);
-            GLUniform::use(shader, "sampleTexture", 0);
+            noise_texture->use(0);
+            GLUniform::use(shader, "noiseTexture", 0);
             
-            noise_texture->use(1);
-            GLUniform::use(shader, "noiseTexture", 1);
+            source_render_target.bind_color_texture_for_reading(1, 1);
+            GLUniform::use(shader, "positionMap", 1);
             
-            source_render_target.bind_color_texture_for_reading(1, 2);
-            GLUniform::use(shader, "positionMap", 2);
+            source_render_target.bind_color_texture_for_reading(2, 2);
+            GLUniform::use(shader, "normalMap", 2);
             
-            source_render_target.bind_color_texture_for_reading(2, 3);
-            GLUniform::use(shader, "normalMap", 3);
-            
+            GLUniform::use(shader, "samples", samples[0], sample_size);
             GLUniform::use(shader, "VPBMatrix", bias_matrix * projection * view);
             GLUniform::use(shader, "eyePosition", camera_position);
             const float WIN_SIZE_X = 2400;
@@ -58,19 +56,13 @@ namespace gle
         
         void create_sample_kernel()
         {
-            auto kernel = std::vector<float>(sample_size * 3);
             for (int i = 0; i < sample_size; ++i)
             {
                 float radius = random(0., 1.);
                 double theta = random(0., 2. * M_PI);
                 double phi = random(0., 0.5 * M_PI);
-                auto sample = radius * radius * glm::vec3(cos(theta) * sin(phi), sin(theta) * sin(phi), cos(phi));
-                
-                kernel[i*3] = sample.x;
-                kernel[i*3+1] = sample.y;
-                kernel[i*3+2] = sample.z;
+                samples.push_back(radius * radius * glm::vec3(cos(theta) * sin(phi), sin(theta) * sin(phi), cos(phi)));
             }
-            sample_texture = std::unique_ptr<GLTexture2D>(new GLTexture2D(&kernel[0], sample_size, 1));
         }
         
         void create_noise_texture()
