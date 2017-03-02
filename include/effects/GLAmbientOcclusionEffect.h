@@ -11,64 +11,67 @@ namespace gle
 {
     class GLAmbientOcclusionEffect : public GLPostEffect
     {
-        std::unique_ptr<GLTexture2D> sample_texture, noise_texture;
+        float radius;
+        std::unique_ptr<GLTexture2D> noise_texture;
+        std::vector<glm::vec3> samples;
+        const int noise_size = 4;
+        const int sample_size = 16;
+        glm::mat4 bias_matrix = glm::mat4(0.5, 0.0, 0.0, 0.0,
+                                          0.0, 0.5, 0.0, 0.0,
+                                          0.0, 0.0, 0.5, 0.0,
+                                          0.5, 0.5, 0.5, 1.0);
     public:
         
-        GLAmbientOcclusionEffect()
-        : GLPostEffect("../GLEngine/shaders/effect.vert",  "../GLEngine/shaders/ssao_effect.frag")
+        GLAmbientOcclusionEffect(float _radius = 1.f)
+            : GLPostEffect("../GLEngine/shaders/effect.vert",  "../GLEngine/shaders/ssao_effect.frag"), radius(_radius)
         {
             create_sample_kernel();
             create_noise_texture();
         }
         
-        void apply(const GLRenderTarget& source_render_target, float z_near, float z_far)
+        void apply(const GLRenderTarget& source_render_target, float z_near, float z_far, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection)
         {
-            sample_texture->use(0);
-            GLUniform::use(shader, "sampleTexture", 0);
+            noise_texture->use(0);
+            GLUniform::use(shader, "noiseTexture", 0);
             
-            noise_texture->use(1);
-            GLUniform::use(shader, "noiseTexture", 1);
+            source_render_target.bind_color_texture_for_reading(1, 1);
+            GLUniform::use(shader, "positionMap", 1);
             
             source_render_target.bind_color_texture_for_reading(2, 2);
             GLUniform::use(shader, "normalMap", 2);
             
-            source_render_target.bind_depth_texture_for_reading(3);
-            GLUniform::use(shader, "depthMap", 3);
+            GLUniform::use(shader, "samples", samples[0], sample_size);
+            GLUniform::use(shader, "VPBMatrix", bias_matrix * projection * view);
+            GLUniform::use(shader, "eyePosition", camera_position);
+            const float WIN_SIZE_X = 2400;
+            const float WIN_SIZE_Y = 1400;
+            GLUniform::use(shader, "noiseUvScale", glm::vec2(WIN_SIZE_X / noise_size, WIN_SIZE_Y / noise_size));
+            GLUniform::use(shader, "sampleSize", sample_size);
+            GLUniform::use(shader, "radius", radius);
             
-            GLPostEffect::apply(source_render_target, z_near, z_far);
+            draw();
         }
         
     private:
         
         void create_sample_kernel()
         {
-            const int kernel_size = 4;
-            auto kernel = std::vector<float>(kernel_size * kernel_size * 3);
-            for (int i = 0; i < kernel_size * kernel_size; ++i)
+            for (int i = 0; i < sample_size; ++i)
             {
-                auto sample = glm::normalize(glm::vec3(random(-1.0f, 1.0f), random(-1.0f, 1.0f), random(0.0f, 1.0f)));
-                sample *= random(0.0f, 1.0f);
-                float scale = float(i) / float(kernel_size);
-                float t = scale * scale;
-                sample *= (1. - t) * 0.1 + t;
-                
-                kernel[i*3] = sample.x;
-                kernel[i*3+1] = sample.y;
-                kernel[i*3+2] = sample.z;
+                float radius = random(0., 1.);
+                double theta = random(0., 2. * M_PI);
+                double phi = random(0., 0.5 * M_PI);
+                samples.push_back(radius * radius * glm::vec3(cos(theta) * sin(phi), sin(theta) * sin(phi), cos(phi)));
             }
-            sample_texture = std::unique_ptr<GLTexture2D>(new GLTexture2D(&kernel[0], kernel_size, kernel_size));
         }
         
         void create_noise_texture()
         {
-            const int noise_size = 4;
             auto noise = std::vector<float>(noise_size * noise_size * 3);
             for (int i = 0; i < noise_size * noise_size; ++i)
             {
-                auto n = normalize(glm::vec3(
-                                random(-1.0f, 1.0f),
-                                random(-1.0f, 1.0f),
-                                0.0f));
+                double angle = random(0., 2. * M_PI);
+                auto n = glm::normalize(glm::vec3(cos(angle), sin(angle), 0.f));
                 noise[i*3] = n.x;
                 noise[i*3+1] = n.y;
                 noise[i*3+2] = n.z;

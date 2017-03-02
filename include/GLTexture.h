@@ -163,8 +163,8 @@ namespace gle
                          GL_FLOAT,
                          pixels);
             
-            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             glTexParameteri(target, GL_TEXTURE_WRAP_S, wrapMode);
             glTexParameteri(target, GL_TEXTURE_WRAP_T, wrapMode);
         }
