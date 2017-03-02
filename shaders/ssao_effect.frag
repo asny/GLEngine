@@ -4,11 +4,12 @@ uniform sampler2D positionMap;
 uniform sampler2D normalMap;
 
 uniform vec3 samples[64];
+uniform int sampleSize;
 uniform sampler2D noiseTexture;
+uniform int noiseSize;
+
 uniform mat4 VPBMatrix;
 uniform vec3 eyePosition;
-uniform vec2 noiseUvScale;
-uniform int sampleSize;
 uniform float radius;
 
 in vec2 uv;
@@ -21,7 +22,8 @@ void main()
     float depth = distance(pos, eyePosition);
     
    	vec3 normal = normalize(texture(normalMap, uv).xyz);
-    vec3 random_dir = texture(noiseTexture, uv * noiseUvScale).xyz;
+    vec2 noise_uv = mod(gl_FragCoord.xy, noiseSize) / noiseSize;
+    vec3 random_dir = texture(noiseTexture, noise_uv).xyz;
     vec3 tangent = normalize(random_dir - normal * dot(random_dir, normal));
     vec3 bitangent = cross(normal, tangent);
     mat3 tbn = mat3(tangent, bitangent, normal);
