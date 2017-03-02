@@ -29,7 +29,7 @@ namespace gle
             create_noise_texture();
         }
         
-        void apply(const GLRenderTarget& source_render_target, float z_near, float z_far, const glm::mat4& view, const glm::mat4& projection)
+        void apply(const GLRenderTarget& source_render_target, float z_near, float z_far, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection)
         {
             sample_texture->use(0);
             GLUniform::use(shader, "sampleTexture", 0);
@@ -44,7 +44,7 @@ namespace gle
             GLUniform::use(shader, "normalMap", 3);
             
             GLUniform::use(shader, "VPBMatrix", bias_matrix * projection * view);
-            GLUniform::use(shader, "VMatrix", view);
+            GLUniform::use(shader, "eyePosition", camera_position);
             const float WIN_SIZE_X = 2400;
             const float WIN_SIZE_Y = 1400;
             GLUniform::use(shader, "noiseUvScale", glm::vec2(WIN_SIZE_X / noise_size, WIN_SIZE_Y / noise_size));

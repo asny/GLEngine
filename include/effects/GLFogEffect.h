@@ -23,7 +23,7 @@ namespace gle
             
         }
         
-        void apply(const GLRenderTarget& source_render_target, float z_near, float z_far, const glm::mat4& view, const glm::mat4& projection)
+        void apply(const GLRenderTarget& source_render_target, float z_near, float z_far, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection)
         {
             noise_texture->use(0);
             GLUniform::use(shader, "noiseTexture", 0);

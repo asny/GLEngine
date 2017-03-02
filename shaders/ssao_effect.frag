@@ -6,7 +6,7 @@ uniform sampler2D normalMap;
 uniform sampler2D sampleTexture;
 uniform sampler2D noiseTexture;
 uniform mat4 VPBMatrix;
-uniform mat4 VMatrix;
+uniform vec3 eyePosition;
 uniform vec2 noiseUvScale;
 uniform int sampleSize;
 uniform float radius;
@@ -18,7 +18,7 @@ layout (location = 0) out vec4 color;
 void main()
 {
     vec3 pos = texture(positionMap, uv).xyz;
-    float depth = abs((VMatrix * vec4(pos, 1.f)).z);
+    float depth = distance(pos, eyePosition);
     
    	vec3 normal = normalize(texture(normalMap, uv).xyz);
     vec3 random_dir = texture(noiseTexture, uv * noiseUvScale).xyz;
@@ -32,8 +32,8 @@ void main()
         // get sample position and depth
         vec3 sample_pos = pos + radius * tbn * texture(sampleTexture, vec2((i + 0.5)/sampleSize, 0.5)).xyz;
         vec4 screen_sample_pos = VPBMatrix * vec4(sample_pos, 1.);
-        float sample_depth = abs((VMatrix * vec4(sample_pos, 1.f)).z);
-        float true_depth = abs((VMatrix * vec4(texture(positionMap, screen_sample_pos.xy / screen_sample_pos.w).xyz, 1.)).z);
+        float sample_depth = distance(sample_pos, eyePosition);
+        float true_depth = distance(texture(positionMap, screen_sample_pos.xy / screen_sample_pos.w).xyz, eyePosition);
         
         // range check & accumulate
         if(abs(depth - true_depth) < radius && true_depth + 0.025 <= sample_depth)
