@@ -10,13 +10,11 @@
 		491B8E2D1E5CDA3300BE362A /* shadows.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 491B8E1E1E5CD8CD00BE362A /* shadows.cpp */; };
 		491B8E2E1E5CDA7A00BE362A /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EBFAED1E4382F000503199 /* SDL2_image.framework */; };
 		491B8E2F1E5CDA7A00BE362A /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EBFAEF1E43870000503199 /* SDL2.framework */; };
-		491B8E301E5CDA7E00BE362A /* libglfw.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4954F2441E06F47C005B5739 /* libglfw.dylib */; };
 		491B8E311E5CDA8800BE362A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4954F2421E06F459005B5739 /* OpenGL.framework */; };
 		491B8E3D1E5CDC9100BE362A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4954F2421E06F459005B5739 /* OpenGL.framework */; };
 		491B8E3E1E5CDC9900BE362A /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EBFAED1E4382F000503199 /* SDL2_image.framework */; };
 		491B8E3F1E5CDC9900BE362A /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EBFAEF1E43870000503199 /* SDL2.framework */; };
 		491B8E401E5CDCB400BE362A /* hello_world.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 491B8E1D1E5CD8CD00BE362A /* hello_world.cpp */; };
-		491B8E411E5CDCC200BE362A /* libglfw.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4954F2441E06F47C005B5739 /* libglfw.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -83,7 +81,6 @@
 		49471A581E14591C006E8AD5 /* light_pass.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = light_pass.vert; path = ../shaders/light_pass.vert; sourceTree = "<group>"; };
 		49471A5B1E152693006E8AD5 /* GLLight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLLight.h; path = ../include/lights/GLLight.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4954F2421E06F459005B5739 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		4954F2441E06F47C005B5739 /* libglfw.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.dylib; path = ../../../../../opt/local/lib/libglfw.dylib; sourceTree = "<group>"; };
 		495DABC91E621AF700AD5816 /* GLAmbientOcclusionEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLAmbientOcclusionEffect.h; path = ../include/effects/GLAmbientOcclusionEffect.h; sourceTree = "<group>"; };
 		495DABCA1E621C0700AD5816 /* effect.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = effect.vert; path = ../shaders/effect.vert; sourceTree = "<group>"; };
 		495DABCB1E621C0700AD5816 /* ssao_effect.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ssao_effect.frag; path = ../shaders/ssao_effect.frag; sourceTree = "<group>"; };
@@ -100,7 +97,6 @@
 				491B8E311E5CDA8800BE362A /* OpenGL.framework in Frameworks */,
 				491B8E2E1E5CDA7A00BE362A /* SDL2_image.framework in Frameworks */,
 				491B8E2F1E5CDA7A00BE362A /* SDL2.framework in Frameworks */,
-				491B8E301E5CDA7E00BE362A /* libglfw.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,7 +107,6 @@
 				491B8E3D1E5CDC9100BE362A /* OpenGL.framework in Frameworks */,
 				491B8E3E1E5CDC9900BE362A /* SDL2_image.framework in Frameworks */,
 				491B8E3F1E5CDC9900BE362A /* SDL2.framework in Frameworks */,
-				491B8E411E5CDCC200BE362A /* libglfw.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,7 +199,6 @@
 		4954F22E1E06EF8D005B5739 = {
 			isa = PBXGroup;
 			children = (
-				4954F2441E06F47C005B5739 /* libglfw.dylib */,
 				4900D19A1E0DC4DE00F92EBD /* Mesh */,
 				4900D17D1E0A72A600F92EBD /* GLEngine */,
 				4900D18E1E0C57A600F92EBD /* Shaders */,
