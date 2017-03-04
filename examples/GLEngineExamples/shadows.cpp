@@ -12,15 +12,13 @@
 #include "gtx/rotate_vector.hpp"
 #include "GLAmbientOcclusionEffect.h"
 
-#define GLFW_INCLUDE_NONE
-#include "glfw3.h"
+#define SDL_MAIN_HANDLED
+#include "SDL.h"
 
 using namespace std;
 using namespace glm;
 using namespace gle;
 using namespace mesh;
-
-GLFWwindow* gWindow = NULL;
 
 shared_ptr<float> cube_rotation_angle = make_shared<float>(0.f);
 
@@ -45,47 +43,48 @@ void print_fps(double elapsedTime)
 
 void update(GLCamera& camera)
 {
-    static float last_time = glfwGetTime();
-    float time = glfwGetTime();
-    float elapsed_time = time - last_time;
+    static float last_time = time();
+    float current_time = time();
+    float elapsed_time = current_time - last_time;
+    last_time = current_time;
     
     print_fps(elapsed_time);
-    *cube_rotation_angle = time;
+    *cube_rotation_angle = current_time;
     
     static vec3 view_position = vec3(0., 0., 5.);
     static vec3 view_direction = vec3(0., 0., -1.);
     const float speed = 3.;
     
-    if(glfwGetKey(gWindow, 'S'))
+    const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
+    
+    if(currentKeyStates[ SDL_SCANCODE_S ])
     {
         view_position -= speed * elapsed_time * view_direction;
     }
-    else if(glfwGetKey(gWindow, 'W'))
+    else if(currentKeyStates[ SDL_SCANCODE_W ])
     {
         view_position += speed * elapsed_time * view_direction;
     }
     
     auto side = normalize(cross(view_direction, vec3(0.,1.,0.)));
     auto up = normalize(cross(side, view_direction));
-    if(glfwGetKey(gWindow, 'A'))
+    if(currentKeyStates[ SDL_SCANCODE_A ])
     {
         view_direction = vec3(glm::rotate(mat4(), elapsed_time, up) * vec4(view_direction, 1.));
     }
-    else if(glfwGetKey(gWindow, 'D'))
+    else if(currentKeyStates[ SDL_SCANCODE_D ])
     {
         view_direction = vec3(glm::rotate(mat4(), -elapsed_time, up) * vec4(view_direction, 1.));
     }
-    else if(glfwGetKey(gWindow, 'E'))
+    else if(currentKeyStates[ SDL_SCANCODE_E ])
     {
         view_direction = vec3(glm::rotate(mat4(), -elapsed_time, side) * vec4(view_direction, 1.));
     }
-    else if(glfwGetKey(gWindow, 'Q'))
+    else if(currentKeyStates[ SDL_SCANCODE_Q ])
     {
         view_direction = vec3(glm::rotate(mat4(), elapsed_time, side) * vec4(view_direction, 1.));
     }
     camera.set_view(view_position, view_direction);
-    
-    last_time = time;
 }
 
 void create_cube(GLScene& root)
@@ -108,32 +107,32 @@ void create_room(GLScene& root)
 
 int main(int argc, const char * argv[])
 {
-    int WIN_SIZE_X = 1200;
-    int WIN_SIZE_Y = 700;
+    // Initialize SDL
+    if( SDL_Init( SDL_INIT_EVERYTHING ) < 0 )
+    {
+        printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
+        throw std::runtime_error("SDL init failed");
+    }
     
-    // initialise GLFW
-    glfwSetErrorCallback(on_error);
-    if(!glfwInit())
-        throw std::runtime_error("glfwInit failed");
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     
-    // Open a window with GLFW
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-    gWindow = glfwCreateWindow(WIN_SIZE_X, WIN_SIZE_Y, "GLEngine example 1", NULL, NULL);
-    if(!gWindow)
-        throw std::runtime_error("glfwCreateWindow failed. Can your hardware handle OpenGL 3.3?");
+    // Create window
+    int window_width = 1200;
+    int window_height = 700;
+    auto window = SDL_CreateWindow( "Shadows", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, window_width, window_height, SDL_WINDOW_OPENGL|SDL_WINDOW_RESIZABLE );
+    if( window == NULL )
+    {
+        printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
+        throw std::runtime_error("SDL init failed");
+    }
     
-    // GLFW settings
-    glfwSetInputMode(gWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glfwSetCursorPos(gWindow, 0, 0);
-    glfwMakeContextCurrent(gWindow);
-    glfwGetFramebufferSize(gWindow, &WIN_SIZE_X, &WIN_SIZE_Y);
+    // Create context
+    auto glcontext = SDL_GL_CreateContext(window);
     
     // Create camera
-    auto camera = GLCamera(WIN_SIZE_X, WIN_SIZE_Y);
+    auto camera = GLCamera(window_width, window_height);
     camera.add_post_effect(make_shared<GLAmbientOcclusionEffect>());
     
     // Create scene
@@ -144,10 +143,18 @@ int main(int argc, const char * argv[])
     scene.add_light(std::make_shared<GLDirectionalLight>(glm::vec3(1., -1., 0.)));
     
     // run while the window is open
-    while(!glfwWindowShouldClose(gWindow))
+    bool quit = false;
+    while(!quit)
     {
         // process pending events
-        glfwPollEvents();
+        SDL_Event e;
+        while( SDL_PollEvent( &e ) != 0 )
+        {
+            if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE)
+            {
+                quit = true;
+            }
+        }
         
         // update the scene based on the time elapsed since last update
         update(camera);
@@ -155,14 +162,17 @@ int main(int argc, const char * argv[])
         // draw one frame
         camera.draw(scene);
         
-        glfwSwapBuffers(gWindow);
-        
-        //exit program if escape key is pressed
-        if(glfwGetKey(gWindow, GLFW_KEY_ESCAPE))
-            glfwSetWindowShouldClose(gWindow, GL_TRUE);
+        SDL_GL_SwapWindow(window);
     }
     
-    // clean up and exit
-    glfwTerminate();
+    // Delete context
+    SDL_GL_DeleteContext(glcontext);
+    
+    // Destroy window
+    SDL_DestroyWindow( window );
+    window = NULL;
+    
+    // Quit SDL subsystems
+    SDL_Quit();
     return 0;
 }
