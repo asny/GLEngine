@@ -24,9 +24,10 @@ void main()
     else
     {
         float dist = distance(pos.xyz, eyePosition);
-        float noise = texture(noiseTexture, uv).r;
+        float noise = texture(noiseTexture, 0.1 * pos.xz).r;
         
-        float x = dist * fogDensity + 0.15 * noise * cos(time + noise * 3.14f);
+        float t = time + 0.4 * 3.14 * noise;
+        float x = (1. + 0.1 * cos(t)) * dist * fogDensity;
         factor = 1.0 / exp(x * x);
         factor = clamp( factor, minVisibility, 1.0 );
     }
