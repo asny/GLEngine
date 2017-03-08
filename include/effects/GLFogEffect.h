@@ -15,7 +15,7 @@ namespace gle
     public:
         glm::vec3 color = glm::vec3(0.8, 0.8, 0.8);
         float density = 0.2;
-        float min_visibility = 0.05;
+        float no_fog_height = 5;
         
         GLFogEffect(std::shared_ptr<GLTexture> _noise_texture)
         : GLPostEffect("../GLEngine/shaders/effect.vert",  "../GLEngine/shaders/fog_effect.frag"), noise_texture(_noise_texture)
@@ -33,7 +33,7 @@ namespace gle
             
             GLUniform::use(shader, "fogColor", color);
             GLUniform::use(shader, "fogDensity", density);
-            GLUniform::use(shader, "minVisibility", min_visibility);
+            GLUniform::use(shader, "noFogHeight", no_fog_height);
             GLUniform::use(shader, "time", time());
             GLUniform::use(shader, "eyePosition", camera_position);
             
