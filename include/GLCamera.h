@@ -24,7 +24,6 @@ namespace gle {
         glm::mat4 projection = glm::mat4(1.);
         
         GLRenderTarget geometry_pass_render_target;
-        std::vector<std::shared_ptr<GLPostEffect>> post_effects;
         
     public:
         
@@ -57,14 +56,18 @@ namespace gle {
         {
             deferred_pass(scene);
             forward_pass(scene);
-            post_effect_pass();
             
             check_gl_error();
         }
         
-        void add_post_effect(std::shared_ptr<GLPostEffect> post_effect)
+        void apply_post_effect(const GLPostEffect& post_effect)
         {
-            post_effects.push_back(post_effect);
+            GLDefaultRenderTarget::get().use();
+            
+            glEnable(GL_BLEND);
+            glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            
+            post_effect.apply(geometry_pass_render_target, position, view, projection);
         }
         
     private:
@@ -95,19 +98,6 @@ namespace gle {
             GLDefaultRenderTarget::get().clear();
             
             scene.shine_light(position, direction, geometry_pass_render_target, GLDefaultRenderTarget::get());
-        }
-        
-        void post_effect_pass()
-        {
-            GLDefaultRenderTarget::get().use();
-            
-            glEnable(GL_BLEND);
-            glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            
-            for(auto post_effect : post_effects)
-            {
-                post_effect->apply(geometry_pass_render_target, position, view, projection);
-            }
         }
     };
 }

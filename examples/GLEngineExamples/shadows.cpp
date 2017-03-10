@@ -133,7 +133,6 @@ int main(int argc, const char * argv[])
     
     // Create camera
     auto camera = GLCamera(window_width, window_height);
-    camera.add_post_effect(make_shared<GLAmbientOcclusionEffect>());
     
     // Create scene
     auto scene = GLScene();
@@ -141,6 +140,9 @@ int main(int argc, const char * argv[])
     create_cube(scene);
     scene.add_light(std::make_shared<GLPointLight>(glm::vec3(-1., 5., 1.)));
     scene.add_light(std::make_shared<GLDirectionalLight>(glm::vec3(1., -1., 0.)));
+    
+    // Create post effect
+    auto ssao = GLAmbientOcclusionEffect();
     
     // run while the window is open
     bool quit = false;
@@ -161,6 +163,7 @@ int main(int argc, const char * argv[])
         
         // draw one frame
         camera.draw(scene);
+        camera.apply_post_effect(ssao);
         
         SDL_GL_SwapWindow(window);
     }
