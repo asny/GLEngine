@@ -37,6 +37,7 @@ namespace gle
             
             texture->use(0);
             GLUniform::use(shader, "texture0", 0);
+            GLUniform::use(shader, "eyePosition", camera_position);
             GLUniform::use(shader, "MVMatrix", view * model);
             GLUniform::use(shader, "PMatrix", projection);
         }
