@@ -8,6 +8,7 @@
 #include "materials/GLFlatColorMaterial.h"
 #include "materials/GLColorMaterial.h"
 #include "materials/GLStandardMaterial.h"
+#include "effects/GLDebugEffect.h"
 #include "gtx/rotate_vector.hpp"
 
 #define SDL_MAIN_HANDLED
@@ -108,6 +109,9 @@ int main(int argc, const char * argv[])
     scene.add_light(std::make_shared<GLDirectionalLight>(glm::vec3(1., -1., 0.)));
     create_cubes(scene);
     
+    // Create debug effect
+    auto debug_effect = GLDebugEffect();
+    
     // run while the window is open
     bool quit = false;
     while(!quit)
@@ -120,6 +124,14 @@ int main(int argc, const char * argv[])
             {
                 quit = true;
             }
+            if( e.key.keysym.sym == SDLK_0)
+                debug_effect.type = gle::GLDebugEffect::NONE;
+            if( e.key.keysym.sym == SDLK_1)
+                debug_effect.type = gle::GLDebugEffect::POSITION;
+            if( e.key.keysym.sym == SDLK_2)
+                debug_effect.type = gle::GLDebugEffect::NORMAL;
+            if( e.key.keysym.sym == SDLK_3)
+                debug_effect.type = gle::GLDebugEffect::COLOR;
         }
         
         // update the scene based on the time elapsed since last update
@@ -127,6 +139,7 @@ int main(int argc, const char * argv[])
         
         // draw one frame
         camera.draw(scene);
+        camera.apply_post_effect(debug_effect);
         
         SDL_GL_SwapWindow(window);
     }

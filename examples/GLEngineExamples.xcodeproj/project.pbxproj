@@ -72,6 +72,8 @@
 		491B8E361E5CDC7700BE362A /* hello_world */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hello_world; sourceTree = BUILT_PRODUCTS_DIR; };
 		491B8E421E5D798C00BE362A /* GLPostEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLPostEffect.h; path = ../include/GLPostEffect.h; sourceTree = "<group>"; };
 		491B8E451E5E0B3D00BE362A /* fog_effect.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = fog_effect.frag; path = ../shaders/fog_effect.frag; sourceTree = "<group>"; };
+		491E99E51E8253200007A627 /* debug_effect.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = debug_effect.frag; path = ../shaders/debug_effect.frag; sourceTree = "<group>"; };
+		491E99E61E82533B0007A627 /* GLDebugEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLDebugEffect.h; path = ../include/effects/GLDebugEffect.h; sourceTree = "<group>"; };
 		493E30911E5F5DA4001924E5 /* GLFogEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLFogEffect.h; path = ../include/effects/GLFogEffect.h; sourceTree = "<group>"; };
 		4942D5B01E4F377100C4F61E /* GLRenderTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLRenderTarget.h; path = ../include/GLRenderTarget.h; sourceTree = "<group>"; };
 		49471A541E131A30006E8AD5 /* GLColorMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLColorMaterial.h; path = ../include/materials/GLColorMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -147,6 +149,7 @@
 		4900D18E1E0C57A600F92EBD /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				491E99E51E8253200007A627 /* debug_effect.frag */,
 				495DABCA1E621C0700AD5816 /* effect.vert */,
 				495DABCB1E621C0700AD5816 /* ssao_effect.frag */,
 				491B8E451E5E0B3D00BE362A /* fog_effect.frag */,
@@ -184,6 +187,7 @@
 			children = (
 				493E30911E5F5DA4001924E5 /* GLFogEffect.h */,
 				495DABC91E621AF700AD5816 /* GLAmbientOcclusionEffect.h */,
+				491E99E61E82533B0007A627 /* GLDebugEffect.h */,
 			);
 			name = Effects;
 			sourceTree = "<group>";
