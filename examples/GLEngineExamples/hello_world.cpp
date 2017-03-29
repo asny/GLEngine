@@ -21,11 +21,6 @@ using namespace mesh;
 
 shared_ptr<float> cube_rotation_angle = make_shared<float>(0.f);
 
-void on_error(int errorCode, const char* msg)
-{
-    throw std::runtime_error(msg);
-}
-
 void print_fps(double elapsedTime)
 {
     static int draws = 0;
