@@ -17,7 +17,7 @@ namespace gle
         std::shared_ptr<GLTexture3D> texture;
     public:
         
-        GLSkyboxMaterial(std::shared_ptr<GLTexture3D> _texture) : GLMaterial(FORWARD), texture(_texture)
+        GLSkyboxMaterial(std::shared_ptr<GLTexture3D> _texture) : GLMaterial(DEFERRED), texture(_texture)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/skybox.vert",  "../GLEngine/shaders/skybox.frag");
         }
@@ -37,6 +37,7 @@ namespace gle
             
             texture->use(0);
             GLUniform::use(shader, "texture0", 0);
+            GLUniform::use(shader, "eyePosition", camera_position);
             GLUniform::use(shader, "MVMatrix", view * model);
             GLUniform::use(shader, "PMatrix", projection);
         }

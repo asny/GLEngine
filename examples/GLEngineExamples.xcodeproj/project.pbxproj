@@ -7,15 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4954F23B1E06EF8D005B5739 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4954F23A1E06EF8D005B5739 /* main.cpp */; };
-		4954F2431E06F459005B5739 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4954F2421E06F459005B5739 /* OpenGL.framework */; };
-		4954F2451E06F47C005B5739 /* libglfw.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4954F2441E06F47C005B5739 /* libglfw.dylib */; };
-		49EBFAEE1E4382F000503199 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EBFAED1E4382F000503199 /* SDL2_image.framework */; };
-		49EBFAF11E438B3800503199 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EBFAEF1E43870000503199 /* SDL2.framework */; };
+		491B8E2D1E5CDA3300BE362A /* shadows.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 491B8E1E1E5CD8CD00BE362A /* shadows.cpp */; };
+		491B8E2E1E5CDA7A00BE362A /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EBFAED1E4382F000503199 /* SDL2_image.framework */; };
+		491B8E2F1E5CDA7A00BE362A /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EBFAEF1E43870000503199 /* SDL2.framework */; };
+		491B8E311E5CDA8800BE362A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4954F2421E06F459005B5739 /* OpenGL.framework */; };
+		491B8E3D1E5CDC9100BE362A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4954F2421E06F459005B5739 /* OpenGL.framework */; };
+		491B8E3E1E5CDC9900BE362A /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EBFAED1E4382F000503199 /* SDL2_image.framework */; };
+		491B8E3F1E5CDC9900BE362A /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49EBFAEF1E43870000503199 /* SDL2.framework */; };
+		491B8E401E5CDCB400BE362A /* hello_world.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 491B8E1D1E5CD8CD00BE362A /* hello_world.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		4954F2351E06EF8D005B5739 /* CopyFiles */ = {
+		491B8E241E5CDA1900BE362A /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		491B8E341E5CDC7700BE362A /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -41,8 +53,6 @@
 		4900D18A1E0B224700F92EBD /* GLTextureMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLTextureMaterial.h; path = ../include/materials/GLTextureMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4900D18B1E0B22DE00F92EBD /* GLSkyboxMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLSkyboxMaterial.h; path = ../include/materials/GLSkyboxMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		4900D18F1E0C57BF00F92EBD /* flat.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = flat.geom; path = ../shaders/flat.geom; sourceTree = "<group>"; };
-		4900D1901E0C57BF00F92EBD /* gouraud.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = gouraud.frag; path = ../shaders/gouraud.frag; sourceTree = "<group>"; };
-		4900D1911E0C57BF00F92EBD /* gouraud.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = gouraud.vert; path = ../shaders/gouraud.vert; sourceTree = "<group>"; };
 		4900D1921E0C57BF00F92EBD /* particle.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = particle.geom; path = ../shaders/particle.geom; sourceTree = "<group>"; };
 		4900D1931E0C57BF00F92EBD /* phong.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = phong.frag; path = ../shaders/phong.frag; sourceTree = "<group>"; };
 		4900D1941E0C57BF00F92EBD /* phong.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = phong.vert; path = ../shaders/phong.vert; sourceTree = "<group>"; };
@@ -56,6 +66,15 @@
 		4900D19D1E0DC4FB00F92EBD /* Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mesh.h; path = ../../Mesh/include/Mesh.h; sourceTree = "<group>"; };
 		4900D19E1E0DC4FB00F92EBD /* MeshCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeshCreator.h; path = ../../Mesh/include/MeshCreator.h; sourceTree = "<group>"; };
 		4900D19F1E0DC4FB00F92EBD /* Property.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Property.h; path = ../../Mesh/include/Property.h; sourceTree = "<group>"; };
+		491B8E1D1E5CD8CD00BE362A /* hello_world.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = hello_world.cpp; path = GLEngineExamples/hello_world.cpp; sourceTree = SOURCE_ROOT; };
+		491B8E1E1E5CD8CD00BE362A /* shadows.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = shadows.cpp; path = GLEngineExamples/shadows.cpp; sourceTree = SOURCE_ROOT; };
+		491B8E261E5CDA1900BE362A /* shadows */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = shadows; sourceTree = BUILT_PRODUCTS_DIR; };
+		491B8E361E5CDC7700BE362A /* hello_world */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hello_world; sourceTree = BUILT_PRODUCTS_DIR; };
+		491B8E421E5D798C00BE362A /* GLPostEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLPostEffect.h; path = ../include/GLPostEffect.h; sourceTree = "<group>"; };
+		491B8E451E5E0B3D00BE362A /* fog_effect.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = fog_effect.frag; path = ../shaders/fog_effect.frag; sourceTree = "<group>"; };
+		491E99E51E8253200007A627 /* debug_effect.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = debug_effect.frag; path = ../shaders/debug_effect.frag; sourceTree = "<group>"; };
+		491E99E61E82533B0007A627 /* GLDebugEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLDebugEffect.h; path = ../include/effects/GLDebugEffect.h; sourceTree = "<group>"; };
+		493E30911E5F5DA4001924E5 /* GLFogEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLFogEffect.h; path = ../include/effects/GLFogEffect.h; sourceTree = "<group>"; };
 		4942D5B01E4F377100C4F61E /* GLRenderTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLRenderTarget.h; path = ../include/GLRenderTarget.h; sourceTree = "<group>"; };
 		49471A541E131A30006E8AD5 /* GLColorMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLColorMaterial.h; path = ../include/materials/GLColorMaterial.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		49471A551E131AB9006E8AD5 /* color_material.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = color_material.frag; path = ../shaders/color_material.frag; sourceTree = "<group>"; };
@@ -63,24 +82,33 @@
 		49471A571E14591C006E8AD5 /* light_pass.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = light_pass.frag; path = ../shaders/light_pass.frag; sourceTree = "<group>"; };
 		49471A581E14591C006E8AD5 /* light_pass.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = light_pass.vert; path = ../shaders/light_pass.vert; sourceTree = "<group>"; };
 		49471A5B1E152693006E8AD5 /* GLLight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = GLLight.h; path = ../include/lights/GLLight.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		4954F2371E06EF8D005B5739 /* GLEngineExample1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GLEngineExample1; sourceTree = BUILT_PRODUCTS_DIR; };
-		4954F23A1E06EF8D005B5739 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4954F2421E06F459005B5739 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		4954F2441E06F47C005B5739 /* libglfw.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.dylib; path = ../../../../../opt/local/lib/libglfw.dylib; sourceTree = "<group>"; };
+		495DABC91E621AF700AD5816 /* GLAmbientOcclusionEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLAmbientOcclusionEffect.h; path = ../include/effects/GLAmbientOcclusionEffect.h; sourceTree = "<group>"; };
+		495DABCA1E621C0700AD5816 /* effect.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = effect.vert; path = ../shaders/effect.vert; sourceTree = "<group>"; };
+		495DABCB1E621C0700AD5816 /* ssao_effect.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ssao_effect.frag; path = ../shaders/ssao_effect.frag; sourceTree = "<group>"; };
 		497D00901E22D1E400DC549A /* GLState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLState.h; path = ../include/GLState.h; sourceTree = "<group>"; };
 		49EBFAED1E4382F000503199 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		49EBFAEF1E43870000503199 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		4954F2341E06EF8D005B5739 /* Frameworks */ = {
+		491B8E231E5CDA1900BE362A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4954F2451E06F47C005B5739 /* libglfw.dylib in Frameworks */,
-				4954F2431E06F459005B5739 /* OpenGL.framework in Frameworks */,
-				49EBFAF11E438B3800503199 /* SDL2.framework in Frameworks */,
-				49EBFAEE1E4382F000503199 /* SDL2_image.framework in Frameworks */,
+				491B8E311E5CDA8800BE362A /* OpenGL.framework in Frameworks */,
+				491B8E2E1E5CDA7A00BE362A /* SDL2_image.framework in Frameworks */,
+				491B8E2F1E5CDA7A00BE362A /* SDL2.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		491B8E331E5CDC7700BE362A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				491B8E3D1E5CDC9100BE362A /* OpenGL.framework in Frameworks */,
+				491B8E3E1E5CDC9900BE362A /* SDL2_image.framework in Frameworks */,
+				491B8E3F1E5CDC9900BE362A /* SDL2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +129,7 @@
 				4900D1861E0A72D000F92EBD /* GLVertexAttribute.h */,
 				497D00901E22D1E400DC549A /* GLState.h */,
 				4942D5B01E4F377100C4F61E /* GLRenderTarget.h */,
+				491B8E421E5D798C00BE362A /* GLPostEffect.h */,
 			);
 			name = GLEngine;
 			sourceTree = "<group>";
@@ -120,13 +149,15 @@
 		4900D18E1E0C57A600F92EBD /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				491E99E51E8253200007A627 /* debug_effect.frag */,
+				495DABCA1E621C0700AD5816 /* effect.vert */,
+				495DABCB1E621C0700AD5816 /* ssao_effect.frag */,
+				491B8E451E5E0B3D00BE362A /* fog_effect.frag */,
 				49471A571E14591C006E8AD5 /* light_pass.frag */,
 				49471A581E14591C006E8AD5 /* light_pass.vert */,
 				49471A551E131AB9006E8AD5 /* color_material.frag */,
 				49471A561E131AB9006E8AD5 /* color_material.vert */,
 				4900D18F1E0C57BF00F92EBD /* flat.geom */,
-				4900D1901E0C57BF00F92EBD /* gouraud.frag */,
-				4900D1911E0C57BF00F92EBD /* gouraud.vert */,
 				4900D1921E0C57BF00F92EBD /* particle.geom */,
 				4900D1931E0C57BF00F92EBD /* phong.frag */,
 				4900D1941E0C57BF00F92EBD /* phong.vert */,
@@ -151,6 +182,16 @@
 			name = Mesh;
 			sourceTree = "<group>";
 		};
+		493E30901E5F5D5F001924E5 /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				493E30911E5F5DA4001924E5 /* GLFogEffect.h */,
+				495DABC91E621AF700AD5816 /* GLAmbientOcclusionEffect.h */,
+				491E99E61E82533B0007A627 /* GLDebugEffect.h */,
+			);
+			name = Effects;
+			sourceTree = "<group>";
+		};
 		49471A591E152619006E8AD5 /* Lights */ = {
 			isa = PBXGroup;
 			children = (
@@ -162,13 +203,13 @@
 		4954F22E1E06EF8D005B5739 = {
 			isa = PBXGroup;
 			children = (
-				4954F2441E06F47C005B5739 /* libglfw.dylib */,
 				4900D19A1E0DC4DE00F92EBD /* Mesh */,
 				4900D17D1E0A72A600F92EBD /* GLEngine */,
 				4900D18E1E0C57A600F92EBD /* Shaders */,
+				493E30901E5F5D5F001924E5 /* Effects */,
 				49471A591E152619006E8AD5 /* Lights */,
 				4900D1871E0AD83800F92EBD /* Materials */,
-				4954F2391E06EF8D005B5739 /* GLEngineExample1 */,
+				4954F2391E06EF8D005B5739 /* GLEngineExamples */,
 				4954F2381E06EF8D005B5739 /* Products */,
 				4954F2411E06F459005B5739 /* Frameworks */,
 			);
@@ -177,16 +218,19 @@
 		4954F2381E06EF8D005B5739 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4954F2371E06EF8D005B5739 /* GLEngineExample1 */,
+				491B8E261E5CDA1900BE362A /* shadows */,
+				491B8E361E5CDC7700BE362A /* hello_world */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4954F2391E06EF8D005B5739 /* GLEngineExample1 */ = {
+		4954F2391E06EF8D005B5739 /* GLEngineExamples */ = {
 			isa = PBXGroup;
 			children = (
-				4954F23A1E06EF8D005B5739 /* main.cpp */,
+				491B8E1D1E5CD8CD00BE362A /* hello_world.cpp */,
+				491B8E1E1E5CD8CD00BE362A /* shadows.cpp */,
 			);
+			name = GLEngineExamples;
 			path = GLEngineExample1;
 			sourceTree = "<group>";
 		};
@@ -203,21 +247,38 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4954F2361E06EF8D005B5739 /* GLEngineExample1 */ = {
+		491B8E251E5CDA1900BE362A /* shadows */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4954F23E1E06EF8D005B5739 /* Build configuration list for PBXNativeTarget "GLEngineExample1" */;
+			buildConfigurationList = 491B8E2A1E5CDA1900BE362A /* Build configuration list for PBXNativeTarget "shadows" */;
 			buildPhases = (
-				4954F2331E06EF8D005B5739 /* Sources */,
-				4954F2341E06EF8D005B5739 /* Frameworks */,
-				4954F2351E06EF8D005B5739 /* CopyFiles */,
+				491B8E221E5CDA1900BE362A /* Sources */,
+				491B8E231E5CDA1900BE362A /* Frameworks */,
+				491B8E241E5CDA1900BE362A /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = GLEngineExample1;
-			productName = GLEngineExample1;
-			productReference = 4954F2371E06EF8D005B5739 /* GLEngineExample1 */;
+			name = shadows;
+			productName = shadows;
+			productReference = 491B8E261E5CDA1900BE362A /* shadows */;
+			productType = "com.apple.product-type.tool";
+		};
+		491B8E351E5CDC7700BE362A /* hello_world */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 491B8E3A1E5CDC7700BE362A /* Build configuration list for PBXNativeTarget "hello_world" */;
+			buildPhases = (
+				491B8E321E5CDC7700BE362A /* Sources */,
+				491B8E331E5CDC7700BE362A /* Frameworks */,
+				491B8E341E5CDC7700BE362A /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = hello_world;
+			productName = hello_world;
+			productReference = 491B8E361E5CDC7700BE362A /* hello_world */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -229,8 +290,12 @@
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Asger Nyman Christiansen";
 				TargetAttributes = {
-					4954F2361E06EF8D005B5739 = {
-						CreatedOnToolsVersion = 8.1;
+					491B8E251E5CDA1900BE362A = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
+					491B8E351E5CDC7700BE362A = {
+						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -247,23 +312,108 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4954F2361E06EF8D005B5739 /* GLEngineExample1 */,
+				491B8E251E5CDA1900BE362A /* shadows */,
+				491B8E351E5CDC7700BE362A /* hello_world */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		4954F2331E06EF8D005B5739 /* Sources */ = {
+		491B8E221E5CDA1900BE362A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4954F23B1E06EF8D005B5739 /* main.cpp in Sources */,
+				491B8E2D1E5CDA3300BE362A /* shadows.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		491B8E321E5CDC7700BE362A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				491B8E401E5CDCB400BE362A /* hello_world.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		491B8E2B1E5CDA1900BE362A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					/Library/Frameworks/SDL2.framework/Headers/,
+					/Library/Frameworks/SDL2_image.framework/Headers/,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/include/glm /opt/local/include/GLFW ./../../Mesh/include/ ./../include/";
+			};
+			name = Debug;
+		};
+		491B8E2C1E5CDA1900BE362A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
+					/Library/Frameworks/SDL2.framework/Headers/,
+					/Library/Frameworks/SDL2_image.framework/Headers/,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/include/glm /opt/local/include/GLFW ./../../Mesh/include/ ./../include/";
+			};
+			name = Release;
+		};
+		491B8E3B1E5CDC7700BE362A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = (
+					/Library/Frameworks/SDL2.framework/Headers/,
+					/Library/Frameworks/SDL2_image.framework/Headers/,
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/include/glm ./../../Mesh/include/ ./../include/";
+			};
+			name = Debug;
+		};
+		491B8E3C1E5CDC7700BE362A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = (
+					/Library/Frameworks/SDL2.framework/Headers/,
+					/Library/Frameworks/SDL2_image.framework/Headers/,
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/include/glm ./../../Mesh/include/ ./../include/";
+			};
+			name = Release;
+		};
 		4954F23C1E06EF8D005B5739 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -353,67 +503,32 @@
 			};
 			name = Release;
 		};
-		4954F23F1E06EF8D005B5739 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Library/Frameworks,
-					"$(LOCAL_LIBRARY_DIR)/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = (
-					/usr/local/include,
-					/Library/Frameworks/SDL2.framework/Headers/,
-					/Library/Frameworks/SDL2_image.framework/Headers/,
-				);
-				LIBRARY_SEARCH_PATHS = (
-					/usr/local/lib,
-					/opt/local/lib,
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "/usr/local/include/glm /opt/local/include/GLFW ./../../Mesh/include/ ./../include/";
-			};
-			name = Debug;
-		};
-		4954F2401E06EF8D005B5739 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Library/Frameworks,
-					"$(LOCAL_LIBRARY_DIR)/Frameworks",
-				);
-				HEADER_SEARCH_PATHS = (
-					/usr/local/include,
-					/Library/Frameworks/SDL2.framework/Headers/,
-					/Library/Frameworks/SDL2_image.framework/Headers/,
-				);
-				LIBRARY_SEARCH_PATHS = (
-					/usr/local/lib,
-					/opt/local/lib,
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "/usr/local/include/glm /opt/local/include/GLFW ./../../Mesh/include/ ./../include/";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		491B8E2A1E5CDA1900BE362A /* Build configuration list for PBXNativeTarget "shadows" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				491B8E2B1E5CDA1900BE362A /* Debug */,
+				491B8E2C1E5CDA1900BE362A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		491B8E3A1E5CDC7700BE362A /* Build configuration list for PBXNativeTarget "hello_world" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				491B8E3B1E5CDC7700BE362A /* Debug */,
+				491B8E3C1E5CDC7700BE362A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4954F2321E06EF8D005B5739 /* Build configuration list for PBXProject "GLEngineExamples" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4954F23C1E06EF8D005B5739 /* Debug */,
 				4954F23D1E06EF8D005B5739 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		4954F23E1E06EF8D005B5739 /* Build configuration list for PBXNativeTarget "GLEngineExample1" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4954F23F1E06EF8D005B5739 /* Debug */,
-				4954F2401E06EF8D005B5739 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

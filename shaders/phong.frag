@@ -10,7 +10,7 @@ uniform float opacity;
 in vec3 pos;
 in vec3 nor;
 
-out vec4 fragColour;
+layout (location = 0) out vec4 color;
 
 void main(void)
 {
@@ -32,5 +32,5 @@ void main(void)
     vec3 ambient = ambientMat;
     vec3 diffuse = clamp( diffuseMat * max(dot(N,L), 0.0) , 0.0, 1.0 ) ;
     vec3 spec = clamp ( specMat * pow(max(dot(R,E), 0.0), specPow) , 0.0, 1.0 );
-    fragColour = vec4(ambient + diffuse + spec, opacity);
+    color = vec4(ambient + diffuse + spec, opacity);
 }

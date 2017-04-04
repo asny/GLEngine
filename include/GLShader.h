@@ -23,10 +23,10 @@ namespace gle {
             name = vertexShaderFilename + fragmentShaderFilename + geometryShaderFilename;
             if(geometryShaderFilename.length() != 0)
             {
-                shader_id = init_shader(&vertexShaderFilename[0], &fragmentShaderFilename[0], "fragColour", &geometryShaderFilename[0]);
+                shader_id = init_shader(&vertexShaderFilename[0], &fragmentShaderFilename[0], &geometryShaderFilename[0]);
             }
             else {
-                shader_id = init_shader(&vertexShaderFilename[0], &fragmentShaderFilename[0], "fragColour", nullptr);
+                shader_id = init_shader(&vertexShaderFilename[0], &fragmentShaderFilename[0], nullptr);
             }
             
             check_gl_error();
@@ -112,7 +112,7 @@ namespace gle {
         
     private:
         // Create a GLSL program object from vertex and fragment shader files
-        static GLuint init_shader(const char* vShaderFile, const char* fShaderFile, const char* outputAttributeName, const char* gShaderFile)
+        static GLuint init_shader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile)
         {
             struct Shader {
                 std::string  filename;
@@ -156,9 +156,6 @@ namespace gle {
                 
                 glAttachShader( program, shader );
             }
-            
-            /* Link output */
-            glBindFragDataLocation(program, 0, outputAttributeName);
             
             /* link  and error check */
             glLinkProgram(program);

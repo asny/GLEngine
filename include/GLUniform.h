@@ -14,7 +14,7 @@ namespace gle
     public:
         
         template<typename ValueType>
-        static void use(std::shared_ptr<GLShader> shader, const std::string& name, const ValueType& value)
+        static void use(std::shared_ptr<GLShader> shader, const std::string& name, const ValueType& value, int count = 1)
         {
             static std::map<std::string, GLuint> dictionary = std::map<std::string, GLuint>();
             auto key = shader->get_name() + name;
@@ -29,38 +29,38 @@ namespace gle
             
             // Use the value
             shader->use();
-            GLUniform::set(iterator->second, value);
+            GLUniform::set(iterator->second, value, count);
         }
         
     private:
-        static void set(GLuint location, float value)
+        static void set(GLuint location, float value, int count)
         {
-            glUniform1f(location, value);
+            glUniform1fv(location, count, &value);
         }
         
-        static void set(GLuint location, int value)
+        static void set(GLuint location, int value, int count)
         {
-            glUniform1i(location, value);
+            glUniform1iv(location, count, &value);
         }
         
-        static void set(GLuint location, const glm::vec2& value)
+        static void set(GLuint location, const glm::vec2& value, int count)
         {
-            glUniform2fv(location, 1, &value[0]);
+            glUniform2fv(location, count, &value[0]);
         }
         
-        static void set(GLuint location, const glm::vec3& value)
+        static void set(GLuint location, const glm::vec3& value, int count)
         {
-            glUniform3fv(location, 1, &value[0]);
+            glUniform3fv(location, count, &value[0]);
         }
         
-        static void set(GLuint location, const glm::vec4& value)
+        static void set(GLuint location, const glm::vec4& value, int count)
         {
-            glUniform4fv(location, 1, &value[0]);
+            glUniform4fv(location, count, &value[0]);
         }
         
-        static void set(GLuint location, const glm::mat4& value)
+        static void set(GLuint location, const glm::mat4& value, int count)
         {
-            glUniformMatrix4fv(location, 1, GL_FALSE, &value[0][0]);
+            glUniformMatrix4fv(location, count, GL_FALSE, &value[0][0]);
         }
     };
 }

@@ -5,14 +5,13 @@ uniform sampler2D colorMap;
 uniform sampler2D normalMap;
 uniform sampler2D depthMap;
 uniform sampler2D shadowMap;
-uniform samplerCube shadowCubeMap;
+
+layout (location = 0) out vec4 color;
 
 uniform vec3 eyePosition;
 uniform mat4 shadowMVP;
 
 in vec2 uv;
-
-out vec4 fragColour;
 
 struct BaseLight
 {
@@ -125,14 +124,7 @@ vec4 calculate_point_light(vec3 position, vec3 normal)
     float distance = length(lightDirection);
     lightDirection = normalize(lightDirection);
     
-    float shadow = 1.f;
-    vec4 shadow_coord = shadowMVP * vec4(position, 1.);
-    if ( texture(shadowCubeMap, lightDirection).x < shadow_coord.z/shadow_coord.w)
-    {
-        shadow = 0.5f;
-    }
-    
-    vec4 color = calculate_light(pointLight.base, lightDirection, position, normal, shadow);
+    vec4 color = calculate_light(pointLight.base, lightDirection, position, normal, 1.f);
     
     float attenuation =  pointLight.attenuation.constant +
         pointLight.attenuation.linear * distance +
@@ -146,23 +138,24 @@ vec4 calculate_point_light(vec3 position, vec3 normal)
 void main()
 {
     float depth = texture(depthMap, uv).r;
-    if(depth == 1.)
-        discard;
-    
-   	vec3 pos = texture(positionMap, uv).xyz;
-   	vec3 color = texture(colorMap, uv).xyz;
-   	vec3 normal = normalize(texture(normalMap, uv).xyz);
-    
-    vec4 light;
-    if(lightType == 1)
+   	vec4 col = vec4(texture(colorMap, uv).xyz, 1.);
+    if(depth < 1.)
     {
-        light = calculate_directional_light(pos, normal);
+        vec3 pos = texture(positionMap, uv).xyz;
+        vec3 normal = normalize(texture(normalMap, uv).xyz);
+        
+        vec4 light;
+        if(lightType == 1)
+        {
+            light = calculate_directional_light(pos, normal);
+        }
+        else if(lightType == 2)
+        {
+            light = calculate_point_light(pos, normal);
+        }
+        
+        col *= light;
     }
-    else if(lightType == 2)
-    {
-        light = calculate_point_light(pos, normal);
-    }
-    
-    fragColour = vec4(color, 1.0) * light;
+    color = col;
     gl_FragDepth = depth;
 }
