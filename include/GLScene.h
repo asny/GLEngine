@@ -63,7 +63,7 @@ namespace gle
         
         GLScene() : shadow_render_target(GLRenderTarget(1024, 1024, 0, true))
         {
-            
+            shadow_render_target.create_depth_cubemap(1024, 1024);
         }
         
         void add_light(std::shared_ptr<GLPointLight> light)
@@ -91,6 +91,15 @@ namespace gle
             
             for(auto light : point_lights)
             {
+                // Cast shadows
+                shadow_render_target.use();
+                for (int i = 0; i < 6; i++)
+                {
+                    shadow_render_target.bind_depth_texture_cubemap_for_writing(i);
+                    shadow_render_target.clear();
+                    draw(DEFERRED, view_position, light->get_view(i), light->get_projection());
+                }
+                
                 // Shine the light
                 render_target.use();
                 light->shine(view_position, source_render_target);
