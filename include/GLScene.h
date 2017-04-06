@@ -102,7 +102,7 @@ namespace gle
                 
                 // Shine the light
                 render_target.use();
-                light->shine(view_position, source_render_target);
+                light->shine(view_position, source_render_target, shadow_render_target);
             }
             
             for(auto light : directional_lights)
