@@ -133,7 +133,9 @@ int main(int argc, const char * argv[])
     auto scene = GLScene();
     create_room(scene);
     create_cube(scene);
-    scene.add_light(std::make_shared<GLPointLight>(glm::vec3(-1., 5., 1.)));
+    
+    auto point_light = make_shared<GLPointLight>();
+    scene.add_light(point_light);
     scene.add_light(std::make_shared<GLDirectionalLight>(glm::vec3(1., -1., 0.)));
     
     // Create post effect
@@ -155,6 +157,7 @@ int main(int argc, const char * argv[])
         
         // update the scene based on the time elapsed since last update
         update(camera);
+        point_light->position = vec3(3. * sin(gle::time()), 5. * cos(gle::time()), 1.);
         
         // draw one frame
         camera.draw(scene);

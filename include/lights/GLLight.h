@@ -88,15 +88,15 @@ namespace gle
     
     class GLPointLight : public GLLight
     {
-        std::shared_ptr<glm::vec3> position;
     public:
+        glm::vec3 position = glm::vec3(0., 0., 0.);
         
-        GLPointLight(const glm::vec3& _position) : GLLight(), position(std::make_shared<glm::vec3>(_position))
+        GLPointLight() : GLLight()
         {
             
         }
         
-        GLPointLight(const std::shared_ptr<glm::vec3> _position) : GLLight(), position(_position)
+        GLPointLight(const glm::vec3& _position) : GLLight(), position(_position)
         {
             
         }
@@ -105,17 +105,17 @@ namespace gle
         {
             switch (layer) {
                 case 0:
-                    return glm::lookAt(*position, *position + glm::vec3(1.0,0.0,0.0), glm::vec3(0.0,-1.0,0.0));
+                    return glm::lookAt(position, position + glm::vec3(1.0,0.0,0.0), glm::vec3(0.0,-1.0,0.0));
                 case 1:
-                    return glm::lookAt(*position, *position + glm::vec3(-1.0,0.0,0.0), glm::vec3(0.0,-1.0,0.0));
+                    return glm::lookAt(position, position + glm::vec3(-1.0,0.0,0.0), glm::vec3(0.0,-1.0,0.0));
                 case 2:
-                    return glm::lookAt(*position, *position + glm::vec3(0.0,1.0,0.0), glm::vec3(0.0,0.0,1.0));
+                    return glm::lookAt(position, position + glm::vec3(0.0,1.0,0.0), glm::vec3(0.0,0.0,1.0));
                 case 3:
-                    return glm::lookAt(*position, *position + glm::vec3(0.0,-1.0,0.0), glm::vec3(0.0,0.0,-1.0));
+                    return glm::lookAt(position, position + glm::vec3(0.0,-1.0,0.0), glm::vec3(0.0,0.0,-1.0));
                 case 4:
-                    return glm::lookAt(*position, *position + glm::vec3(0.0,0.0,1.0), glm::vec3(0.0,-1.0,0.0));
+                    return glm::lookAt(position, position + glm::vec3(0.0,0.0,1.0), glm::vec3(0.0,-1.0,0.0));
                 case 5:
-                    return glm::lookAt(*position, *position + glm::vec3(0.0,0.0,-1.0), glm::vec3(0.0,-1.0,0.0));
+                    return glm::lookAt(position, position + glm::vec3(0.0,0.0,-1.0), glm::vec3(0.0,-1.0,0.0));
             }
             return glm::mat4(1.);
         }
@@ -136,7 +136,7 @@ namespace gle
             GLUniform::use(shader, "shadowMVP4", bias_matrix * get_projection() * get_view(4));
             GLUniform::use(shader, "shadowMVP5", bias_matrix * get_projection() * get_view(5));
             GLUniform::use(shader, "lightType", 2);
-            GLUniform::use(shader, "pointLight.position", *position);
+            GLUniform::use(shader, "pointLight.position", position);
             GLUniform::use(shader, "pointLight.base.color", glm::vec3(1., 1., 1.));
             GLUniform::use(shader, "pointLight.base.ambientIntensity", 0.2f);
             GLUniform::use(shader, "pointLight.base.diffuseIntensity", 0.5f);
