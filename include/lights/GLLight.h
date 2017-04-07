@@ -122,7 +122,7 @@ namespace gle
         
         glm::mat4 get_projection()
         {
-            return glm::perspective<float>(45.0f, 1.0f, 1.0f, 50.0f);
+            return glm::perspective<float>(glm::radians(90.0f), 1.0f, 1.0f, 50.0f);
         }
         
         void shine(const glm::vec3& view_position, const GLRenderTarget& source_render_target, const GLRenderTarget& shadow_render_target)
