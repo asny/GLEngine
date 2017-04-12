@@ -58,11 +58,11 @@ namespace gle
         std::vector<std::shared_ptr<GLDirectionalLight>> directional_lights;
         std::vector<std::shared_ptr<GLPointLight>> point_lights;
         GLShadowCubeRenderTarget point_light_shadow_render_target;
-        GLRenderTarget directional_light_shadow_render_target;
+        GLShadowRenderTarget directional_light_shadow_render_target;
         
     public:
         
-        GLScene() : directional_light_shadow_render_target(GLRenderTarget(1024, 1024, 0, true)), point_light_shadow_render_target(1024, 1024)
+        GLScene() : directional_light_shadow_render_target(1024, 1024), point_light_shadow_render_target(1024, 1024)
         {
             
         }

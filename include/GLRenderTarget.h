@@ -59,7 +59,6 @@ namespace gle
     {
         std::vector<std::shared_ptr<GLTexture>> color_textures;
         std::shared_ptr<GLFramebufferDepthTexture> depth_texture;
-        std::shared_ptr<GLFramebufferDepthTextureCubeMap> depth_texture_cubemap;
         
     public:
         
@@ -152,11 +151,35 @@ namespace gle
     
     class GLShadowRenderTarget : public GLRenderTarget
     {
+        std::shared_ptr<GLFramebufferDepthTexture> depth_texture;
     public:
         
-        GLShadowRenderTarget(int _width, int _height) : GLRenderTarget(_width, _height, 0, true)
+        GLShadowRenderTarget(int _width, int _height) : GLRenderTarget()
         {
+            width = _width;
+            height = _height;
             
+            use();
+            
+            glDrawBuffer(GL_NONE);
+            
+            depth_texture = std::make_shared<GLFramebufferDepthTexture>(width, height);
+            
+            GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+            if (Status != GL_FRAMEBUFFER_COMPLETE) {
+                printf("Framebuffer error, status: 0x%x\n", Status);
+            }
+        }
+        
+        void clear() const
+        {
+            GLState::depth_write(true); // If it is not possible to write to the depth buffer, we are not able to clear it.
+            glClear(GL_DEPTH_BUFFER_BIT);
+        }
+        
+        void bind_texture_for_reading(int texture_location) const
+        {
+            depth_texture->use(texture_location);
         }
     };
     

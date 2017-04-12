@@ -71,9 +71,9 @@ namespace gle
             return glm::ortho<float>(-10,10,-10,10,-10,20);
         }
         
-        void shine(const glm::vec3& view_position, const glm::vec3& view_direction, const GLRenderTarget& source_render_target, const GLRenderTarget& shadow_render_target)
+        void shine(const glm::vec3& view_position, const glm::vec3& view_direction, const GLRenderTarget& source_render_target, const GLShadowRenderTarget& shadow_render_target)
         {
-            shadow_render_target.bind_depth_texture_for_reading(4);
+            shadow_render_target.bind_texture_for_reading(4);
             GLUniform::use(shader, "shadowMap", 4);
             GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view(view_position, view_direction));
             GLUniform::use(shader, "lightType", 1);
