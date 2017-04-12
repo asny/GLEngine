@@ -57,14 +57,14 @@ namespace gle
     {
         std::vector<std::shared_ptr<GLDirectionalLight>> directional_lights;
         std::vector<std::shared_ptr<GLPointLight>> point_lights;
-        GLRenderTarget point_light_shadow_render_target;
+        GLShadowCubeRenderTarget point_light_shadow_render_target;
         GLRenderTarget directional_light_shadow_render_target;
         
     public:
         
-        GLScene() : directional_light_shadow_render_target(GLRenderTarget(1024, 1024, 0, true))
+        GLScene() : directional_light_shadow_render_target(GLRenderTarget(1024, 1024, 0, true)), point_light_shadow_render_target(1024, 1024)
         {
-            point_light_shadow_render_target.create_depth_cubemap(1024, 1024);
+            
         }
         
         void add_light(std::shared_ptr<GLPointLight> light)
@@ -96,7 +96,7 @@ namespace gle
                 point_light_shadow_render_target.use();
                 for (int i = 0; i < 6; i++)
                 {
-                    point_light_shadow_render_target.bind_depth_texture_cubemap_for_writing(i);
+                    point_light_shadow_render_target.bind_texture_for_writing(i);
                     point_light_shadow_render_target.clear();
                     draw(DEFERRED, view_position, light->get_view(i), light->get_projection());
                 }

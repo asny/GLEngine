@@ -125,9 +125,9 @@ namespace gle
             return glm::perspective<float>(glm::radians(90.0f), 1.0f, 1.0f, 50.0f);
         }
         
-        void shine(const glm::vec3& view_position, const GLRenderTarget& source_render_target, const GLRenderTarget& shadow_render_target)
+        void shine(const glm::vec3& view_position, const GLRenderTarget& source_render_target, const GLShadowCubeRenderTarget& shadow_render_target)
         {
-            shadow_render_target.bind_depth_texture_cubemap_for_reading(5);
+            shadow_render_target.bind_texture_for_reading(5);
             GLUniform::use(shader, "shadowCubeMap", 5);
             GLUniform::use(shader, "shadowMVP0", bias_matrix * get_projection() * get_view(0));
             GLUniform::use(shader, "shadowMVP1", bias_matrix * get_projection() * get_view(1));
