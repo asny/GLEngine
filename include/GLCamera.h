@@ -23,7 +23,7 @@ namespace gle {
         glm::mat4 view = glm::mat4(1.);
         glm::mat4 projection = glm::mat4(1.);
         
-        GLRenderTarget geometry_pass_render_target;
+        std::shared_ptr<GLRenderTarget> geometry_pass_render_target;
         
     public:
         
@@ -38,7 +38,7 @@ namespace gle {
         void set_screen_size(int width, int height)
         {
             GLDefaultRenderTarget::get().resize(width, height);
-            geometry_pass_render_target.resize(width, height, 3, true);
+            geometry_pass_render_target = std::make_shared<GLRenderTarget>(width, height, 3, true);
             projection = glm::perspective(glm::radians(45.f), width/float(height), z_near, z_far);
         }
         
@@ -67,7 +67,7 @@ namespace gle {
             glEnable(GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
-            post_effect.apply(geometry_pass_render_target, position, view, projection);
+            post_effect.apply(*geometry_pass_render_target, position, view, projection);
         }
         
     private:
@@ -86,8 +86,8 @@ namespace gle {
         void deferred_pass(const GLScene& scene)
         {
             // Geometry pass
-            geometry_pass_render_target.use();
-            geometry_pass_render_target.clear();
+            geometry_pass_render_target->use();
+            geometry_pass_render_target->clear();
             
             glDisable(GL_BLEND);
             
@@ -97,7 +97,7 @@ namespace gle {
             GLDefaultRenderTarget::get().use();
             GLDefaultRenderTarget::get().clear();
             
-            scene.shine_light(position, direction, geometry_pass_render_target, GLDefaultRenderTarget::get());
+            scene.shine_light(position, direction, *geometry_pass_render_target, GLDefaultRenderTarget::get());
         }
     };
 }
