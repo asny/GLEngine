@@ -23,7 +23,8 @@ namespace gle {
         glm::mat4 view = glm::mat4(1.);
         glm::mat4 projection = glm::mat4(1.);
         
-        std::shared_ptr<GLRenderTarget> geometry_pass_render_target;
+        std::shared_ptr<GLDefaultRenderTarget> default_render_target;
+        std::shared_ptr<GLColorRenderTarget> geometry_pass_render_target;
         
     public:
         
@@ -37,8 +38,8 @@ namespace gle {
          */
         void set_screen_size(int width, int height)
         {
-            GLDefaultRenderTarget::get().resize(width, height);
-            geometry_pass_render_target = std::make_shared<GLRenderTarget>(width, height, 3, true);
+            default_render_target = std::make_shared<GLDefaultRenderTarget>(width, height);
+            geometry_pass_render_target = std::make_shared<GLColorRenderTarget>(width, height, 3, true);
             projection = glm::perspective(glm::radians(45.f), width/float(height), z_near, z_far);
         }
         
@@ -62,7 +63,7 @@ namespace gle {
         
         void apply_post_effect(const GLPostEffect& post_effect)
         {
-            GLDefaultRenderTarget::get().use();
+            default_render_target->use();
             
             glEnable(GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -73,7 +74,7 @@ namespace gle {
     private:
         void forward_pass(const GLScene& scene)
         {
-            GLDefaultRenderTarget::get().use();
+            default_render_target->use();
             
             // Set up default blending
             glEnable(GL_BLEND);
@@ -94,10 +95,10 @@ namespace gle {
             scene.draw(DEFERRED, position, view, projection);
             
             // Light pass
-            GLDefaultRenderTarget::get().use();
-            GLDefaultRenderTarget::get().clear();
+            default_render_target->use();
+            default_render_target->clear();
             
-            scene.shine_light(position, direction, *geometry_pass_render_target, GLDefaultRenderTarget::get());
+            scene.shine_light(position, direction, *geometry_pass_render_target, *default_render_target);
         }
     };
 }

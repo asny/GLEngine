@@ -13,11 +13,6 @@ namespace gle
 {
     class GLDefaultRenderTarget
     {
-        GLDefaultRenderTarget()
-        {
-            
-        }
-        
     protected:
         int width, height;
         GLenum framebufferobject_id = 0;
@@ -25,24 +20,6 @@ namespace gle
     public:
         
         GLDefaultRenderTarget(int _width, int _height)
-        {
-            width = _width;
-            height = _height;
-            glGenFramebuffers(1, &framebufferobject_id);
-        }
-        
-        ~GLDefaultRenderTarget()
-        {
-            glDeleteFramebuffers(1, &framebufferobject_id);
-        }
-        
-        static GLDefaultRenderTarget& get()
-        {
-            static GLDefaultRenderTarget target = GLDefaultRenderTarget();
-            return target;
-        }
-        
-        void resize(int _width, int _height)
         {
             width = _width;
             height = _height;
@@ -69,12 +46,36 @@ namespace gle
     
     class GLRenderTarget : public GLDefaultRenderTarget
     {
+    protected:
+        void check_framebuffer()
+        {
+            GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+            if (Status != GL_FRAMEBUFFER_COMPLETE) {
+                printf("Framebuffer error, status: 0x%x\n", Status);
+            }
+        }
+        
+        GLRenderTarget(int _width, int _height) : GLDefaultRenderTarget(_width, _height)
+        {
+            glGenFramebuffers(1, &framebufferobject_id);
+        }
+        
+    public:
+        
+        ~GLRenderTarget()
+        {
+            glDeleteFramebuffers(1, &framebufferobject_id);
+        }
+    };
+    
+    class GLColorRenderTarget : public GLRenderTarget
+    {
         std::vector<std::shared_ptr<GLTexture>> color_textures;
         std::shared_ptr<GLFramebufferDepthTexture> depth_texture;
         
     public:
         
-        GLRenderTarget(int _width, int _height, int no_color_textures, bool create_depth_texture) : GLDefaultRenderTarget(_width, _height)
+        GLColorRenderTarget(int _width, int _height, int no_color_textures, bool create_depth_texture) : GLRenderTarget(_width, _height)
         {
             use();
             
@@ -87,39 +88,24 @@ namespace gle
                 color_textures[i] = std::make_shared<GLFramebufferColorTexture>(width, height, i);
             }
             
-            if(no_color_textures == 0)
-                glDrawBuffer(GL_NONE);
-            else
-                glDrawBuffers(no_color_textures, DrawBuffers);
-            
+            glDrawBuffers(no_color_textures, DrawBuffers);
             
             if(create_depth_texture)
             {
                 depth_texture = std::make_shared<GLFramebufferDepthTexture>(width, height);
             }
             
-            GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-            if (Status != GL_FRAMEBUFFER_COMPLETE) {
-                printf("Framebuffer error, status: 0x%x\n", Status);
-            }
+            check_framebuffer();
         }
         
         void clear() const
         {
-            if(color_textures.size() > 0)
-            {
-                if(depth_texture != nullptr) {
-                    GLDefaultRenderTarget::clear();
-                }
-                else {
-                    glClearColor(0., 0., 0., 0.);
-                    glClear(GL_COLOR_BUFFER_BIT);
-                }
+            if(depth_texture != nullptr) {
+                GLDefaultRenderTarget::clear();
             }
-            else
-            {
-                GLState::depth_write(true); // If it is not possible to write to the depth buffer, we are not able to clear it.
-                glClear(GL_DEPTH_BUFFER_BIT);
+            else {
+                glClearColor(0., 0., 0., 0.);
+                glClear(GL_COLOR_BUFFER_BIT);
             }
         }
         
@@ -134,12 +120,12 @@ namespace gle
         }
     };
     
-    class GLShadowRenderTarget : public GLDefaultRenderTarget
+    class GLShadowRenderTarget : public GLRenderTarget
     {
         std::shared_ptr<GLFramebufferDepthTexture> depth_texture;
     public:
         
-        GLShadowRenderTarget(int _width, int _height) : GLDefaultRenderTarget(_width, _height)
+        GLShadowRenderTarget(int _width, int _height) : GLRenderTarget(_width, _height)
         {
             use();
             
@@ -147,10 +133,7 @@ namespace gle
             
             depth_texture = std::make_shared<GLFramebufferDepthTexture>(width, height);
             
-            GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-            if (Status != GL_FRAMEBUFFER_COMPLETE) {
-                printf("Framebuffer error, status: 0x%x\n", Status);
-            }
+            check_framebuffer();
         }
         
         void clear() const
@@ -165,13 +148,13 @@ namespace gle
         }
     };
     
-    class GLShadowCubeRenderTarget : public GLDefaultRenderTarget
+    class GLShadowCubeRenderTarget : public GLRenderTarget
     {
         std::shared_ptr<GLFramebufferDepthTextureCubeMap> depth_texture_cubemap;
         
     public:
         
-        GLShadowCubeRenderTarget(int _width, int _height) : GLDefaultRenderTarget(_width, _height)
+        GLShadowCubeRenderTarget(int _width, int _height) : GLRenderTarget(_width, _height)
         {
             use();
             
@@ -179,10 +162,7 @@ namespace gle
             
             depth_texture_cubemap = std::make_shared<GLFramebufferDepthTextureCubeMap>(width, height);
             
-            GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-            if (Status != GL_FRAMEBUFFER_COMPLETE) {
-                printf("Framebuffer error, status: 0x%x\n", Status);
-            }
+            check_framebuffer();
         }
         
         void clear() const

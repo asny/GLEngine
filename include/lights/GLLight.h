@@ -26,7 +26,7 @@ namespace gle
             shader = GLShader::create_or_get("../GLEngine/shaders/light_pass.vert",  "../GLEngine/shaders/light_pass.frag");
         }
         
-        void shine(const glm::vec3& view_position, const GLRenderTarget& source_render_target)
+        void shine(const glm::vec3& view_position, const GLColorRenderTarget& source_render_target)
         {
             GLState::depth_write(true);
             GLState::depth_test(true);
@@ -71,7 +71,7 @@ namespace gle
             return glm::ortho<float>(-10,10,-10,10,-10,20);
         }
         
-        void shine(const glm::vec3& view_position, const glm::vec3& view_direction, const GLRenderTarget& source_render_target, const GLShadowRenderTarget& shadow_render_target)
+        void shine(const glm::vec3& view_position, const glm::vec3& view_direction, const GLColorRenderTarget& source_render_target, const GLShadowRenderTarget& shadow_render_target)
         {
             shadow_render_target.bind_texture_for_reading(4);
             GLUniform::use(shader, "shadowMap", 4);
@@ -125,7 +125,7 @@ namespace gle
             return glm::perspective<float>(glm::radians(90.0f), 1.0f, 1.0f, 50.0f);
         }
         
-        void shine(const glm::vec3& view_position, const GLRenderTarget& source_render_target, const GLShadowCubeRenderTarget& shadow_render_target)
+        void shine(const glm::vec3& view_position, const GLColorRenderTarget& source_render_target, const GLShadowCubeRenderTarget& shadow_render_target)
         {
             shadow_render_target.bind_texture_for_reading(5);
             GLUniform::use(shader, "shadowCubeMap", 5);
