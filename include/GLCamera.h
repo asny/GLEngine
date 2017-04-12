@@ -39,7 +39,7 @@ namespace gle {
         {
             GLDefaultRenderTarget::get().resize(width, height);
             geometry_pass_render_target.resize(width, height, 3, true);
-            projection = glm::perspective(45.f, width/float(height), z_near, z_far);
+            projection = glm::perspective(glm::radians(45.f), width/float(height), z_near, z_far);
         }
         
         /**
