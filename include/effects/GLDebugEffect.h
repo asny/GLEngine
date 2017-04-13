@@ -20,7 +20,7 @@ namespace gle
             
         }
         
-        void apply(const GLRenderTarget& source_render_target, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection) const
+        void apply(const GLColorRenderTarget& source_render_target, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection) const
         {
             source_render_target.bind_color_texture_for_reading(0, 0);
             GLUniform::use(shader, "colorMap", 0);
