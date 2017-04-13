@@ -11,18 +11,37 @@
 
 namespace gle
 {
-    class GLDefaultRenderTarget
+    class GLRenderTarget
     {
     protected:
         int width, height;
         GLenum framebufferobject_id = 0;
         
-    public:
+        void check_framebuffer()
+        {
+            GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+            if (Status != GL_FRAMEBUFFER_COMPLETE) {
+                printf("Framebuffer error, status: 0x%x\n", Status);
+            }
+        }
         
-        GLDefaultRenderTarget(int _width, int _height)
+        GLRenderTarget(int _width, int _height)
         {
             width = _width;
             height = _height;
+        }
+        
+        void generate_framebuffer()
+        {
+            glGenFramebuffers(1, &framebufferobject_id);
+        }
+        
+    public:
+        
+        ~GLRenderTarget()
+        {
+            if(framebufferobject_id != 0)
+                glDeleteFramebuffers(1, &framebufferobject_id);
         }
         
         void use() const
@@ -44,27 +63,13 @@ namespace gle
         }
     };
     
-    class GLRenderTarget : public GLDefaultRenderTarget
+    class GLScreenRenderTarget : public GLRenderTarget
     {
-    protected:
-        void check_framebuffer()
-        {
-            GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-            if (Status != GL_FRAMEBUFFER_COMPLETE) {
-                printf("Framebuffer error, status: 0x%x\n", Status);
-            }
-        }
-        
-        GLRenderTarget(int _width, int _height) : GLDefaultRenderTarget(_width, _height)
-        {
-            glGenFramebuffers(1, &framebufferobject_id);
-        }
-        
     public:
         
-        ~GLRenderTarget()
+        GLScreenRenderTarget(int _width, int _height) : GLRenderTarget(_width, _height)
         {
-            glDeleteFramebuffers(1, &framebufferobject_id);
+            
         }
     };
     
@@ -77,6 +82,7 @@ namespace gle
         
         GLColorRenderTarget(int _width, int _height, int no_color_textures, bool create_depth_texture) : GLRenderTarget(_width, _height)
         {
+            generate_framebuffer();
             use();
             
             GLenum DrawBuffers[no_color_textures];
@@ -101,7 +107,7 @@ namespace gle
         void clear() const
         {
             if(depth_texture != nullptr) {
-                GLDefaultRenderTarget::clear();
+                GLRenderTarget::clear();
             }
             else {
                 glClearColor(0., 0., 0., 0.);
@@ -127,6 +133,7 @@ namespace gle
         
         GLShadowRenderTarget(int _width, int _height) : GLRenderTarget(_width, _height)
         {
+            generate_framebuffer();
             use();
             
             glDrawBuffer(GL_NONE);
@@ -156,6 +163,7 @@ namespace gle
         
         GLShadowCubeRenderTarget(int _width, int _height) : GLRenderTarget(_width, _height)
         {
+            generate_framebuffer();
             use();
             
             glDrawBuffer(GL_NONE);
