@@ -13,10 +13,10 @@ namespace gle
 {
     class GLRenderTarget
     {
-    protected:
         int width, height;
         GLenum framebufferobject_id = 0;
         
+    protected:
         void check_framebuffer()
         {
             GLenum Status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -36,14 +36,13 @@ namespace gle
             glGenFramebuffers(1, &framebufferobject_id);
         }
         
-    public:
-        
         ~GLRenderTarget()
         {
             if(framebufferobject_id != 0)
                 glDeleteFramebuffers(1, &framebufferobject_id);
         }
         
+    public:
         void use() const
         {
             static GLenum current_render_target = 0;
@@ -66,7 +65,6 @@ namespace gle
     class GLScreenRenderTarget : public GLRenderTarget
     {
     public:
-        
         GLScreenRenderTarget(int _width, int _height) : GLRenderTarget(_width, _height)
         {
             
@@ -91,14 +89,14 @@ namespace gle
             for (int i = 0; i < no_color_textures; i++)
             {
                 DrawBuffers[i] = GL_COLOR_ATTACHMENT0 + i;
-                color_textures[i] = std::make_shared<GLFramebufferColorTexture>(width, height, i);
+                color_textures[i] = std::make_shared<GLFramebufferColorTexture>(_width, _height, i);
             }
             
             glDrawBuffers(no_color_textures, DrawBuffers);
             
             if(create_depth_texture)
             {
-                depth_texture = std::make_shared<GLFramebufferDepthTexture>(width, height);
+                depth_texture = std::make_shared<GLFramebufferDepthTexture>(_width, _height);
             }
             
             check_framebuffer();
@@ -138,7 +136,7 @@ namespace gle
             
             glDrawBuffer(GL_NONE);
             
-            depth_texture = std::make_shared<GLFramebufferDepthTexture>(width, height);
+            depth_texture = std::make_shared<GLFramebufferDepthTexture>(_width, _height);
             
             check_framebuffer();
         }
@@ -168,7 +166,7 @@ namespace gle
             
             glDrawBuffer(GL_NONE);
             
-            depth_texture_cubemap = std::make_shared<GLFramebufferDepthTextureCubeMap>(width, height);
+            depth_texture_cubemap = std::make_shared<GLFramebufferDepthTextureCubeMap>(_width, _height);
             
             check_framebuffer();
         }
