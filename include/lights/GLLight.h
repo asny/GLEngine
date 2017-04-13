@@ -75,6 +75,7 @@ namespace gle
         {
             shadow_render_target.bind_texture_for_reading(4);
             GLUniform::use(shader, "shadowMap", 4);
+            GLUniform::use(shader, "shadowCubeMap", 5);
             GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view(view_position, view_direction));
             GLUniform::use(shader, "lightType", 1);
             GLUniform::use(shader, "directionalLight.direction", direction);
@@ -127,6 +128,7 @@ namespace gle
         
         void shine(const glm::vec3& view_position, const GLColorRenderTarget& source_render_target, const GLShadowCubeRenderTarget& shadow_render_target)
         {
+            GLUniform::use(shader, "shadowMap", 4);
             shadow_render_target.bind_texture_for_reading(5);
             GLUniform::use(shader, "shadowCubeMap", 5);
             GLUniform::use(shader, "shadowMVP0", bias_matrix * get_projection() * get_view(0));
