@@ -26,7 +26,7 @@ namespace gle
             shader = GLShader::create_or_get("../GLEngine/shaders/light_pass.vert",  "../GLEngine/shaders/light_pass.frag");
         }
         
-        void shine(const glm::vec3& view_position, const GLRenderTarget& source_render_target)
+        void shine(const glm::vec3& view_position, const GLColorRenderTarget& source_render_target)
         {
             GLState::depth_write(true);
             GLState::depth_test(true);
@@ -71,10 +71,11 @@ namespace gle
             return glm::ortho<float>(-10,10,-10,10,-10,20);
         }
         
-        void shine(const glm::vec3& view_position, const glm::vec3& view_direction, const GLRenderTarget& source_render_target, const GLRenderTarget& shadow_render_target)
+        void shine(const glm::vec3& view_position, const glm::vec3& view_direction, const GLColorRenderTarget& source_render_target, const GLShadowRenderTarget& shadow_render_target)
         {
-            shadow_render_target.bind_depth_texture_for_reading(4);
+            shadow_render_target.bind_texture_for_reading(4);
             GLUniform::use(shader, "shadowMap", 4);
+            GLUniform::use(shader, "shadowCubeMap", 5);
             GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view(view_position, view_direction));
             GLUniform::use(shader, "lightType", 1);
             GLUniform::use(shader, "directionalLight.direction", direction);
@@ -88,15 +89,15 @@ namespace gle
     
     class GLPointLight : public GLLight
     {
-        std::shared_ptr<glm::vec3> position;
     public:
+        glm::vec3 position = glm::vec3(0., 0., 0.);
         
-        GLPointLight(const glm::vec3& _position) : GLLight(), position(std::make_shared<glm::vec3>(_position))
+        GLPointLight() : GLLight()
         {
             
         }
         
-        GLPointLight(const std::shared_ptr<glm::vec3> _position) : GLLight(), position(_position)
+        GLPointLight(const glm::vec3& _position) : GLLight(), position(_position)
         {
             
         }
@@ -105,30 +106,39 @@ namespace gle
         {
             switch (layer) {
                 case 0:
-                    return glm::lookAt(*position, *position + glm::vec3(1.0,0.0,0.0), glm::vec3(0.0,-1.0,0.0));
+                    return glm::lookAt(position, position + glm::vec3(1.0,0.0,0.0), glm::vec3(0.0,-1.0,0.0));
                 case 1:
-                    return glm::lookAt(*position, *position + glm::vec3(-1.0,0.0,0.0), glm::vec3(0.0,-1.0,0.0));
+                    return glm::lookAt(position, position + glm::vec3(-1.0,0.0,0.0), glm::vec3(0.0,-1.0,0.0));
                 case 2:
-                    return glm::lookAt(*position, *position + glm::vec3(0.0,1.0,0.0), glm::vec3(0.0,0.0,1.0));
+                    return glm::lookAt(position, position + glm::vec3(0.0,1.0,0.0), glm::vec3(0.0,0.0,1.0));
                 case 3:
-                    return glm::lookAt(*position, *position + glm::vec3(0.0,-1.0,0.0), glm::vec3(0.0,0.0,-1.0));
+                    return glm::lookAt(position, position + glm::vec3(0.0,-1.0,0.0), glm::vec3(0.0,0.0,-1.0));
                 case 4:
-                    return glm::lookAt(*position, *position + glm::vec3(0.0,0.0,1.0), glm::vec3(0.0,-1.0,0.0));
+                    return glm::lookAt(position, position + glm::vec3(0.0,0.0,1.0), glm::vec3(0.0,-1.0,0.0));
                 case 5:
-                    return glm::lookAt(*position, *position + glm::vec3(0.0,0.0,-1.0), glm::vec3(0.0,-1.0,0.0));
+                    return glm::lookAt(position, position + glm::vec3(0.0,0.0,-1.0), glm::vec3(0.0,-1.0,0.0));
             }
             return glm::mat4(1.);
         }
         
         glm::mat4 get_projection()
         {
-            return glm::perspective<float>(45.0f, 1.0f, 1.0f, 50.0f);
+            return glm::perspective<float>(glm::radians(90.0f), 1.0f, 1.0f, 50.0f);
         }
         
-        void shine(const glm::vec3& view_position, const GLRenderTarget& source_render_target)
+        void shine(const glm::vec3& view_position, const GLColorRenderTarget& source_render_target, const GLShadowCubeRenderTarget& shadow_render_target)
         {
+            GLUniform::use(shader, "shadowMap", 4);
+            shadow_render_target.bind_texture_for_reading(5);
+            GLUniform::use(shader, "shadowCubeMap", 5);
+            GLUniform::use(shader, "shadowMVP0", bias_matrix * get_projection() * get_view(0));
+            GLUniform::use(shader, "shadowMVP1", bias_matrix * get_projection() * get_view(1));
+            GLUniform::use(shader, "shadowMVP2", bias_matrix * get_projection() * get_view(2));
+            GLUniform::use(shader, "shadowMVP3", bias_matrix * get_projection() * get_view(3));
+            GLUniform::use(shader, "shadowMVP4", bias_matrix * get_projection() * get_view(4));
+            GLUniform::use(shader, "shadowMVP5", bias_matrix * get_projection() * get_view(5));
             GLUniform::use(shader, "lightType", 2);
-            GLUniform::use(shader, "pointLight.position", *position);
+            GLUniform::use(shader, "pointLight.position", position);
             GLUniform::use(shader, "pointLight.base.color", glm::vec3(1., 1., 1.));
             GLUniform::use(shader, "pointLight.base.ambientIntensity", 0.2f);
             GLUniform::use(shader, "pointLight.base.diffuseIntensity", 0.5f);

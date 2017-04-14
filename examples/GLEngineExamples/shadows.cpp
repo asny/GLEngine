@@ -133,7 +133,15 @@ int main(int argc, const char * argv[])
     auto scene = GLScene();
     create_room(scene);
     create_cube(scene);
-    scene.add_light(std::make_shared<GLPointLight>(glm::vec3(-1., 5., 1.)));
+    
+    // Light
+    auto material = make_shared<GLColorMaterial>(vec3(1., 1., 1.));
+    auto geometry = MeshCreator::create_box(false);
+    auto light_translation = make_shared<vec3>(0., 0., 0.);
+    scene.add_child(std::make_shared<GLTranslationNode>(light_translation))->add_child(make_shared<GLTransformationNode>(scale(vec3(0.1, 0.1, 0.1))))->add_leaf(geometry, material);
+    
+    auto point_light = make_shared<GLPointLight>();
+    scene.add_light(point_light);
     scene.add_light(std::make_shared<GLDirectionalLight>(glm::vec3(1., -1., 0.)));
     
     // Create post effect
@@ -155,6 +163,8 @@ int main(int argc, const char * argv[])
         
         // update the scene based on the time elapsed since last update
         update(camera);
+        point_light->position = vec3(3. * sin(gle::time()), 5. * cos(gle::time()), 0.);
+        *light_translation = point_light->position * 1.1f;
         
         // draw one frame
         camera.draw(scene);

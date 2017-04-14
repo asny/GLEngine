@@ -57,22 +57,26 @@ namespace gle
     {
         std::vector<std::shared_ptr<GLDirectionalLight>> directional_lights;
         std::vector<std::shared_ptr<GLPointLight>> point_lights;
-        GLRenderTarget shadow_render_target;
+        std::shared_ptr<GLShadowCubeRenderTarget> point_light_shadow_render_target = nullptr;
+        std::shared_ptr<GLShadowRenderTarget> directional_light_shadow_render_target = nullptr;
         
     public:
         
-        GLScene() : shadow_render_target(GLRenderTarget(1024, 1024, 0, true))
-        {
-            
-        }
-        
         void add_light(std::shared_ptr<GLPointLight> light)
         {
+            if(!point_light_shadow_render_target)
+            {
+                point_light_shadow_render_target = std::make_shared<GLShadowCubeRenderTarget>(1024, 1024);
+            }
             point_lights.push_back(light);
         }
         
         void add_light(std::shared_ptr<GLDirectionalLight> light)
         {
+            if(!directional_light_shadow_render_target)
+            {
+                directional_light_shadow_render_target = std::make_shared<GLShadowRenderTarget>(1024, 1024);
+            }
             directional_lights.push_back(light);
         }
         
@@ -83,7 +87,7 @@ namespace gle
         }
         
         void shine_light(const glm::vec3& view_position, const glm::vec3& view_direction,
-                         const GLRenderTarget& source_render_target, const GLDefaultRenderTarget& render_target) const
+                         const GLColorRenderTarget& source_render_target, const GLRenderTarget& render_target) const
         {
             // Set up blending
             glEnable(GL_BLEND);
@@ -91,21 +95,30 @@ namespace gle
             
             for(auto light : point_lights)
             {
+                // Cast shadows
+                point_light_shadow_render_target->use();
+                for (int i = 0; i < 6; i++)
+                {
+                    point_light_shadow_render_target->bind_texture_for_writing(i);
+                    point_light_shadow_render_target->clear();
+                    draw(DEFERRED, view_position, light->get_view(i), light->get_projection());
+                }
+                
                 // Shine the light
                 render_target.use();
-                light->shine(view_position, source_render_target);
+                light->shine(view_position, source_render_target, *point_light_shadow_render_target);
             }
             
             for(auto light : directional_lights)
             {
                 // Cast shadows
-                shadow_render_target.use();
-                shadow_render_target.clear();
+                directional_light_shadow_render_target->use();
+                directional_light_shadow_render_target->clear();
                 draw(DEFERRED, view_position, light->get_view(view_position, view_direction), light->get_projection());
                 
                 // Shine the light
                 render_target.use();
-                light->shine(view_position, view_direction, source_render_target, shadow_render_target);
+                light->shine(view_position, view_direction, source_render_target, *directional_light_shadow_render_target);
             }
         }
     };

@@ -23,7 +23,8 @@ namespace gle {
         glm::mat4 view = glm::mat4(1.);
         glm::mat4 projection = glm::mat4(1.);
         
-        GLRenderTarget geometry_pass_render_target;
+        std::shared_ptr<GLScreenRenderTarget> screen_render_target;
+        std::shared_ptr<GLColorRenderTarget> geometry_pass_render_target;
         
     public:
         
@@ -37,9 +38,9 @@ namespace gle {
          */
         void set_screen_size(int width, int height)
         {
-            GLDefaultRenderTarget::get().resize(width, height);
-            geometry_pass_render_target.resize(width, height, 3, true);
-            projection = glm::perspective(45.f, width/float(height), z_near, z_far);
+            screen_render_target = std::make_shared<GLScreenRenderTarget>(width, height);
+            geometry_pass_render_target = std::make_shared<GLColorRenderTarget>(width, height, 3, true);
+            projection = glm::perspective(glm::radians(45.f), width/float(height), z_near, z_far);
         }
         
         /**
@@ -62,18 +63,18 @@ namespace gle {
         
         void apply_post_effect(const GLPostEffect& post_effect)
         {
-            GLDefaultRenderTarget::get().use();
+            screen_render_target->use();
             
             glEnable(GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
-            post_effect.apply(geometry_pass_render_target, position, view, projection);
+            post_effect.apply(*geometry_pass_render_target, position, view, projection);
         }
         
     private:
         void forward_pass(const GLScene& scene)
         {
-            GLDefaultRenderTarget::get().use();
+            screen_render_target->use();
             
             // Set up default blending
             glEnable(GL_BLEND);
@@ -86,18 +87,18 @@ namespace gle {
         void deferred_pass(const GLScene& scene)
         {
             // Geometry pass
-            geometry_pass_render_target.use();
-            geometry_pass_render_target.clear();
+            geometry_pass_render_target->use();
+            geometry_pass_render_target->clear();
             
             glDisable(GL_BLEND);
             
             scene.draw(DEFERRED, position, view, projection);
             
             // Light pass
-            GLDefaultRenderTarget::get().use();
-            GLDefaultRenderTarget::get().clear();
+            screen_render_target->use();
+            screen_render_target->clear();
             
-            scene.shine_light(position, direction, geometry_pass_render_target, GLDefaultRenderTarget::get());
+            scene.shine_light(position, direction, *geometry_pass_render_target, *screen_render_target);
         }
     };
 }
