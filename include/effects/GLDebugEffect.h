@@ -12,7 +12,7 @@ namespace gle
     class GLDebugEffect : public GLPostEffect
     {
     public:
-        enum Type {NONE = -1, POSITION = 0, NORMAL = 1, COLOR = 2};
+        enum Type {NONE = -1, POSITION = 0, NORMAL = 1, COLOR = 2, DEPTH = 3};
         Type type = NONE;
         
         GLDebugEffect() : GLPostEffect("../GLEngine/shaders/effect.vert",  "../GLEngine/shaders/debug_effect.frag")
@@ -30,6 +30,9 @@ namespace gle
             
             source_render_target.bind_color_texture_for_reading(2, 2);
             GLUniform::use(shader, "normalMap", 2);
+            
+            source_render_target.bind_depth_texture_for_reading(3);
+            GLUniform::use(shader, "depthMap", 3);
             
             GLUniform::use(shader, "type", type);
             
