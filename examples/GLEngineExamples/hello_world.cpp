@@ -101,7 +101,9 @@ int main(int argc, const char * argv[])
     
     // Create scene
     auto scene = GLScene();
-    scene.add_light(std::make_shared<GLDirectionalLight>(glm::vec3(1., -1., 0.)));
+    auto directional_light = make_shared<GLDirectionalLight>();
+    scene.add_light(directional_light);
+    directional_light->direction = glm::vec3(1., -1., 0.);
     create_cubes(scene);
     
     // Create debug effect

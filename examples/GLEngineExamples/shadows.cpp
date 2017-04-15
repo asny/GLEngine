@@ -142,7 +142,9 @@ int main(int argc, const char * argv[])
     
     auto point_light = make_shared<GLPointLight>();
     scene.add_light(point_light);
-    scene.add_light(std::make_shared<GLDirectionalLight>(glm::vec3(1., -1., 0.)));
+    auto directional_light = make_shared<GLDirectionalLight>();
+    scene.add_light(directional_light);
+    directional_light->direction = glm::vec3(1., -1., 0.);
     
     // Create post effect
     auto ssao = GLAmbientOcclusionEffect();

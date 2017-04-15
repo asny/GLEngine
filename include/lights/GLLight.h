@@ -46,17 +46,16 @@ namespace gle
             
             GLObject::draw_full_screen_quad(shader);
         }
+    public:
+        glm::vec3 color = glm::vec3(1., 1., 1.);
+        float ambient_intensity = 0.2f;
+        float diffuse_intensity = 0.5f;
     };
     
     class GLDirectionalLight : public GLLight
     {
-        glm::vec3 direction;
     public:
-        
-        GLDirectionalLight(const glm::vec3& _direction) : GLLight(), direction(_direction)
-        {
-            
-        }
+        glm::vec3 direction = glm::vec3(0., -1., 0.);
         
         glm::mat4 get_view(const glm::vec3& view_position, const glm::vec3& view_direction)
         {
@@ -79,9 +78,9 @@ namespace gle
             GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view(view_position, view_direction));
             GLUniform::use(shader, "lightType", 1);
             GLUniform::use(shader, "directionalLight.direction", direction);
-            GLUniform::use(shader, "directionalLight.base.color", glm::vec3(1., 1., 1.));
-            GLUniform::use(shader, "directionalLight.base.ambientIntensity", 0.2f);
-            GLUniform::use(shader, "directionalLight.base.diffuseIntensity", 0.5f);
+            GLUniform::use(shader, "directionalLight.base.color", color);
+            GLUniform::use(shader, "directionalLight.base.ambientIntensity", ambient_intensity);
+            GLUniform::use(shader, "directionalLight.base.diffuseIntensity", diffuse_intensity);
             
             GLLight::shine(view_position, source_render_target);
         }
@@ -91,16 +90,9 @@ namespace gle
     {
     public:
         glm::vec3 position = glm::vec3(0., 0., 0.);
-        
-        GLPointLight() : GLLight()
-        {
-            
-        }
-        
-        GLPointLight(const glm::vec3& _position) : GLLight(), position(_position)
-        {
-            
-        }
+        float attenuation_constant = 0.1f;
+        float attenuation_linear = 0.01f;
+        float attenuation_exp = 0.001f;
         
         glm::mat4 get_view(int layer)
         {
@@ -139,12 +131,12 @@ namespace gle
             GLUniform::use(shader, "shadowMVP5", bias_matrix * get_projection() * get_view(5));
             GLUniform::use(shader, "lightType", 2);
             GLUniform::use(shader, "pointLight.position", position);
-            GLUniform::use(shader, "pointLight.base.color", glm::vec3(1., 1., 1.));
-            GLUniform::use(shader, "pointLight.base.ambientIntensity", 0.2f);
-            GLUniform::use(shader, "pointLight.base.diffuseIntensity", 0.5f);
-            GLUniform::use(shader, "pointLight.attenuation.constant", 0.1f);
-            GLUniform::use(shader, "pointLight.attenuation.linear", 0.01f);
-            GLUniform::use(shader, "pointLight.attenuation.exp", 0.001f);
+            GLUniform::use(shader, "pointLight.base.color", color);
+            GLUniform::use(shader, "pointLight.base.ambientIntensity", ambient_intensity);
+            GLUniform::use(shader, "pointLight.base.diffuseIntensity", diffuse_intensity);
+            GLUniform::use(shader, "pointLight.attenuation.constant", attenuation_constant);
+            GLUniform::use(shader, "pointLight.attenuation.linear", attenuation_linear);
+            GLUniform::use(shader, "pointLight.attenuation.exp", attenuation_exp);
             
             GLLight::shine(view_position, source_render_target);
         }
