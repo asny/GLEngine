@@ -189,5 +189,32 @@ namespace gle
             GLNode::draw(draw_pass, camera_position, model * glm::translate(glm::mat4(1.f), *translation), view, projection);
         }
     };
+    
+    class GLScaleNode : public GLNode
+    {
+    public:
+        GLScaleNode(double _scale) : scale(std::make_shared<glm::vec3>(_scale, _scale, _scale))
+        {
+            
+        }
+        
+        GLScaleNode(const glm::vec3& _scale) : scale(std::make_shared<glm::vec3>(_scale))
+        {
+            
+        }
+        
+        GLScaleNode(std::shared_ptr<glm::vec3> _scale) : scale(_scale)
+        {
+            
+        }
+        
+    private:
+        std::shared_ptr<glm::vec3> scale;
+        
+        void draw(DrawPassMode draw_pass, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
+        {
+            GLNode::draw(draw_pass, camera_position, model * glm::scale(glm::mat4(1.f), *scale), view, projection);
+        }
+    };
 
 }
