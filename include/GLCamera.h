@@ -57,11 +57,6 @@ namespace gle {
             view = lookAt(position, position + direction, glm::vec3(0., 1., 0.));
         }
         
-        void zoom(float delta)
-        {
-            set_view(position + delta * direction, direction);
-        }
-        
         void draw(const GLScene& scene)
         {
             deferred_pass(scene);
@@ -83,6 +78,11 @@ namespace gle {
         const glm::vec3& get_position()
         {
             return position;
+        }
+        
+        const glm::vec3& get_direction()
+        {
+            return direction;
         }
         
         glm::vec3 get_view_direction_at(int screen_coord_x, int screen_coord_y)
