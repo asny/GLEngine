@@ -17,6 +17,8 @@ namespace gle {
     {
         const float z_near = 0.1f;
         const float z_far = 100.f;
+        int width;
+        int height;
         
         glm::vec3 position = glm::vec3(0.);
         glm::vec3 direction = glm::vec3(0., 0., -1.);
@@ -36,8 +38,10 @@ namespace gle {
         /**
          Reshape the window.
          */
-        void set_screen_size(int width, int height)
+        void set_screen_size(int _width, int _height)
         {
+            width = _width;
+            height = _height;
             screen_render_target = std::make_shared<GLScreenRenderTarget>(width, height);
             geometry_pass_render_target = std::make_shared<GLColorRenderTarget>(width, height, 3, true);
             projection = glm::perspective(glm::radians(45.f), width/float(height), z_near, z_far);
@@ -74,6 +78,21 @@ namespace gle {
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
             post_effect.apply(*geometry_pass_render_target, position, view, projection);
+        }
+        
+        const glm::vec3& get_position()
+        {
+            return position;
+        }
+        
+        glm::vec3 get_view_direction_at(int screen_coord_x, int screen_coord_y)
+        {
+            glm::vec4 screen_pos = glm::vec4(2. * static_cast<double>(screen_coord_x) / static_cast<double>(width) - 1.,
+                                             1.-(2. * static_cast<double>(screen_coord_y) / static_cast<double>(height)), 1., 1.);
+            glm::vec4 ray_eye = glm::inverse(projection) * screen_pos;
+            ray_eye = glm::vec4(ray_eye.x, ray_eye.y, -1.0, 0.0);
+            glm::vec4 ray_world = inverse(view) * ray_eye;
+            return glm::normalize(glm::vec3(ray_world.x, ray_world.y, ray_world.z));
         }
         
     private:
