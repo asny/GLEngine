@@ -59,7 +59,7 @@ namespace gle
         
         glm::mat4 get_view(const glm::vec3& view_position, const glm::vec3& view_direction)
         {
-            auto target = view_position + view_direction * 5.f;
+            auto target = view_position + view_direction * 10.f;
             const float distance = 1.f;
             glm::vec3 up = normalize(cross(direction, glm::vec3(1., 0., 0.)));
             return glm::lookAt(target - distance * direction, target, up);
@@ -67,7 +67,7 @@ namespace gle
         
         glm::mat4 get_projection()
         {
-            return glm::ortho<float>(-10,10,-10,10,-10,20);
+            return glm::ortho<float>(-20,20,-20,20,-20,20);
         }
         
         void shine(const glm::vec3& view_position, const glm::vec3& view_direction, const GLColorRenderTarget& source_render_target, const GLShadowRenderTarget& shadow_render_target)
