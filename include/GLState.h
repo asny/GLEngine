@@ -12,7 +12,7 @@ namespace gle
     public:
         static void cull_back_faces(bool enable)
         {
-            static bool currently_enabled = true;
+            static bool currently_enabled = false;
             if(currently_enabled != enable)
             {
                 if(enable)
