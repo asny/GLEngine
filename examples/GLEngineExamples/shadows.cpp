@@ -46,7 +46,7 @@ void update(GLCamera& camera)
     print_fps(elapsed_time);
     *cube_rotation_angle = current_time;
     
-    static vec3 view_position = vec3(0., 0., 5.);
+    static vec3 view_position = vec3(0., 0., 20.);
     static vec3 view_direction = vec3(0., 0., -1.);
     const float speed = 3.;
     
@@ -96,7 +96,7 @@ void create_room(GLScene& root)
 {
     auto color_material = make_shared<GLColorMaterial>(vec3(0.5, 0.5, 0.5));
     auto box = MeshCreator::create_box(true);
-    auto scale_node = std::make_shared<GLTransformationNode>(scale(vec3(10., 10., 10.)));
+    auto scale_node = std::make_shared<GLTransformationNode>(scale(vec3(7., 7., 7.)));
     root.add_child(scale_node)->add_leaf(box, color_material);
 }
 
