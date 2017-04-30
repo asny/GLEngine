@@ -9,6 +9,7 @@
 #include "GLCamera.h"
 #include "MeshCreator.h"
 #include "materials/GLColorMaterial.h"
+#include "materials/GLFlatColorMaterial.h"
 #include "gtx/rotate_vector.hpp"
 #include "GLAmbientOcclusionEffect.h"
 
@@ -84,7 +85,7 @@ void update(GLCamera& camera)
 
 void create_cube(GLScene& root)
 {
-    auto material = make_shared<GLColorMaterial>(vec3(0.5, 0.1, 0.7));
+    auto material = make_shared<GLFlatColorMaterial>(vec3(0.5, 0.1, 0.7));
     auto geometry = MeshCreator::create_box(false);
     
     auto rotation_node = std::make_shared<GLRotationNode>(vec3(1., 1., 0.), cube_rotation_angle);
@@ -94,7 +95,7 @@ void create_cube(GLScene& root)
 
 void create_room(GLScene& root)
 {
-    auto color_material = make_shared<GLColorMaterial>(vec3(0.5, 0.5, 0.5));
+    auto color_material = make_shared<GLFlatColorMaterial>(vec3(0.5, 0.5, 0.5));
     auto box = MeshCreator::create_box(true);
     auto scale_node = std::make_shared<GLTransformationNode>(scale(vec3(7., 7., 7.)));
     root.add_child(scale_node)->add_leaf(box, color_material);
