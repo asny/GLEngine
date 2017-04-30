@@ -3,9 +3,13 @@
 uniform sampler2D positionMap;
 uniform sampler2D normalMap;
 
-uniform vec3 samples[64];
+uniform vec3 samples[4];
 uniform int sampleSize;
 uniform sampler2D noiseTexture;
+uniform sampler2D blueNoiseTexture0;
+uniform sampler2D blueNoiseTexture1;
+uniform sampler2D blueNoiseTexture2;
+uniform sampler2D blueNoiseTexture3;
 uniform int noiseSize;
 
 uniform mat4 VPBMatrix;
@@ -32,7 +36,17 @@ void main()
     for (int i = 0; i < sampleSize; i++)
     {
         // Sample position and depth
-        vec3 sample_pos = pos + radius * tbn * samples[i];
+        float random_radius;
+        if(mod(i, 4) == 0)
+            random_radius = texture(blueNoiseTexture0, gl_FragCoord.xy/128.).x;
+        if(mod(i, 4) == 1)
+            random_radius = texture(blueNoiseTexture1, gl_FragCoord.xy/128.).x;
+        if(mod(i, 4) == 2)
+            random_radius = texture(blueNoiseTexture2, gl_FragCoord.xy/128.).x;
+        if(mod(i, 4) == 3)
+            random_radius = texture(blueNoiseTexture3, gl_FragCoord.xy/128.).x;
+        vec3 sample_pos = pos + radius * tbn * samples[i] * random_radius * random_radius;
+        
         vec4 screen_sample_pos = VPBMatrix * vec4(sample_pos, 1.);
         float sample_depth = distance(texture(positionMap, screen_sample_pos.xy / screen_sample_pos.w).xyz, eyePosition);
         

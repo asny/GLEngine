@@ -13,9 +13,10 @@ namespace gle
     {
         float radius;
         std::unique_ptr<GLTexture2D> noise_texture;
+        std::unique_ptr<GLTexture2D> blue_noise_texture0, blue_noise_texture1, blue_noise_texture2, blue_noise_texture3;
         std::vector<glm::vec3> samples;
         const int noise_size = 4;
-        const int sample_size = 16;
+        const int sample_size = 4;
         glm::mat4 bias_matrix = glm::mat4(0.5, 0.0, 0.0, 0.0,
                                           0.0, 0.5, 0.0, 0.0,
                                           0.0, 0.0, 0.5, 0.0,
@@ -27,6 +28,10 @@ namespace gle
         {
             create_sample_kernel();
             create_noise_texture();
+            blue_noise_texture0 = std::unique_ptr<GLTexture2D>(new GLTexture2D("../GLEngine/HDR_L_0.png"));
+            blue_noise_texture1 = std::unique_ptr<GLTexture2D>(new GLTexture2D("../GLEngine/HDR_L_1.png"));
+            blue_noise_texture2 = std::unique_ptr<GLTexture2D>(new GLTexture2D("../GLEngine/HDR_L_2.png"));
+            blue_noise_texture3 = std::unique_ptr<GLTexture2D>(new GLTexture2D("../GLEngine/HDR_L_3.png"));
         }
         
         void apply(const GLColorRenderTarget& source_render_target, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection) const
@@ -39,6 +44,15 @@ namespace gle
             
             source_render_target.bind_color_texture_for_reading(2, 2);
             GLUniform::use(shader, "normalMap", 2);
+            
+            blue_noise_texture0->use(3);
+            GLUniform::use(shader, "blueNoiseTexture0", 3);
+            blue_noise_texture0->use(4);
+            GLUniform::use(shader, "blueNoiseTexture1", 4);
+            blue_noise_texture0->use(5);
+            GLUniform::use(shader, "blueNoiseTexture2", 5);
+            blue_noise_texture0->use(6);
+            GLUniform::use(shader, "blueNoiseTexture3", 6);
             
             GLUniform::use(shader, "samples", samples[0], sample_size);
             GLUniform::use(shader, "sampleSize", sample_size);
@@ -57,10 +71,9 @@ namespace gle
         {
             for (int i = 0; i < sample_size; ++i)
             {
-                float radius = random(0., 1.);
                 double theta = random(0., 2. * M_PI);
                 double phi = random(0., 0.5 * M_PI);
-                samples.push_back(radius * radius * glm::vec3(cos(theta) * sin(phi), sin(theta) * sin(phi), cos(phi)));
+                samples.push_back(glm::vec3(cos(theta) * sin(phi), sin(theta) * sin(phi), cos(phi)));
             }
         }
         
