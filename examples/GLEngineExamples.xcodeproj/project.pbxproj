@@ -87,6 +87,9 @@
 		495DABCA1E621C0700AD5816 /* effect.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = effect.vert; path = ../shaders/effect.vert; sourceTree = "<group>"; };
 		495DABCB1E621C0700AD5816 /* ssao_effect.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ssao_effect.frag; path = ../shaders/ssao_effect.frag; sourceTree = "<group>"; };
 		497D00901E22D1E400DC549A /* GLState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLState.h; path = ../include/GLState.h; sourceTree = "<group>"; };
+		49A616C21EB7255D00025A1E /* GLWireframeMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLWireframeMaterial.h; path = ../include/materials/GLWireframeMaterial.h; sourceTree = "<group>"; };
+		49A616C51EB72C8600025A1E /* wireframe.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = wireframe.frag; path = ../shaders/wireframe.frag; sourceTree = "<group>"; };
+		49A616C61EB72C8600025A1E /* wireframe.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = wireframe.geom; path = ../shaders/wireframe.geom; sourceTree = "<group>"; };
 		49CC18771EAFD373007EB9AA /* Search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Search.h; path = ../../Mesh/include/Search.h; sourceTree = "<group>"; };
 		49EBFAED1E4382F000503199 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		49EBFAEF1E43870000503199 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
@@ -143,6 +146,7 @@
 				4900D18A1E0B224700F92EBD /* GLTextureMaterial.h */,
 				4900D18B1E0B22DE00F92EBD /* GLSkyboxMaterial.h */,
 				49471A541E131A30006E8AD5 /* GLColorMaterial.h */,
+				49A616C21EB7255D00025A1E /* GLWireframeMaterial.h */,
 			);
 			name = Materials;
 			sourceTree = "<group>";
@@ -150,6 +154,8 @@
 		4900D18E1E0C57A600F92EBD /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				49A616C51EB72C8600025A1E /* wireframe.frag */,
+				49A616C61EB72C8600025A1E /* wireframe.geom */,
 				491E99E51E8253200007A627 /* debug_effect.frag */,
 				495DABCA1E621C0700AD5816 /* effect.vert */,
 				495DABCB1E621C0700AD5816 /* ssao_effect.frag */,
