@@ -7,6 +7,7 @@
 
 #include "GLScene.h"
 #include "GLPostEffect.h"
+#include "effects/GLAntiAliasingEffect.h"
 
 namespace gle {
     
@@ -26,7 +27,10 @@ namespace gle {
         glm::mat4 projection = glm::mat4(1.);
         
         std::shared_ptr<GLScreenRenderTarget> screen_render_target;
+        std::shared_ptr<GLColorRenderTarget> light_pass_render_target;
         std::shared_ptr<GLColorRenderTarget> geometry_pass_render_target;
+        
+        GLAntiAliasingEffect anti_aliasing_effect;
         
     public:
         
@@ -44,7 +48,10 @@ namespace gle {
             height = _height;
             screen_render_target = std::make_shared<GLScreenRenderTarget>(width, height);
             geometry_pass_render_target = std::make_shared<GLColorRenderTarget>(width, height, 3, true);
+            light_pass_render_target = std::make_shared<GLColorRenderTarget>(width, height, 1, true);
             projection = glm::perspective(glm::radians(45.f), width/float(height), z_near, z_far);
+            anti_aliasing_effect.screen_height = height;
+            anti_aliasing_effect.screen_width = width;
         }
         
         /**
@@ -67,12 +74,20 @@ namespace gle {
         
         void apply_post_effect(const GLPostEffect& post_effect)
         {
-            screen_render_target->use();
+            light_pass_render_target->use();
             
             glEnable(GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
             post_effect.apply(*geometry_pass_render_target, position, view, projection);
+        }
+        
+        void final_pass()
+        {
+            screen_render_target->use();
+            screen_render_target->clear();
+            
+            anti_aliasing_effect.apply(*light_pass_render_target, position, view, projection);
         }
         
         const glm::vec3& get_position()
@@ -98,7 +113,7 @@ namespace gle {
     private:
         void forward_pass(const GLScene& scene)
         {
-            screen_render_target->use();
+            light_pass_render_target->use();
             
             // Set up default blending
             glEnable(GL_BLEND);
@@ -119,10 +134,10 @@ namespace gle {
             scene.draw(DEFERRED, position, view, projection);
             
             // Light pass
-            screen_render_target->use();
-            screen_render_target->clear();
+            light_pass_render_target->use();
+            light_pass_render_target->clear();
             
-            scene.shine_light(position, direction, *geometry_pass_render_target, *screen_render_target);
+            scene.shine_light(position, direction, *geometry_pass_render_target, *light_pass_render_target);
         }
     };
 }

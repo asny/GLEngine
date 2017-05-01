@@ -172,6 +172,7 @@ int main(int argc, const char * argv[])
         // draw one frame
         camera.draw(scene);
         camera.apply_post_effect(ssao);
+        camera.final_pass();
         
         SDL_GL_SwapWindow(window);
     }
