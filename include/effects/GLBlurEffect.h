@@ -9,14 +9,14 @@
 
 namespace gle
 {
-    class GLAntiAliasingEffect : public GLPostEffect
+    class GLBlurEffect : public GLPostEffect
     {
     public:
         
         int screen_width = 1;
         int screen_height = 1;
         
-        GLAntiAliasingEffect() : GLPostEffect("../GLEngine/shaders/effect.vert",  "../GLEngine/shaders/anti_aliasing_effect.frag")
+        GLBlurEffect() : GLPostEffect("../GLEngine/shaders/effect.vert",  "../GLEngine/shaders/blur_effect.frag")
         {
             
         }

@@ -7,7 +7,7 @@
 
 #include "GLScene.h"
 #include "GLPostEffect.h"
-#include "effects/GLAntiAliasingEffect.h"
+#include "effects/GLBlurEffect.h"
 
 namespace gle {
     
@@ -30,7 +30,7 @@ namespace gle {
         std::shared_ptr<GLColorRenderTarget> light_pass_render_target;
         std::shared_ptr<GLColorRenderTarget> geometry_pass_render_target;
         
-        GLAntiAliasingEffect anti_aliasing_effect;
+        GLBlurEffect anti_aliasing_effect;
         
     public:
         
