@@ -123,6 +123,26 @@ namespace gle
         }
     };
     
+    class GLSwitchNode : public GLNode
+    {
+    public:
+        GLSwitchNode(const std::shared_ptr<bool> _enabled) : enabled(_enabled)
+        {
+            
+        }
+        
+    private:
+        std::shared_ptr<bool> enabled;
+        
+        void draw(DrawPassMode draw_pass, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
+        {
+            if(*enabled)
+            {
+                GLNode::draw(draw_pass, camera_position, model, view, projection);
+            }
+        }
+    };
+    
     class GLTransformationNode : public GLNode
     {
     public:
