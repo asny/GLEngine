@@ -65,21 +65,6 @@ namespace gle {
             check_gl_error();
         }
         
-        void draw_wireframe(const GLScene& scene)
-        {
-            screen_render_target->use();
-            screen_render_target->clear();
-            
-            // Set up default blending
-            glEnable(GL_BLEND);
-            glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            
-            // Draw the scene
-            scene.draw(WIREFRAME, position, view, projection);
-            
-            check_gl_error();
-        }
-        
         void apply_post_effect(const GLPostEffect& post_effect)
         {
             screen_render_target->use();

@@ -11,7 +11,7 @@
 
 namespace gle
 {
-    enum DrawPassMode {FORWARD, DEFERRED, WIREFRAME};
+    enum DrawPassMode {FORWARD, DEFERRED};
     
     class GLMaterial
     {

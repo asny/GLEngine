@@ -8,7 +8,6 @@
 #include "Mesh.h"
 #include "MeshCreator.h"
 #include "GLMaterial.h"
-#include "GLWireframeMaterial.h"
 #include "GLVertexAttribute.h"
 #include "GLUniform.h"
 
@@ -21,12 +20,10 @@ namespace gle
     {
         std::shared_ptr<mesh::Mesh> geometry;
         std::shared_ptr<GLMaterial> material;
-        std::shared_ptr<GLWireframeMaterial> wireframe_material = std::make_shared<GLWireframeMaterial>(glm::vec3(1., 0., 0.));
         
         GLuint array_id;
         std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>> vec2_vertex_attributes;
         std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>> vec3_vertex_attributes;
-        std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>> wireframe_vertex_attributes;
         
     public:
         
@@ -37,7 +34,6 @@ namespace gle
             glBindVertexArray(array_id);
             
             material->create_attributes(geometry, vec2_vertex_attributes, vec3_vertex_attributes);
-            wireframe_material->create_attributes(geometry, vec2_vertex_attributes, wireframe_vertex_attributes);
         }
         
         /**
@@ -45,11 +41,6 @@ namespace gle
          */
         void draw(DrawPassMode draw_pass, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
         {
-            if(draw_pass == WIREFRAME)
-            {
-                draw_wireframe(camera_position, model, view, projection);
-            }
-            
             if(!material->should_draw(draw_pass))
                 return;
             
@@ -122,32 +113,6 @@ namespace gle
         }
         
     private:
-        void draw_wireframe(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
-        {
-            for (auto attribute : wireframe_vertex_attributes)
-            {
-                if(!attribute->is_up_to_date())
-                {
-                    for(auto face = geometry->faces_begin(); face != geometry->faces_end(); face = face->next())
-                    {
-                        attribute->add_data_at(*face->v1());
-                        attribute->add_data_at(*face->v2());
-                        attribute->add_data_at(*face->v3());
-                    }
-                    attribute->send_data();
-                }
-            }
-            
-            // Use material specific uniforms and states
-            wireframe_material->pre_draw(camera_position, model, view, projection);
-            
-            // Bind vertex array and draw
-            glBindVertexArray(array_id);
-            glDrawArrays(GL_TRIANGLES, 0, geometry->get_no_faces() * 3);
-            
-            check_gl_error();
-        }
-        
         template<class T>
         static void update_attribute(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLVertexAttribute<T>> attribute)
         {
