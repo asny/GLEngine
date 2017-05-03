@@ -35,8 +35,7 @@ namespace gle
             GLState::cull_back_faces(false);
             
             GLUniform::use(shader, "MMatrix", model);
-            GLUniform::use(shader, "VMatrix", view);
-            GLUniform::use(shader, "PMatrix", projection);
+            GLUniform::use(shader, "VPMatrix", projection * view);
             
             GLUniform::use(shader, "materialColor", color);
         }
