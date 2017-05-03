@@ -17,7 +17,7 @@ namespace gle
         
     public:
         
-        GLWireframeMaterial(const glm::vec3& _color) : GLMaterial(DEFERRED), color(_color)
+        GLWireframeMaterial(const glm::vec3& _color) : GLMaterial(FORWARD), color(_color)
         {
             shader = GLShader::create_or_get("../GLEngine/shaders/pre_geom.vert",  "../GLEngine/shaders/wireframe.frag", "../GLEngine/shaders/wireframe.geom");
         }
@@ -32,7 +32,7 @@ namespace gle
         {
             GLState::depth_test(true);
             GLState::depth_write(true);
-            GLState::cull_back_faces(true);
+            GLState::cull_back_faces(false);
             
             GLUniform::use(shader, "MMatrix", model);
             GLUniform::use(shader, "VMatrix", view);
