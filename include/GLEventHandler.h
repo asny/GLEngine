@@ -40,5 +40,34 @@ namespace gle
                 camera.set_view(camera_position, glm::normalize(-camera_position));
             }
         }
+        
+        static void show_debug(SDL_Event& e, GLDebugEffect& debug_effect)
+        {
+            if( e.key.keysym.sym == SDLK_0)
+            {
+                debug_effect.type = gle::GLDebugEffect::NONE;
+            }
+            if( e.key.keysym.sym == SDLK_1)
+            {
+                debug_effect.type = gle::GLDebugEffect::POSITION;
+            }
+            if( e.key.keysym.sym == SDLK_2)
+            {
+                debug_effect.type = gle::GLDebugEffect::NORMAL;
+            }
+            if( e.key.keysym.sym == SDLK_3)
+            {
+                debug_effect.type = gle::GLDebugEffect::COLOR;
+            }
+            if( e.key.keysym.sym == SDLK_4)
+            {
+                debug_effect.type = gle::GLDebugEffect::DEPTH;
+            }
+        }
+        
+        static bool is_quitting(SDL_Event& e)
+        {
+            return e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE;
+        }
     };
 }
