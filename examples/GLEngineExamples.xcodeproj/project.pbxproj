@@ -90,6 +90,7 @@
 		49A616C21EB7255D00025A1E /* GLWireframeMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLWireframeMaterial.h; path = ../include/materials/GLWireframeMaterial.h; sourceTree = "<group>"; };
 		49A616C51EB72C8600025A1E /* wireframe.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = wireframe.frag; path = ../shaders/wireframe.frag; sourceTree = "<group>"; };
 		49A616C61EB72C8600025A1E /* wireframe.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = wireframe.geom; path = ../shaders/wireframe.geom; sourceTree = "<group>"; };
+		49A616C71EBB060000025A1E /* GLEventHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLEventHandler.h; path = ../include/GLEventHandler.h; sourceTree = "<group>"; };
 		49CC18771EAFD373007EB9AA /* Search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Search.h; path = ../../Mesh/include/Search.h; sourceTree = "<group>"; };
 		49EBFAED1E4382F000503199 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		49EBFAEF1E43870000503199 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
@@ -134,6 +135,7 @@
 				497D00901E22D1E400DC549A /* GLState.h */,
 				4942D5B01E4F377100C4F61E /* GLRenderTarget.h */,
 				491B8E421E5D798C00BE362A /* GLPostEffect.h */,
+				49A616C71EBB060000025A1E /* GLEventHandler.h */,
 			);
 			name = GLEngine;
 			sourceTree = "<group>";
