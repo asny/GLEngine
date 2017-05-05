@@ -12,6 +12,7 @@
 #include "materials/GLFlatColorMaterial.h"
 #include "gtx/rotate_vector.hpp"
 #include "GLAmbientOcclusionEffect.h"
+#include "GLEventHandler.h"
 
 #define SDL_MAIN_HANDLED
 #include "SDL.h"
@@ -37,7 +38,7 @@ void print_fps(double elapsedTime)
     }
 }
 
-void update(GLCamera& camera)
+void update()
 {
     static float last_time = time();
     float current_time = time();
@@ -46,41 +47,6 @@ void update(GLCamera& camera)
     
     print_fps(elapsed_time);
     *cube_rotation_angle = current_time;
-    
-    static vec3 view_position = vec3(0., 0., 20.);
-    static vec3 view_direction = vec3(0., 0., -1.);
-    const float speed = 3.;
-    
-    const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
-    
-    if(currentKeyStates[ SDL_SCANCODE_S ])
-    {
-        view_position -= speed * elapsed_time * view_direction;
-    }
-    else if(currentKeyStates[ SDL_SCANCODE_W ])
-    {
-        view_position += speed * elapsed_time * view_direction;
-    }
-    
-    auto side = normalize(cross(view_direction, vec3(0.,1.,0.)));
-    auto up = normalize(cross(side, view_direction));
-    if(currentKeyStates[ SDL_SCANCODE_A ])
-    {
-        view_direction = vec3(glm::rotate(mat4(), elapsed_time, up) * vec4(view_direction, 1.));
-    }
-    else if(currentKeyStates[ SDL_SCANCODE_D ])
-    {
-        view_direction = vec3(glm::rotate(mat4(), -elapsed_time, up) * vec4(view_direction, 1.));
-    }
-    else if(currentKeyStates[ SDL_SCANCODE_E ])
-    {
-        view_direction = vec3(glm::rotate(mat4(), -elapsed_time, side) * vec4(view_direction, 1.));
-    }
-    else if(currentKeyStates[ SDL_SCANCODE_Q ])
-    {
-        view_direction = vec3(glm::rotate(mat4(), elapsed_time, side) * vec4(view_direction, 1.));
-    }
-    camera.set_view(view_position, view_direction);
 }
 
 void create_cube(GLScene& root)
@@ -129,6 +95,7 @@ int main(int argc, const char * argv[])
     
     // Create camera
     auto camera = GLCamera(window_width, window_height);
+    camera.set_view(vec3(10., 0., 0.), vec3(-1., 0., 0.));
     
     // Create scene
     auto scene = GLScene();
@@ -158,14 +125,12 @@ int main(int argc, const char * argv[])
         SDL_Event e;
         while( SDL_PollEvent( &e ) != 0 )
         {
-            if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE)
-            {
-                quit = true;
-            }
+            quit = GLEventHandler::is_quitting(e);
+            GLEventHandler::navigate(e, camera);
         }
         
         // update the scene based on the time elapsed since last update
-        update(camera);
+        update();
         point_light->position = vec3(3. * sin(gle::time()), 5. * cos(gle::time()), 0.);
         *light_translation = point_light->position * 1.1f;
         

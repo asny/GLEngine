@@ -5,6 +5,9 @@
 
 #pragma once
 
+#include "GLCamera.h"
+#include "effects/GLDebugEffect.h"
+
 namespace gle
 {
     class GLEventHandler

@@ -8,7 +8,7 @@
 #include "materials/GLFlatColorMaterial.h"
 #include "materials/GLColorMaterial.h"
 #include "materials/GLStandardMaterial.h"
-#include "effects/GLDebugEffect.h"
+#include "GLEventHandler.h"
 #include "gtx/rotate_vector.hpp"
 
 #define SDL_MAIN_HANDLED
@@ -117,18 +117,8 @@ int main(int argc, const char * argv[])
         SDL_Event e;
         while( SDL_PollEvent( &e ) != 0 )
         {
-            if( e.type == SDL_QUIT || e.key.keysym.sym == SDLK_ESCAPE)
-            {
-                quit = true;
-            }
-            if( e.key.keysym.sym == SDLK_0)
-                debug_effect.type = gle::GLDebugEffect::NONE;
-            if( e.key.keysym.sym == SDLK_1)
-                debug_effect.type = gle::GLDebugEffect::POSITION;
-            if( e.key.keysym.sym == SDLK_2)
-                debug_effect.type = gle::GLDebugEffect::NORMAL;
-            if( e.key.keysym.sym == SDLK_3)
-                debug_effect.type = gle::GLDebugEffect::COLOR;
+            quit = GLEventHandler::is_quitting(e);
+            GLEventHandler::show_debug(e, debug_effect);
         }
         
         // update the scene based on the time elapsed since last update
