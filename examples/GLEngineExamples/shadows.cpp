@@ -116,6 +116,7 @@ int main(int argc, const char * argv[])
     
     // Create post effect
     auto ssao = GLAmbientOcclusionEffect();
+    auto debug_effect = GLDebugEffect();
     
     // run while the window is open
     bool quit = false;
@@ -126,7 +127,8 @@ int main(int argc, const char * argv[])
         while( SDL_PollEvent( &e ) != 0 )
         {
             quit = GLEventHandler::is_quitting(e);
-            GLEventHandler::navigate(e, camera);
+            GLEventHandler::navigate_spherical(e, camera);
+            GLEventHandler::show_debug(e, debug_effect);
         }
         
         // update the scene based on the time elapsed since last update
@@ -137,6 +139,7 @@ int main(int argc, const char * argv[])
         // draw one frame
         camera.draw(scene);
         camera.apply_post_effect(ssao);
+        camera.apply_post_effect(debug_effect);
         
         SDL_GL_SwapWindow(window);
     }

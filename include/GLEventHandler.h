@@ -13,7 +13,7 @@ namespace gle
     class GLEventHandler
     {
     public:
-        static void navigate(SDL_Event& e, GLCamera& camera)
+        static void navigate_spherical(SDL_Event& e, GLCamera& camera)
         {
             static bool mouse_rotation = false;
             
@@ -50,19 +50,19 @@ namespace gle
             {
                 debug_effect.type = gle::GLDebugEffect::NONE;
             }
-            if( e.key.keysym.sym == SDLK_1)
+            if( e.key.keysym.sym == SDLK_6)
             {
                 debug_effect.type = gle::GLDebugEffect::POSITION;
             }
-            if( e.key.keysym.sym == SDLK_2)
+            if( e.key.keysym.sym == SDLK_7)
             {
                 debug_effect.type = gle::GLDebugEffect::NORMAL;
             }
-            if( e.key.keysym.sym == SDLK_3)
+            if( e.key.keysym.sym == SDLK_8)
             {
                 debug_effect.type = gle::GLDebugEffect::COLOR;
             }
-            if( e.key.keysym.sym == SDLK_4)
+            if( e.key.keysym.sym == SDLK_9)
             {
                 debug_effect.type = gle::GLDebugEffect::DEPTH;
             }
