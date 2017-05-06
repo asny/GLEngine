@@ -11,5 +11,5 @@ const float oneOverSqrtTwo = 1/sqrt(2);
 void main()									
 {
     float dist = min(min(barycentric_coords.x, barycentric_coords.y), (1. - barycentric_coords.x - barycentric_coords.y) * oneOverSqrtTwo);
-	color = vec4(materialColor, max(1.0 - 100. * dist*dist, 0.));
+	color = vec4(materialColor, 1.0 - smoothstep(0., 0.1, dist));
 }
