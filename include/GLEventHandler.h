@@ -6,6 +6,7 @@
 #pragma once
 
 #include "GLCamera.h"
+#include "Search.h"
 #include "effects/GLDebugEffect.h"
 
 namespace gle
@@ -66,6 +67,17 @@ namespace gle
             {
                 debug_effect.type = gle::GLDebugEffect::DEPTH;
             }
+        }
+        
+        static mesh::Search::Result picking(SDL_Event& e, const GLCamera& camera, const mesh::Mesh& model)
+        {
+            if( e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT)
+            {
+                auto view_ray_origin = camera.get_position();
+                auto view_ray_direction = camera.get_view_direction_at(e.button.x, e.button.y);
+                return mesh::Search::closest_face(model, view_ray_origin, view_ray_direction);
+            }
+            return mesh::Search::Result();
         }
         
         static bool is_quitting(SDL_Event& e)

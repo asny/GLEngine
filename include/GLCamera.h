@@ -75,17 +75,17 @@ namespace gle {
             post_effect.apply(*geometry_pass_render_target, position, view, projection);
         }
         
-        const glm::vec3& get_position()
+        const glm::vec3& get_position() const
         {
             return position;
         }
         
-        const glm::vec3& get_direction()
+        const glm::vec3& get_direction() const
         {
             return direction;
         }
         
-        glm::vec3 get_view_direction_at(int screen_coord_x, int screen_coord_y)
+        glm::vec3 get_view_direction_at(int screen_coord_x, int screen_coord_y) const
         {
             glm::vec4 screen_pos = glm::vec4(2. * static_cast<double>(screen_coord_x) / static_cast<double>(width) - 1.,
                                              1.-(2. * static_cast<double>(screen_coord_y) / static_cast<double>(height)), 1., 1.);
