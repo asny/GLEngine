@@ -72,6 +72,19 @@ namespace gle {
             return attributeLocation;
         }
         
+        std::shared_ptr<GLVertexAttribute<float>> create_attribute(std::string name, std::shared_ptr<mesh::Attribute<mesh::VertexID, float>> attribute)
+        {
+            auto glAttribute = std::make_shared<GLVertexAttribute<float>>(attribute);
+            
+            // Initialize attribute
+            auto location = get_attribute_location(name);
+            glEnableVertexAttribArray(location);
+            glVertexAttribPointer(location, 1, GL_FLOAT, GL_FALSE, sizeof(float), (const GLvoid *)(0));
+            check_gl_error();
+            
+            return glAttribute;
+        }
+        
         std::shared_ptr<GLVertexAttribute<glm::vec2>> create_attribute(std::string name, std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> attribute)
         {
             auto glAttribute = std::make_shared<GLVertexAttribute<glm::vec2>>(attribute);

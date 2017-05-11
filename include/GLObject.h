@@ -22,6 +22,7 @@ namespace gle
         std::shared_ptr<GLMaterial> material;
         
         GLuint array_id;
+        std::vector<std::shared_ptr<GLVertexAttribute<float>>> float_vertex_attributes;
         std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>> vec2_vertex_attributes;
         std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>> vec3_vertex_attributes;
         
@@ -33,6 +34,7 @@ namespace gle
             glGenVertexArrays(1, &array_id);
             glBindVertexArray(array_id);
             
+            material->create_attributes(geometry, float_vertex_attributes);
             material->create_attributes(geometry, vec2_vertex_attributes, vec3_vertex_attributes);
         }
         
@@ -68,6 +70,11 @@ namespace gle
             }
             
             // Update buffers if necessary
+            for (auto glAttribute : float_vertex_attributes)
+            {
+                update_attribute(geometry, glAttribute);
+            }
+            
             for (auto glAttribute : vec2_vertex_attributes)
             {
                 update_attribute(geometry, glAttribute);

@@ -33,11 +33,7 @@ namespace gle
         
         void add_data_at(const mesh::VertexID& id)
         {
-            ValueType vec = attribute->at(id);
-            for(int j = 0; j < size; j++)
-            {
-                data.push_back(vec[j]);
-            }
+            add_data_at(id, attribute->at(id));
         }
         
         void send_data()
@@ -52,6 +48,24 @@ namespace gle
         }
         
     private:
+        
+        void add_data_at(const mesh::VertexID& id, float value)
+        {
+            data.push_back(value);
+        }
+        
+        void add_data_at(const mesh::VertexID& id, glm::vec2 value)
+        {
+            data.push_back(value[0]);
+            data.push_back(value[1]);
+        }
+        
+        void add_data_at(const mesh::VertexID& id, glm::vec3 value)
+        {
+            data.push_back(value[0]);
+            data.push_back(value[1]);
+            data.push_back(value[2]);
+        }
         
         void deprecate()
         {
