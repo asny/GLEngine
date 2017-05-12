@@ -8,6 +8,8 @@
 #include "Mesh.h"
 #include "GLShader.h"
 #include "GLUniform.h"
+#include "GLRenderTarget.h"
+#include "GLObject.h"
 
 namespace gle
 {
