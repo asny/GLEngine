@@ -94,6 +94,7 @@
 		49A616CA1EC6379C00025A1E /* GLSandMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLSandMaterial.h; path = ../include/materials/GLSandMaterial.h; sourceTree = "<group>"; };
 		49A616CB1EC637E400025A1E /* sand.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = sand.frag; path = ../shaders/sand.frag; sourceTree = "<group>"; };
 		49A616CC1EC637E400025A1E /* sand.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = sand.vert; path = ../shaders/sand.vert; sourceTree = "<group>"; };
+		49A616CE1EC7945C00025A1E /* SurfaceMeasures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SurfaceMeasures.h; path = ../../Mesh/include/SurfaceMeasures.h; sourceTree = "<group>"; };
 		49CC18771EAFD373007EB9AA /* Search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Search.h; path = ../../Mesh/include/Search.h; sourceTree = "<group>"; };
 		49EBFAED1E4382F000503199 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		49EBFAEF1E43870000503199 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
@@ -188,6 +189,7 @@
 		4900D19A1E0DC4DE00F92EBD /* Mesh */ = {
 			isa = PBXGroup;
 			children = (
+				49A616CE1EC7945C00025A1E /* SurfaceMeasures.h */,
 				49CC18771EAFD373007EB9AA /* Search.h */,
 				4900D19B1E0DC4FB00F92EBD /* Attribute.h */,
 				4900D19C1E0DC4FB00F92EBD /* ID.h */,
