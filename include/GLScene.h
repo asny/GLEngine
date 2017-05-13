@@ -114,7 +114,7 @@ namespace gle
                 // Cast shadows
                 directional_light_shadow_render_target->use();
                 directional_light_shadow_render_target->clear();
-                draw(DEFERRED, view_position, light->get_view(view_position, view_direction), light->get_projection());
+                draw(DEFERRED, view_position, light->get_view(), light->get_projection());
                 
                 // Shine the light
                 render_target.use();

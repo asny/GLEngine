@@ -56,18 +56,18 @@ namespace gle
     {
     public:
         glm::vec3 direction = glm::vec3(0., -1., 0.);
+        float shadow_radius = 10.f;
+        glm::vec3 shadow_target = glm::vec3(0., 0., 0.);
         
-        glm::mat4 get_view(const glm::vec3& view_position, const glm::vec3& view_direction)
+        glm::mat4 get_view()
         {
-            auto target = view_position + view_direction * 10.f;
-            const float distance = 1.f;
             glm::vec3 up = normalize(cross(direction, glm::vec3(1., 0., 0.)));
-            return glm::lookAt(target - distance * direction, target, up);
+            return glm::lookAt(shadow_target - direction, shadow_target, up);
         }
         
         glm::mat4 get_projection()
         {
-            return glm::ortho<float>(-20,20,-20,20,-20,20);
+            return glm::ortho<float>(-shadow_radius, shadow_radius, -shadow_radius, shadow_radius, -2.f * shadow_radius, 2.f * shadow_radius);
         }
         
         void shine(const glm::vec3& view_position, const glm::vec3& view_direction, const GLColorRenderTarget& source_render_target, const GLShadowRenderTarget& shadow_render_target)
@@ -75,7 +75,7 @@ namespace gle
             shadow_render_target.bind_texture_for_reading(4);
             GLUniform::use(shader, "shadowMap", 4);
             GLUniform::use(shader, "shadowCubeMap", 5);
-            GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view(view_position, view_direction));
+            GLUniform::use(shader, "shadowMVP", bias_matrix * get_projection() * get_view());
             GLUniform::use(shader, "lightType", 1);
             GLUniform::use(shader, "directionalLight.direction", direction);
             GLUniform::use(shader, "directionalLight.base.color", color);
