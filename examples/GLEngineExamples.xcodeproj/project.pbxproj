@@ -368,12 +368,9 @@
 					/Library/Frameworks/SDL2.framework/Headers/,
 					/Library/Frameworks/SDL2_image.framework/Headers/,
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/opt/local/lib,
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "/usr/local/include/glm /opt/local/include/GLFW ./../../Mesh/include/ ./../include/";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/include/glm ./../../Mesh/include/ ./../include/";
 			};
 			name = Debug;
 		};
@@ -389,12 +386,9 @@
 					/Library/Frameworks/SDL2.framework/Headers/,
 					/Library/Frameworks/SDL2_image.framework/Headers/,
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					/opt/local/lib,
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "/usr/local/include/glm /opt/local/include/GLFW ./../../Mesh/include/ ./../include/";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/include/glm ./../../Mesh/include/ ./../include/";
 			};
 			name = Release;
 		};
@@ -406,6 +400,7 @@
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
 				);
 				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
 					/Library/Frameworks/SDL2.framework/Headers/,
 					/Library/Frameworks/SDL2_image.framework/Headers/,
 				);
@@ -423,6 +418,7 @@
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
 				);
 				HEADER_SEARCH_PATHS = (
+					/usr/local/include,
 					/Library/Frameworks/SDL2.framework/Headers/,
 					/Library/Frameworks/SDL2_image.framework/Headers/,
 				);
