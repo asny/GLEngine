@@ -35,7 +35,8 @@ namespace gle
             glBindVertexArray(array_id);
             
             material->create_attributes(geometry, float_vertex_attributes);
-            material->create_attributes(geometry, vec2_vertex_attributes, vec3_vertex_attributes);
+            material->create_attributes(geometry, vec2_vertex_attributes);
+            material->create_attributes(geometry, vec3_vertex_attributes);
         }
         
         /**
