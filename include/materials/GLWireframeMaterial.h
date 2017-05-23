@@ -17,9 +17,9 @@ namespace gle
         
     public:
         
-        GLWireframeMaterial(const glm::vec3& _color) : GLMaterial(FORWARD), color(_color)
+        GLWireframeMaterial(const glm::vec3& _color) : GLMaterial(FORWARD, "../GLEngine/shaders/pre_geom.vert",  "../GLEngine/shaders/wireframe.frag", "../GLEngine/shaders/wireframe.geom"), color(_color)
         {
-            shader = GLShader::create_or_get("../GLEngine/shaders/pre_geom.vert",  "../GLEngine/shaders/wireframe.frag", "../GLEngine/shaders/wireframe.geom");
+            
         }
         
         void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)

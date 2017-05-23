@@ -17,9 +17,9 @@ namespace gle
     {
         DrawPassMode mode = DEFERRED;
     protected:
-        std::shared_ptr<GLShader> shader;
+        const std::shared_ptr<GLShader> shader;
         
-        GLMaterial(DrawPassMode _mode) : mode(_mode)
+        GLMaterial(DrawPassMode _mode, const std::string& vertex_shader_name, const std::string& fragment_shader_name, const std::string& geometry_shader_name = "") : mode(_mode), shader(GLShader::create_or_get(vertex_shader_name, fragment_shader_name, geometry_shader_name))
         {
             
         }

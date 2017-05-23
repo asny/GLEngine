@@ -17,9 +17,9 @@ namespace gle
         std::shared_ptr<GLTexture3D> texture;
     public:
         
-        GLSkyboxMaterial(std::shared_ptr<GLTexture3D> _texture) : GLMaterial(DEFERRED), texture(_texture)
+        GLSkyboxMaterial(std::shared_ptr<GLTexture3D> _texture) : GLMaterial(DEFERRED, "../GLEngine/shaders/skybox.vert",  "../GLEngine/shaders/skybox.frag"), texture(_texture)
         {
-            shader = GLShader::create_or_get("../GLEngine/shaders/skybox.vert",  "../GLEngine/shaders/skybox.frag");
+            
         }
         
         void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)

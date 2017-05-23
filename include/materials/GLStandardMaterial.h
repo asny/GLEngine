@@ -22,9 +22,9 @@ namespace gle
         
         GLStandardMaterial(const glm::vec3& _ambient, const glm::vec3& _diffuse, const glm::vec3& _specular, double _opacity,
                            const std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec3>> _normals = nullptr)
-            : GLMaterial(FORWARD), normals(_normals), ambient(_ambient), diffuse(_diffuse), specular(_specular), opacity(_opacity)
+            : GLMaterial(FORWARD, "../GLEngine/shaders/phong.vert",  "../GLEngine/shaders/phong.frag"), normals(_normals), ambient(_ambient), diffuse(_diffuse), specular(_specular), opacity(_opacity)
         {
-            shader = GLShader::create_or_get("../GLEngine/shaders/phong.vert",  "../GLEngine/shaders/phong.frag");
+            
         }
         
         void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vertex_attributes)
