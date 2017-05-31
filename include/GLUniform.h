@@ -33,12 +33,12 @@ namespace gle
         }
         
     private:
-        static void set(GLuint location, float value, int count)
+        static void set(GLuint location, const float& value, int count)
         {
             glUniform1fv(location, count, &value);
         }
         
-        static void set(GLuint location, int value, int count)
+        static void set(GLuint location, const int& value, int count)
         {
             glUniform1iv(location, count, &value);
         }
