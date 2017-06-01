@@ -22,14 +22,14 @@ namespace gle
             
         }
         
-        void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
+        void pre_draw(const DrawPassInput& input)
         {
             GLState::depth_test(true);
             GLState::depth_write(true);
             GLState::cull_back_faces(false);
             
-            GLUniform::use(shader, "MMatrix", model);
-            GLUniform::use(shader, "VPMatrix", projection * view);
+            GLUniform::use(shader, "MMatrix", input.model);
+            GLUniform::use(shader, "VPMatrix", input.projection * input.view);
             
             GLUniform::use(shader, "materialColor", color);
         }

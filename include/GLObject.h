@@ -45,7 +45,14 @@ namespace gle
                 return;
             
             // Use material specific uniforms and states
-            material->pre_draw(camera_position, model, view, projection);
+            auto input = DrawPassInput();
+            input.mode = draw_pass;
+            input.camera_position = camera_position;
+            input.model = model;
+            input.view = view;
+            input.projection = projection;
+            
+            material->pre_draw(input);
             draw();
         }
         

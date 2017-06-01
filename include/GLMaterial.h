@@ -8,10 +8,20 @@
 #include "GLTexture.h"
 #include "GLUniform.h"
 #include "GLState.h"
+#include "GLRenderTarget.h"
 
 namespace gle
 {
     enum DrawPassMode {FORWARD, DEFERRED};
+    
+    struct DrawPassInput
+    {
+        DrawPassMode mode;
+        glm::vec3 camera_position;
+        glm::mat4 model;
+        glm::mat4 view;
+        glm::mat4 projection;
+    };
     
     class GLMaterial
     {
@@ -46,6 +56,6 @@ namespace gle
             vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
         }
         
-        virtual void pre_draw(const glm::vec3& _camera_position, const glm::mat4& _model, const glm::mat4& _view, const glm::mat4& _projection) = 0;
+        virtual void pre_draw(const DrawPassInput& input) = 0;
     };
 }
