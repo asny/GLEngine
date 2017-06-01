@@ -96,10 +96,6 @@ namespace gle
             glEnable(GL_BLEND);
             glBlendFunc(GL_ONE, GL_ONE);
             
-            auto input = DrawPassInput();
-            input.mode = DEFERRED;
-            input.camera_position = view_position;
-            
             for(auto light : point_lights)
             {
                 // Cast shadows
@@ -108,11 +104,7 @@ namespace gle
                 {
                     point_light_shadow_render_target->bind_texture_for_writing(i);
                     point_light_shadow_render_target->clear();
-                    
-                    input.view = light->get_view(i);
-                    input.projection = light->get_projection();
-                    
-                    draw(input);
+                    draw(DrawPassInput(DEFERRED, view_position, light->get_view(i), light->get_projection()));
                 }
                 
                 // Shine the light
@@ -125,11 +117,7 @@ namespace gle
                 // Cast shadows
                 directional_light_shadow_render_target->use();
                 directional_light_shadow_render_target->clear();
-                
-                input.view = light->get_view();
-                input.projection = light->get_projection();
-                
-                draw(input);
+                draw(DrawPassInput(DEFERRED, view_position, light->get_view(), light->get_projection()));
                 
                 // Shine the light
                 render_target.use();

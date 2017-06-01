@@ -16,10 +16,16 @@ namespace gle
     
     struct DrawPassInput
     {
-        DrawPassMode mode = DEFERRED;
-        glm::vec3 camera_position = glm::vec3(0., 0., 0.);
-        glm::mat4 view = glm::mat4(1.);
-        glm::mat4 projection = glm::mat4(1.);
+        const DrawPassMode mode;
+        const glm::vec3 camera_position;
+        const glm::mat4 view;
+        const glm::mat4 projection;
+        
+        DrawPassInput(DrawPassMode _mode, const glm::vec3& _camera_position, const glm::mat4& _view, const glm::mat4& _projection)
+            : mode(_mode), camera_position(_camera_position), view(_view), projection(_projection)
+        {
+            
+        }
     };
     
     class GLMaterial
