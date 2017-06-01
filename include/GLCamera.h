@@ -105,7 +105,7 @@ namespace gle {
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
             // Draw the scene
-            scene.draw(DrawPassInput(FORWARD, position, view, projection));
+            scene.draw(DrawPassInput(FORWARD, position, view, projection, geometry_pass_render_target.get()));
         }
         
         void deferred_pass(const GLScene& scene)

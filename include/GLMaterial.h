@@ -21,8 +21,10 @@ namespace gle
         const glm::mat4 view;
         const glm::mat4 projection;
         
-        DrawPassInput(DrawPassMode _mode, const glm::vec3& _camera_position, const glm::mat4& _view, const glm::mat4& _projection)
-            : mode(_mode), camera_position(_camera_position), view(_view), projection(_projection)
+        const GLColorRenderTarget *source_render_target;
+        
+        DrawPassInput(DrawPassMode _mode, const glm::vec3& _camera_position, const glm::mat4& _view, const glm::mat4& _projection, const GLColorRenderTarget *_source_render_target = nullptr)
+            : mode(_mode), camera_position(_camera_position), view(_view), projection(_projection), source_render_target(_source_render_target)
         {
             
         }
