@@ -40,7 +40,7 @@ namespace gle
         }
         
     protected:
-        virtual void draw(DrawPassInput& input, const glm::mat4& model) const
+        virtual void draw(const DrawPassInput& input, const glm::mat4& model) const
         {
             for (const GLObject& object : objects)
             {
@@ -84,7 +84,7 @@ namespace gle
             directional_lights.push_back(light);
         }
         
-        void draw(DrawPassInput& input) const
+        void draw(const DrawPassInput& input) const
         {
             GLNode::draw(input, glm::mat4(1.));
         }
@@ -96,6 +96,10 @@ namespace gle
             glEnable(GL_BLEND);
             glBlendFunc(GL_ONE, GL_ONE);
             
+            auto input = DrawPassInput();
+            input.mode = DEFERRED;
+            input.camera_position = view_position;
+            
             for(auto light : point_lights)
             {
                 // Cast shadows
@@ -105,9 +109,6 @@ namespace gle
                     point_light_shadow_render_target->bind_texture_for_writing(i);
                     point_light_shadow_render_target->clear();
                     
-                    auto input = DrawPassInput();
-                    input.mode = DEFERRED;
-                    input.camera_position = view_position;
                     input.view = light->get_view(i);
                     input.projection = light->get_projection();
                     
@@ -125,9 +126,6 @@ namespace gle
                 directional_light_shadow_render_target->use();
                 directional_light_shadow_render_target->clear();
                 
-                auto input = DrawPassInput();
-                input.mode = DEFERRED;
-                input.camera_position = view_position;
                 input.view = light->get_view();
                 input.projection = light->get_projection();
                 
@@ -151,7 +149,7 @@ namespace gle
     private:
         std::shared_ptr<bool> enabled;
         
-        void draw(DrawPassInput& input, const glm::mat4& model) const
+        void draw(const DrawPassInput& input, const glm::mat4& model) const
         {
             if(*enabled)
             {
@@ -176,7 +174,7 @@ namespace gle
     private:
         std::shared_ptr<const glm::mat4> transformation;
         
-        void draw(DrawPassInput& input, const glm::mat4& model) const
+        void draw(const DrawPassInput& input, const glm::mat4& model) const
         {
             GLNode::draw(input, model * (*transformation));
         }
@@ -199,7 +197,7 @@ namespace gle
         glm::vec3 axis;
         std::shared_ptr<float> angle;
         
-        void draw(DrawPassInput& input, const glm::mat4& model) const
+        void draw(const DrawPassInput& input, const glm::mat4& model) const
         {
             GLNode::draw(input, model * glm::rotate(glm::mat4(1.f), *angle, axis));
         }
@@ -221,7 +219,7 @@ namespace gle
     private:
         std::shared_ptr<glm::vec3> translation;
         
-        void draw(DrawPassInput& input, const glm::mat4& model) const
+        void draw(const DrawPassInput& input, const glm::mat4& model) const
         {
             GLNode::draw(input, model * glm::translate(glm::mat4(1.f), *translation));
         }
@@ -248,7 +246,7 @@ namespace gle
     private:
         std::shared_ptr<glm::vec3> scale;
         
-        void draw(DrawPassInput& input, const glm::mat4& model) const
+        void draw(const DrawPassInput& input, const glm::mat4& model) const
         {
             GLNode::draw(input, model * glm::scale(glm::mat4(1.f), *scale));
         }
