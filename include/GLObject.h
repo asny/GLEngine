@@ -39,14 +39,44 @@ namespace gle
             material->create_attributes(geometry, vec3_vertex_attributes);
         }
         
-        /**
-         Draws the object.
-         */
         void draw(DrawPassMode draw_pass, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
         {
             if(!material->should_draw(draw_pass))
                 return;
             
+            // Use material specific uniforms and states
+            material->pre_draw(camera_position, model, view, projection);
+            draw();
+        }
+        
+        static void draw_full_screen_quad(std::shared_ptr<GLShader> shader)
+        {
+            static GLuint array_id = NULL_LOCATION;
+            if(array_id == NULL_LOCATION)
+            {
+                // Generate and bind array
+                glGenVertexArrays(1, &array_id);
+                glBindVertexArray(array_id);
+                
+                // Create mesh
+                auto uv_coordinates = std::make_shared<mesh::Attribute<mesh::VertexID, glm::vec2>>();
+                auto mesh = MeshCreator::create_quad(uv_coordinates);
+                
+                // Create attribute and send data.
+                auto position = shader->create_attribute("position", mesh->position());
+                update_attribute(mesh, position);
+                
+                auto uv = shader->create_attribute("uv_coordinates", uv_coordinates);
+                update_attribute(mesh, uv);
+            }
+            glBindVertexArray(array_id);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+        }
+        
+    private:
+        
+        void draw() const
+        {
             // Infer draw mode
             GLenum drawmode;
             int no_vertices;
@@ -86,9 +116,6 @@ namespace gle
                 update_attribute(geometry, glAttribute);
             }
             
-            // Use material specific uniforms and states
-            material->pre_draw(camera_position, model, view, projection);
-            
             // Bind vertex array and draw
             glBindVertexArray(array_id);
             glDrawArrays(drawmode, 0, no_vertices);
@@ -96,31 +123,6 @@ namespace gle
             check_gl_error();
         }
         
-        static void draw_full_screen_quad(std::shared_ptr<GLShader> shader)
-        {
-            static GLuint array_id = NULL_LOCATION;
-            if(array_id == NULL_LOCATION)
-            {
-                // Generate and bind array
-                glGenVertexArrays(1, &array_id);
-                glBindVertexArray(array_id);
-                
-                // Create mesh
-                auto uv_coordinates = std::make_shared<mesh::Attribute<mesh::VertexID, glm::vec2>>();
-                auto mesh = MeshCreator::create_quad(uv_coordinates);
-                
-                // Create attribute and send data.
-                auto position = shader->create_attribute("position", mesh->position());
-                update_attribute(mesh, position);
-                
-                auto uv = shader->create_attribute("uv_coordinates", uv_coordinates);
-                update_attribute(mesh, uv);
-            }
-            glBindVertexArray(array_id);
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-        }
-        
-    private:
         template<class T>
         static void update_attribute(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLVertexAttribute<T>> attribute)
         {
