@@ -23,13 +23,13 @@ namespace gle
             
         }
         
-        void pre_draw(const DrawPassInput& input)
+        void pre_draw(const DrawPassInput& input, const glm::mat4& model)
         {
             GLState::depth_test(true);
             GLState::depth_write(true);
             GLState::cull_back_faces(true);
             
-            GLUniform::use(shader, "MMatrix", input.model);
+            GLUniform::use(shader, "MMatrix", model);
             GLUniform::use(shader, "VPMatrix", input.projection * input.view);
             
             GLUniform::use(shader, "materialColor", color);

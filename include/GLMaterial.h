@@ -16,11 +16,10 @@ namespace gle
     
     struct DrawPassInput
     {
-        DrawPassMode mode;
-        glm::vec3 camera_position;
-        glm::mat4 model;
-        glm::mat4 view;
-        glm::mat4 projection;
+        DrawPassMode mode = DEFERRED;
+        glm::vec3 camera_position = glm::vec3(0., 0., 0.);
+        glm::mat4 view = glm::mat4(1.);
+        glm::mat4 projection = glm::mat4(1.);
     };
     
     class GLMaterial
@@ -56,6 +55,6 @@ namespace gle
             vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
         }
         
-        virtual void pre_draw(const DrawPassInput& input) = 0;
+        virtual void pre_draw(const DrawPassInput& input, const glm::mat4& model) = 0;
     };
 }

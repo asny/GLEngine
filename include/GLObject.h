@@ -39,20 +39,13 @@ namespace gle
             material->create_attributes(geometry, vec3_vertex_attributes);
         }
         
-        void draw(DrawPassMode draw_pass, const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection) const
+        void draw(const DrawPassInput& input, const glm::mat4& model) const
         {
-            if(!material->should_draw(draw_pass))
+            if(!material->should_draw(input.mode))
                 return;
             
             // Use material specific uniforms and states
-            auto input = DrawPassInput();
-            input.mode = draw_pass;
-            input.camera_position = camera_position;
-            input.model = model;
-            input.view = view;
-            input.projection = projection;
-            
-            material->pre_draw(input);
+            material->pre_draw(input, model);
             draw();
         }
         

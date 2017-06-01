@@ -22,7 +22,7 @@ namespace gle
             
         }
         
-        void pre_draw(const DrawPassInput& input)
+        void pre_draw(const DrawPassInput& input, const glm::mat4& model)
         {
             GLState::depth_test(true);
             GLState::depth_write(true);
@@ -32,7 +32,7 @@ namespace gle
             texture->use(0);
             GLUniform::use(shader, "texture0", 0);
             GLUniform::use(shader, "eyePosition", input.camera_position);
-            GLUniform::use(shader, "MVMatrix", input.view * input.model);
+            GLUniform::use(shader, "MVMatrix", input.view * model);
             GLUniform::use(shader, "PMatrix", input.projection);
         }
     };

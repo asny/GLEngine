@@ -36,13 +36,13 @@ namespace gle
                 vertex_attributes.push_back(shader->create_attribute("normal", geometry->normal()));
         }
         
-        void pre_draw(const DrawPassInput& input)
+        void pre_draw(const DrawPassInput& input, const glm::mat4& model)
         {
             GLState::depth_test(true);
             GLState::depth_write(opacity >= 0.999);
             GLState::cull_back_faces(true);
             
-            auto modelView = input.view * input.model;
+            auto modelView = input.view * model;
             
             GLUniform::use(shader, "VMatrix", input.view);
             GLUniform::use(shader, "MVMatrix", modelView);
