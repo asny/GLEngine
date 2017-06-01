@@ -13,11 +13,6 @@ namespace gle
 {
     class GLNode
     {
-    protected:
-        GLNode()
-        {
-            
-        }
     public:
         void add_leaf(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLMaterial> material)
         {
