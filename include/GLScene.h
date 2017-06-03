@@ -59,13 +59,16 @@ namespace gle
         std::shared_ptr<GLShadowCubeRenderTarget> point_light_shadow_render_target = nullptr;
         std::shared_ptr<GLShadowRenderTarget> directional_light_shadow_render_target = nullptr;
         
+        const int shadow_width = 1024;
+        const int shadow_height = 1024;
+        
     public:
         
         void add_light(std::shared_ptr<GLPointLight> light)
         {
             if(!point_light_shadow_render_target)
             {
-                point_light_shadow_render_target = std::make_shared<GLShadowCubeRenderTarget>(1024, 1024);
+                point_light_shadow_render_target = std::make_shared<GLShadowCubeRenderTarget>(shadow_width, shadow_height);
             }
             point_lights.push_back(light);
         }
@@ -74,7 +77,7 @@ namespace gle
         {
             if(!directional_light_shadow_render_target)
             {
-                directional_light_shadow_render_target = std::make_shared<GLShadowRenderTarget>(1024, 1024);
+                directional_light_shadow_render_target = std::make_shared<GLShadowRenderTarget>(shadow_width, shadow_height);
             }
             directional_lights.push_back(light);
         }
@@ -99,7 +102,7 @@ namespace gle
                 {
                     point_light_shadow_render_target->bind_texture_for_writing(i);
                     point_light_shadow_render_target->clear();
-                    draw(DrawPassInput(DEFERRED, view_position, light->get_view(i), light->get_projection()));
+                    draw(DrawPassInput(DEFERRED, view_position, glm::vec2(shadow_width, shadow_height), light->get_view(i), light->get_projection()));
                 }
                 
                 // Shine the light
@@ -112,7 +115,7 @@ namespace gle
                 // Cast shadows
                 directional_light_shadow_render_target->use();
                 directional_light_shadow_render_target->clear();
-                draw(DrawPassInput(DEFERRED, view_position, light->get_view(), light->get_projection()));
+                draw(DrawPassInput(DEFERRED, view_position, glm::vec2(shadow_width, shadow_height), light->get_view(), light->get_projection()));
                 
                 // Shine the light
                 render_target.use();

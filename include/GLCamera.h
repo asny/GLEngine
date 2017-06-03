@@ -105,7 +105,7 @@ namespace gle {
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
             // Draw the scene
-            scene.draw(DrawPassInput(FORWARD, position, view, projection, geometry_pass_render_target.get()));
+            scene.draw(DrawPassInput(FORWARD, position, glm::vec2(width, height), view, projection, geometry_pass_render_target.get()));
         }
         
         void deferred_pass(const GLScene& scene)
@@ -116,7 +116,7 @@ namespace gle {
             
             glDisable(GL_BLEND);
             
-            scene.draw(DrawPassInput(DEFERRED, position, view, projection));
+            scene.draw(DrawPassInput(DEFERRED, position, glm::vec2(width, height), view, projection));
             
             // Light pass
             screen_render_target->use();
