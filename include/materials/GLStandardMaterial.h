@@ -36,17 +36,17 @@ namespace gle
                 vertex_attributes.push_back(shader->create_attribute("normal", geometry->normal()));
         }
         
-        void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
+        void pre_draw(const DrawPassInput& input, const glm::mat4& model)
         {
             GLState::depth_test(true);
             GLState::depth_write(opacity >= 0.999);
             GLState::cull_back_faces(true);
             
-            auto modelView = view * model;
+            auto modelView = input.view * model;
             
-            GLUniform::use(shader, "VMatrix", view);
+            GLUniform::use(shader, "VMatrix", input.view);
             GLUniform::use(shader, "MVMatrix", modelView);
-            GLUniform::use(shader, "MVPMatrix", projection * modelView);
+            GLUniform::use(shader, "MVPMatrix", input.projection * modelView);
             GLUniform::use(shader, "NMatrix", inverseTranspose(modelView));
             
             GLUniform::use(shader, "ambientMat", ambient);

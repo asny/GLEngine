@@ -8,10 +8,28 @@
 #include "GLTexture.h"
 #include "GLUniform.h"
 #include "GLState.h"
+#include "GLRenderTarget.h"
 
 namespace gle
 {
     enum DrawPassMode {FORWARD, DEFERRED};
+    
+    struct DrawPassInput
+    {
+        const DrawPassMode mode;
+        const glm::vec3 camera_position;
+        const glm::vec2 screen_size;
+        const glm::mat4 view;
+        const glm::mat4 projection;
+        
+        const GLColorRenderTarget *source_render_target;
+        
+        DrawPassInput(DrawPassMode _mode, const glm::vec3& _camera_position, const glm::vec2& _screen_size, const glm::mat4& _view, const glm::mat4& _projection, const GLColorRenderTarget *_source_render_target = nullptr)
+            : mode(_mode), camera_position(_camera_position), screen_size(_screen_size), view(_view), projection(_projection), source_render_target(_source_render_target)
+        {
+            
+        }
+    };
     
     class GLMaterial
     {
@@ -46,6 +64,6 @@ namespace gle
             vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
         }
         
-        virtual void pre_draw(const glm::vec3& _camera_position, const glm::mat4& _model, const glm::mat4& _view, const glm::mat4& _projection) = 0;
+        virtual void pre_draw(const DrawPassInput& input, const glm::mat4& model) = 0;
     };
 }

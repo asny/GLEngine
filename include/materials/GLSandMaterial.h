@@ -30,7 +30,7 @@ public:
         vertex_attributes.push_back(shader->create_attribute("normal", geometry->normal()));
     }
     
-    void pre_draw(const glm::vec3& camera_position, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
+    void pre_draw(const DrawPassInput& input, const glm::mat4& model)
     {
         gle::GLState::depth_test(true);
         gle::GLState::depth_write(true);
@@ -40,7 +40,7 @@ public:
         gle::GLUniform::use(shader, "noiseTexture", 0);
         
         gle::GLUniform::use(shader, "MMatrix", model);
-        gle::GLUniform::use(shader, "MVPMatrix", projection * view * model);
+        gle::GLUniform::use(shader, "MVPMatrix", input.projection * input.view * model);
         gle::GLUniform::use(shader, "NMatrix", inverseTranspose(model));
     }
     
