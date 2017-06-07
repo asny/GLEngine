@@ -76,7 +76,7 @@ namespace gle {
             glEnable(GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
-            post_effect.apply(*geometry_pass_render_target, position, view, projection);
+            post_effect.apply(DrawPassInput(FORWARD, position, glm::vec2(width, height), view, projection, geometry_pass_render_target.get(), light_pass_render_target.get()));
         }
         
         const glm::vec3& get_position() const
@@ -132,7 +132,7 @@ namespace gle {
             screen_render_target->use();
             screen_render_target->clear();
             
-            copy_effect.apply(*light_pass_render_target, position, view, projection);
+            copy_effect.apply(DrawPassInput(FORWARD, position, glm::vec2(width, height), view, projection, geometry_pass_render_target.get(), light_pass_render_target.get()));
         }
     };
 }

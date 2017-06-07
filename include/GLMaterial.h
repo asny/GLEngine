@@ -17,10 +17,10 @@ namespace gle
     struct DrawPassInput
     {
         const DrawPassMode mode;
-        const glm::vec3 camera_position;
-        const glm::vec2 screen_size;
-        const glm::mat4 view;
-        const glm::mat4 projection;
+        const glm::vec3& camera_position;
+        const glm::vec2& screen_size;
+        const glm::mat4& view;
+        const glm::mat4& projection;
         
         const GLColorRenderTarget *geometry_pass_render_target;
         const GLColorRenderTarget *light_pass_render_target;

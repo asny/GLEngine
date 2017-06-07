@@ -20,18 +20,18 @@ namespace gle
             
         }
         
-        void apply(const GLColorRenderTarget& source_render_target, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection) const
+        void apply(const DrawPassInput& input) const
         {
-            source_render_target.bind_color_texture_for_reading(0, 0);
+            input.geometry_pass_render_target->bind_color_texture_for_reading(0, 0);
             GLUniform::use(shader, "colorMap", 0);
             
-            source_render_target.bind_color_texture_for_reading(1, 1);
+            input.geometry_pass_render_target->bind_color_texture_for_reading(1, 1);
             GLUniform::use(shader, "positionMap", 1);
             
-            source_render_target.bind_color_texture_for_reading(2, 2);
+            input.geometry_pass_render_target->bind_color_texture_for_reading(2, 2);
             GLUniform::use(shader, "normalMap", 2);
             
-            source_render_target.bind_depth_texture_for_reading(3);
+            input.geometry_pass_render_target->bind_depth_texture_for_reading(3);
             GLUniform::use(shader, "depthMap", 3);
             
             GLUniform::use(shader, "type", type);
