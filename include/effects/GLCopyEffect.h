@@ -20,10 +20,10 @@ namespace gle
         
         void apply(const DrawPassInput& input) const
         {
-            input.light_pass_render_target->bind_color_texture_for_reading(0, 0);
+            input.shaded_color_texture->use(0);
             GLUniform::use(shader, "colorMap", 0);
             
-            input.light_pass_render_target->bind_depth_texture_for_reading(1);
+            input.depth_texture->use(1);
             GLUniform::use(shader, "depthMap", 1);
             
             GLState::depth_write(true);

@@ -22,16 +22,16 @@ namespace gle
         
         void apply(const DrawPassInput& input) const
         {
-            input.geometry_pass_render_target->bind_color_texture_for_reading(0, 0);
+            input.color_texture->use(0);
             GLUniform::use(shader, "colorMap", 0);
             
-            input.geometry_pass_render_target->bind_color_texture_for_reading(1, 1);
+            input.position_texture->use(1);
             GLUniform::use(shader, "positionMap", 1);
             
-            input.geometry_pass_render_target->bind_color_texture_for_reading(2, 2);
+            input.normal_texture->use(2);
             GLUniform::use(shader, "normalMap", 2);
             
-            input.geometry_pass_render_target->bind_depth_texture_for_reading(3);
+            input.depth_texture->use(3);
             GLUniform::use(shader, "depthMap", 3);
             
             GLUniform::use(shader, "type", type);

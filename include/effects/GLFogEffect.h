@@ -28,7 +28,7 @@ namespace gle
             noise_texture->use(0);
             GLUniform::use(shader, "noiseTexture", 0);
             
-            input.geometry_pass_render_target->bind_color_texture_for_reading(1, 1);
+            input.position_texture->use(1);
             GLUniform::use(shader, "positionMap", 1);
             
             GLUniform::use(shader, "fogColor", color);

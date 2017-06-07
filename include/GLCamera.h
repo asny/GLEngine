@@ -63,8 +63,10 @@ namespace gle {
         
         void draw(const GLScene& scene)
         {
-            deferred_pass(scene);
-            forward_pass(scene);
+            auto input = DrawPassInput(DEFERRED, position, glm::vec2(width, height), view, projection);
+            deferred_pass(scene, input);
+            input.mode = FORWARD;
+            forward_pass(scene, input);
             
             check_gl_error();
         }
@@ -76,7 +78,15 @@ namespace gle {
             glEnable(GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
-            post_effect.apply(DrawPassInput(FORWARD, position, glm::vec2(width, height), view, projection, geometry_pass_render_target.get(), light_pass_render_target.get()));
+            auto input = DrawPassInput(DEFERRED, position, glm::vec2(width, height), view, projection);
+            
+            input.color_texture = geometry_pass_render_target->get_color_texture_at(0);
+            input.position_texture = geometry_pass_render_target->get_color_texture_at(1);
+            input.normal_texture = geometry_pass_render_target->get_color_texture_at(2);
+            input.depth_texture = geometry_pass_render_target->get_depth_texture();
+            input.shaded_color_texture = light_pass_render_target->get_color_texture_at(0);
+            
+            post_effect.apply(input);
         }
         
         const glm::vec3& get_position() const
@@ -100,7 +110,7 @@ namespace gle {
         }
         
     private:
-        void forward_pass(const GLScene& scene)
+        void forward_pass(const GLScene& scene, DrawPassInput& input)
         {
             screen_render_target->use();
             
@@ -109,10 +119,10 @@ namespace gle {
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
             // Draw the scene
-            scene.draw(DrawPassInput(FORWARD, position, glm::vec2(width, height), view, projection, geometry_pass_render_target.get(), light_pass_render_target.get()));
+            scene.draw(input);
         }
         
-        void deferred_pass(const GLScene& scene)
+        void deferred_pass(const GLScene& scene, DrawPassInput& input)
         {
             // Geometry pass
             geometry_pass_render_target->use();
@@ -120,7 +130,12 @@ namespace gle {
             
             glDisable(GL_BLEND);
             
-            scene.draw(DrawPassInput(DEFERRED, position, glm::vec2(width, height), view, projection));
+            scene.draw(input);
+            
+            input.color_texture = geometry_pass_render_target->get_color_texture_at(0);
+            input.position_texture = geometry_pass_render_target->get_color_texture_at(1);
+            input.normal_texture = geometry_pass_render_target->get_color_texture_at(2);
+            input.depth_texture = geometry_pass_render_target->get_depth_texture();
             
             // Light pass
             light_pass_render_target->use();
@@ -128,11 +143,13 @@ namespace gle {
             
             scene.shine_light(position, direction, *geometry_pass_render_target, *light_pass_render_target);
             
+            input.shaded_color_texture = light_pass_render_target->get_color_texture_at(0);
+            
             // Copy to screen render target
             screen_render_target->use();
             screen_render_target->clear();
             
-            copy_effect.apply(DrawPassInput(FORWARD, position, glm::vec2(width, height), view, projection, geometry_pass_render_target.get(), light_pass_render_target.get()));
+            copy_effect.apply(input);
         }
     };
 }

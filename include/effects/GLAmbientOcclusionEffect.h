@@ -39,10 +39,10 @@ namespace gle
             noise_texture->use(0);
             GLUniform::use(shader, "noiseTexture", 0);
             
-            input.geometry_pass_render_target->bind_color_texture_for_reading(1, 1);
+            input.position_texture->use(1);
             GLUniform::use(shader, "positionMap", 1);
             
-            input.geometry_pass_render_target->bind_color_texture_for_reading(2, 2);
+            input.normal_texture->use(2);
             GLUniform::use(shader, "normalMap", 2);
             
             blue_noise_texture0->use(3);

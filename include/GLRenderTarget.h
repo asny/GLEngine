@@ -113,6 +113,16 @@ namespace gle
             }
         }
         
+        const GLTexture* get_color_texture_at(int location) const
+        {
+            return color_textures.at(location).get();
+        }
+        
+        const GLTexture* get_depth_texture() const
+        {
+            return depth_texture.get();
+        }
+        
         void bind_color_texture_for_reading(int layout_location, int texture_location) const
         {
             color_textures.at(layout_location)->use(texture_location);

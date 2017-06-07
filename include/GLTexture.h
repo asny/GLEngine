@@ -76,7 +76,7 @@ namespace gle
             glDeleteTextures(1, &texture_id);
         }
         
-        void bind()
+        void bind() const
         {
             glBindTexture(target, texture_id);
         }
@@ -85,7 +85,7 @@ namespace gle
         /**
          Bind the texture to the given location.
          */
-        void use(int location)
+        void use(int location) const
         {
             glActiveTexture(GL_TEXTURE0 + location);
             bind();
