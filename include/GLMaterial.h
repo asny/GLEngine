@@ -22,10 +22,11 @@ namespace gle
         const glm::mat4 view;
         const glm::mat4 projection;
         
-        const GLColorRenderTarget *source_render_target;
+        const GLColorRenderTarget *geometry_pass_render_target;
+        const GLColorRenderTarget *light_pass_render_target;
         
-        DrawPassInput(DrawPassMode _mode, const glm::vec3& _camera_position, const glm::vec2& _screen_size, const glm::mat4& _view, const glm::mat4& _projection, const GLColorRenderTarget *_source_render_target = nullptr)
-            : mode(_mode), camera_position(_camera_position), screen_size(_screen_size), view(_view), projection(_projection), source_render_target(_source_render_target)
+        DrawPassInput(DrawPassMode _mode, const glm::vec3& _camera_position, const glm::vec2& _screen_size, const glm::mat4& _view, const glm::mat4& _projection, const GLColorRenderTarget *_geometry_pass_render_target = nullptr, const GLColorRenderTarget *_light_pass_render_target = nullptr)
+            : mode(_mode), camera_position(_camera_position), screen_size(_screen_size), view(_view), projection(_projection), geometry_pass_render_target(_geometry_pass_render_target), light_pass_render_target(_light_pass_render_target)
         {
             
         }

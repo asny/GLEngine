@@ -7,6 +7,7 @@
 
 #include "GLScene.h"
 #include "GLPostEffect.h"
+#include "effects/GLCopyEffect.h"
 
 namespace gle {
     
@@ -27,7 +28,9 @@ namespace gle {
         
         std::shared_ptr<GLScreenRenderTarget> screen_render_target;
         std::shared_ptr<GLColorRenderTarget> geometry_pass_render_target;
+        std::shared_ptr<GLColorRenderTarget> light_pass_render_target;
         
+        GLCopyEffect copy_effect = GLCopyEffect();
     public:
         
         GLCamera(int screen_width, int screen_height)
@@ -44,6 +47,7 @@ namespace gle {
             height = _height;
             screen_render_target = std::make_shared<GLScreenRenderTarget>(width, height);
             geometry_pass_render_target = std::make_shared<GLColorRenderTarget>(width, height, 3, true);
+            light_pass_render_target = std::make_shared<GLColorRenderTarget>(width, height, 1, true);
             projection = glm::perspective(glm::radians(45.f), width/float(height), z_near, z_far);
         }
         
@@ -105,7 +109,7 @@ namespace gle {
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
             // Draw the scene
-            scene.draw(DrawPassInput(FORWARD, position, glm::vec2(width, height), view, projection, geometry_pass_render_target.get()));
+            scene.draw(DrawPassInput(FORWARD, position, glm::vec2(width, height), view, projection, geometry_pass_render_target.get(), light_pass_render_target.get()));
         }
         
         void deferred_pass(const GLScene& scene)
@@ -119,10 +123,16 @@ namespace gle {
             scene.draw(DrawPassInput(DEFERRED, position, glm::vec2(width, height), view, projection));
             
             // Light pass
+            light_pass_render_target->use();
+            light_pass_render_target->clear();
+            
+            scene.shine_light(position, direction, *geometry_pass_render_target, *light_pass_render_target);
+            
+            // Copy to screen render target
             screen_render_target->use();
             screen_render_target->clear();
             
-            scene.shine_light(position, direction, *geometry_pass_render_target, *screen_render_target);
+            copy_effect.apply(*light_pass_render_target, position, view, projection);
         }
     };
 }
