@@ -16,7 +16,6 @@ namespace gle
     
     struct DrawPassInput
     {
-        DrawPassMode mode;
         const glm::vec3& camera_position;
         const glm::vec2& screen_size;
         const glm::mat4& view;
@@ -28,8 +27,8 @@ namespace gle
         const GLTexture *normal_texture = nullptr;
         const GLTexture *depth_texture = nullptr;
         
-        DrawPassInput(DrawPassMode _mode, const glm::vec3& _camera_position, const glm::vec2& _screen_size, const glm::mat4& _view, const glm::mat4& _projection, const GLColorRenderTarget *_geometry_pass_render_target = nullptr, const GLColorRenderTarget *_light_pass_render_target = nullptr)
-            : mode(_mode), camera_position(_camera_position), screen_size(_screen_size), view(_view), projection(_projection)
+        DrawPassInput(const glm::vec3& _camera_position, const glm::vec2& _screen_size, const glm::mat4& _view, const glm::mat4& _projection, const GLColorRenderTarget *_geometry_pass_render_target = nullptr, const GLColorRenderTarget *_light_pass_render_target = nullptr)
+            : camera_position(_camera_position), screen_size(_screen_size), view(_view), projection(_projection)
         {
             
         }

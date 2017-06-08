@@ -39,11 +39,13 @@ namespace gle
             material->create_attributes(geometry, vec3_vertex_attributes);
         }
         
+        bool should_draw_when(DrawPassMode mode) const
+        {
+            return material->should_draw(mode);
+        }
+        
         void draw(const DrawPassInput& input, const glm::mat4& model) const
         {
-            if(!material->should_draw(input.mode))
-                return;
-            
             // Use material specific uniforms and states
             material->pre_draw(input, model);
             draw();

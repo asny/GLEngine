@@ -63,9 +63,8 @@ namespace gle {
         
         void draw(const GLScene& scene)
         {
-            auto input = DrawPassInput(DEFERRED, position, glm::vec2(width, height), view, projection);
+            auto input = DrawPassInput(position, glm::vec2(width, height), view, projection);
             deferred_pass(scene, input);
-            input.mode = FORWARD;
             forward_pass(scene, input);
             
             check_gl_error();
@@ -78,7 +77,7 @@ namespace gle {
             glEnable(GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
-            auto input = DrawPassInput(DEFERRED, position, glm::vec2(width, height), view, projection);
+            auto input = DrawPassInput(position, glm::vec2(width, height), view, projection);
             
             input.color_texture = geometry_pass_render_target->get_color_texture_at(0);
             input.position_texture = geometry_pass_render_target->get_color_texture_at(1);
@@ -119,7 +118,7 @@ namespace gle {
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
             // Draw the scene
-            scene.draw(input);
+            scene.draw(FORWARD, input);
         }
         
         void deferred_pass(const GLScene& scene, DrawPassInput& input)
@@ -130,7 +129,7 @@ namespace gle {
             
             glDisable(GL_BLEND);
             
-            scene.draw(input);
+            scene.draw(DEFERRED, input);
             
             input.color_texture = geometry_pass_render_target->get_color_texture_at(0);
             input.position_texture = geometry_pass_render_target->get_color_texture_at(1);
@@ -141,7 +140,7 @@ namespace gle {
             light_pass_render_target->use();
             light_pass_render_target->clear();
             
-            scene.shine_light(input, *light_pass_render_target);
+            scene.shine_light(DEFERRED, input, *light_pass_render_target);
             
             input.shaded_color_texture = light_pass_render_target->get_color_texture_at(0);
             

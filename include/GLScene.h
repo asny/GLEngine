@@ -35,15 +35,18 @@ namespace gle
         }
         
     protected:
-        virtual void draw(const DrawPassInput& input, const glm::mat4& model) const
+        virtual void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model) const
         {
             for (const GLObject& object : objects)
             {
-                object.draw(input, model);
+                if(object.should_draw_when(mode))
+                {
+                    object.draw(input, model);
+                }
             }
             for (std::shared_ptr<const GLNode> child : children)
             {
-                child->draw(input, model);
+                child->draw(mode, input, model);
             }
         }
         
@@ -82,12 +85,12 @@ namespace gle
             directional_lights.push_back(light);
         }
         
-        void draw(const DrawPassInput& input) const
+        void draw(DrawPassMode mode, const DrawPassInput& input) const
         {
-            GLNode::draw(input, glm::mat4(1.));
+            GLNode::draw(mode, input, glm::mat4(1.));
         }
         
-        void shine_light(const DrawPassInput& input, const GLRenderTarget& render_target) const
+        void shine_light(DrawPassMode mode, const DrawPassInput& input, const GLRenderTarget& render_target) const
         {
             // Set up blending
             glEnable(GL_BLEND);
@@ -101,7 +104,7 @@ namespace gle
                 {
                     point_light_shadow_render_target->bind_texture_for_writing(i);
                     point_light_shadow_render_target->clear();
-                    draw(DrawPassInput(DEFERRED, input.camera_position, glm::vec2(shadow_width, shadow_height), light->get_view(i), light->get_projection()));
+                    draw(mode, DrawPassInput(input.camera_position, glm::vec2(shadow_width, shadow_height), light->get_view(i), light->get_projection()));
                 }
                 
                 // Shine the light
@@ -114,7 +117,7 @@ namespace gle
                 // Cast shadows
                 directional_light_shadow_render_target->use();
                 directional_light_shadow_render_target->clear();
-                draw(DrawPassInput(DEFERRED, input.camera_position, glm::vec2(shadow_width, shadow_height), light->get_view(), light->get_projection()));
+                draw(mode, DrawPassInput(input.camera_position, glm::vec2(shadow_width, shadow_height), light->get_view(), light->get_projection()));
                 
                 // Shine the light
                 render_target.use();
@@ -134,11 +137,11 @@ namespace gle
     private:
         std::shared_ptr<bool> enabled;
         
-        void draw(const DrawPassInput& input, const glm::mat4& model) const
+        void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model) const
         {
             if(*enabled)
             {
-                GLNode::draw(input, model);
+                GLNode::draw(mode, input, model);
             }
         }
     };
@@ -159,9 +162,9 @@ namespace gle
     private:
         std::shared_ptr<const glm::mat4> transformation;
         
-        void draw(const DrawPassInput& input, const glm::mat4& model) const
+        void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model) const
         {
-            GLNode::draw(input, model * (*transformation));
+            GLNode::draw(mode, input, model * (*transformation));
         }
     };
     
@@ -182,9 +185,9 @@ namespace gle
         glm::vec3 axis;
         std::shared_ptr<float> angle;
         
-        void draw(const DrawPassInput& input, const glm::mat4& model) const
+        void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model) const
         {
-            GLNode::draw(input, model * glm::rotate(glm::mat4(1.f), *angle, axis));
+            GLNode::draw(mode, input, model * glm::rotate(glm::mat4(1.f), *angle, axis));
         }
     };
     
@@ -204,9 +207,9 @@ namespace gle
     private:
         std::shared_ptr<glm::vec3> translation;
         
-        void draw(const DrawPassInput& input, const glm::mat4& model) const
+        void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model) const
         {
-            GLNode::draw(input, model * glm::translate(glm::mat4(1.f), *translation));
+            GLNode::draw(mode, input, model * glm::translate(glm::mat4(1.f), *translation));
         }
     };
     
@@ -231,9 +234,9 @@ namespace gle
     private:
         std::shared_ptr<glm::vec3> scale;
         
-        void draw(const DrawPassInput& input, const glm::mat4& model) const
+        void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model) const
         {
-            GLNode::draw(input, model * glm::scale(glm::mat4(1.f), *scale));
+            GLNode::draw(mode, input, model * glm::scale(glm::mat4(1.f), *scale));
         }
     };
 
