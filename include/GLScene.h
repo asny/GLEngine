@@ -87,8 +87,7 @@ namespace gle
             GLNode::draw(input, glm::mat4(1.));
         }
         
-        void shine_light(const glm::vec3& view_position, const glm::vec3& view_direction,
-                         const GLColorRenderTarget& source_render_target, const GLRenderTarget& render_target) const
+        void shine_light(const DrawPassInput& input, const GLRenderTarget& render_target) const
         {
             // Set up blending
             glEnable(GL_BLEND);
@@ -102,12 +101,12 @@ namespace gle
                 {
                     point_light_shadow_render_target->bind_texture_for_writing(i);
                     point_light_shadow_render_target->clear();
-                    draw(DrawPassInput(DEFERRED, view_position, glm::vec2(shadow_width, shadow_height), light->get_view(i), light->get_projection()));
+                    draw(DrawPassInput(DEFERRED, input.camera_position, glm::vec2(shadow_width, shadow_height), light->get_view(i), light->get_projection()));
                 }
                 
                 // Shine the light
                 render_target.use();
-                light->shine(view_position, source_render_target, *point_light_shadow_render_target);
+                light->shine(input, *point_light_shadow_render_target);
             }
             
             for(auto light : directional_lights)
@@ -115,11 +114,11 @@ namespace gle
                 // Cast shadows
                 directional_light_shadow_render_target->use();
                 directional_light_shadow_render_target->clear();
-                draw(DrawPassInput(DEFERRED, view_position, glm::vec2(shadow_width, shadow_height), light->get_view(), light->get_projection()));
+                draw(DrawPassInput(DEFERRED, input.camera_position, glm::vec2(shadow_width, shadow_height), light->get_view(), light->get_projection()));
                 
                 // Shine the light
                 render_target.use();
-                light->shine(view_position, view_direction, source_render_target, *directional_light_shadow_render_target);
+                light->shine(input, *directional_light_shadow_render_target);
             }
         }
     };

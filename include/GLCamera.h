@@ -141,7 +141,7 @@ namespace gle {
             light_pass_render_target->use();
             light_pass_render_target->clear();
             
-            scene.shine_light(position, direction, *geometry_pass_render_target, *light_pass_render_target);
+            scene.shine_light(input, *light_pass_render_target);
             
             input.shaded_color_texture = light_pass_render_target->get_color_texture_at(0);
             

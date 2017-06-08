@@ -122,16 +122,6 @@ namespace gle
         {
             return depth_texture.get();
         }
-        
-        void bind_color_texture_for_reading(int layout_location, int texture_location) const
-        {
-            color_textures.at(layout_location)->use(texture_location);
-        }
-        
-        void bind_depth_texture_for_reading(int texture_location) const
-        {
-            depth_texture->use(texture_location);
-        }
     };
     
     class GLShadowRenderTarget : public GLRenderTarget
