@@ -26,23 +26,23 @@ namespace gle
             shader = GLShader::create_or_get("../GLEngine/shaders/light_pass.vert",  "../GLEngine/shaders/light_pass.frag");
         }
         
-        void shine(const glm::vec3& view_position, const GLColorRenderTarget& source_render_target)
+        void shine(const DrawPassInput& input)
         {
-            GLState::depth_write(true);
-            GLState::depth_test(true);
+            GLState::depth_write(false);
+            GLState::depth_test(false);
             GLState::cull_back_faces(true);
             glDepthFunc(GL_LEQUAL);
             
-            source_render_target.bind_color_texture_for_reading(0, 0);
-            source_render_target.bind_color_texture_for_reading(1, 1);
-            source_render_target.bind_color_texture_for_reading(2, 2);
-            source_render_target.bind_depth_texture_for_reading(3);
-            
-            GLUniform::use(shader, "eyePosition", view_position);
+            input.color_texture->use(0);
             GLUniform::use(shader, "colorMap", 0);
+            input.position_texture->use(1);
             GLUniform::use(shader, "positionMap", 1);
+            input.normal_texture->use(2);
             GLUniform::use(shader, "normalMap", 2);
+            input.depth_texture->use(3);
             GLUniform::use(shader, "depthMap", 3);
+            
+            GLUniform::use(shader, "eyePosition", input.camera_position);
             
             GLObject::draw_full_screen_quad(shader);
         }
@@ -70,7 +70,7 @@ namespace gle
             return glm::ortho<float>(-shadow_radius, shadow_radius, -shadow_radius, shadow_radius, -2.f * shadow_radius, 2.f * shadow_radius);
         }
         
-        void shine(const glm::vec3& view_position, const glm::vec3& view_direction, const GLColorRenderTarget& source_render_target, const GLShadowRenderTarget& shadow_render_target)
+        void shine(const DrawPassInput& input, const GLShadowRenderTarget& shadow_render_target)
         {
             shadow_render_target.bind_texture_for_reading(4);
             GLUniform::use(shader, "shadowMap", 4);
@@ -82,7 +82,7 @@ namespace gle
             GLUniform::use(shader, "directionalLight.base.ambientIntensity", ambient_intensity);
             GLUniform::use(shader, "directionalLight.base.diffuseIntensity", diffuse_intensity);
             
-            GLLight::shine(view_position, source_render_target);
+            GLLight::shine(input);
         }
     };
     
@@ -118,7 +118,7 @@ namespace gle
             return glm::perspective<float>(glm::radians(90.0f), 1.0f, 1.0f, 50.0f);
         }
         
-        void shine(const glm::vec3& view_position, const GLColorRenderTarget& source_render_target, const GLShadowCubeRenderTarget& shadow_render_target)
+        void shine(const DrawPassInput& input, const GLShadowCubeRenderTarget& shadow_render_target)
         {
             GLUniform::use(shader, "shadowMap", 4);
             shadow_render_target.bind_texture_for_reading(5);
@@ -138,7 +138,7 @@ namespace gle
             GLUniform::use(shader, "pointLight.attenuation.linear", attenuation_linear);
             GLUniform::use(shader, "pointLight.attenuation.exp", attenuation_exp);
             
-            GLLight::shine(view_position, source_render_target);
+            GLLight::shine(input);
         }
     };
 }

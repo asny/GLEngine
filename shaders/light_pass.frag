@@ -209,5 +209,4 @@ void main()
         col *= light;
     }
     color = col;
-    gl_FragDepth = depth;
 }

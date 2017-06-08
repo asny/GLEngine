@@ -21,17 +21,9 @@ namespace gle
             shader = GLShader::create_or_get(vertex_shader, fragment_shader);
         }
         
-        virtual void apply(const GLColorRenderTarget& source_render_target, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection)  const = 0;
+        virtual void apply(const DrawPassInput& input)  const = 0;
         
     protected:
         std::shared_ptr<GLShader> shader;
-        
-        void draw() const
-        {
-            GLState::depth_write(false);
-            GLState::depth_test(false);
-            
-            GLObject::draw_full_screen_quad(shader);
-        }
     };
 }

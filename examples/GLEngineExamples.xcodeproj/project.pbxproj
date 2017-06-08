@@ -87,6 +87,8 @@
 		495DABCA1E621C0700AD5816 /* effect.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = effect.vert; path = ../shaders/effect.vert; sourceTree = "<group>"; };
 		495DABCB1E621C0700AD5816 /* ssao_effect.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = ssao_effect.frag; path = ../shaders/ssao_effect.frag; sourceTree = "<group>"; };
 		497D00901E22D1E400DC549A /* GLState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLState.h; path = ../include/GLState.h; sourceTree = "<group>"; };
+		499B40D41EE845CF00BD5CCA /* copy_effect.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = copy_effect.frag; path = ../shaders/copy_effect.frag; sourceTree = "<group>"; };
+		499B40D51EE8460D00BD5CCA /* GLCopyEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLCopyEffect.h; path = ../include/effects/GLCopyEffect.h; sourceTree = "<group>"; };
 		49A616C21EB7255D00025A1E /* GLWireframeMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLWireframeMaterial.h; path = ../include/materials/GLWireframeMaterial.h; sourceTree = "<group>"; };
 		49A616C51EB72C8600025A1E /* wireframe.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = wireframe.frag; path = ../shaders/wireframe.frag; sourceTree = "<group>"; };
 		49A616C61EB72C8600025A1E /* wireframe.geom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = wireframe.geom; path = ../shaders/wireframe.geom; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				49A616CC1EC637E400025A1E /* sand.vert */,
 				49A616C51EB72C8600025A1E /* wireframe.frag */,
 				49A616C61EB72C8600025A1E /* wireframe.geom */,
+				499B40D41EE845CF00BD5CCA /* copy_effect.frag */,
 				491E99E51E8253200007A627 /* debug_effect.frag */,
 				495DABCA1E621C0700AD5816 /* effect.vert */,
 				495DABCB1E621C0700AD5816 /* ssao_effect.frag */,
@@ -206,6 +209,7 @@
 				493E30911E5F5DA4001924E5 /* GLFogEffect.h */,
 				495DABC91E621AF700AD5816 /* GLAmbientOcclusionEffect.h */,
 				491E99E61E82533B0007A627 /* GLDebugEffect.h */,
+				499B40D51EE8460D00BD5CCA /* GLCopyEffect.h */,
 			);
 			name = Effects;
 			sourceTree = "<group>";

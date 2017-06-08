@@ -7,6 +7,7 @@
 
 #include "GLScene.h"
 #include "GLPostEffect.h"
+#include "effects/GLCopyEffect.h"
 
 namespace gle {
     
@@ -27,7 +28,10 @@ namespace gle {
         
         std::shared_ptr<GLScreenRenderTarget> screen_render_target;
         std::shared_ptr<GLColorRenderTarget> geometry_pass_render_target;
+        std::shared_ptr<GLColorRenderTarget> light_pass_render_target;
         
+        GLCopyEffect copy_effect = GLCopyEffect();
+        std::shared_ptr<DrawPassInput> input;
     public:
         
         GLCamera(int screen_width, int screen_height)
@@ -44,6 +48,7 @@ namespace gle {
             height = _height;
             screen_render_target = std::make_shared<GLScreenRenderTarget>(width, height);
             geometry_pass_render_target = std::make_shared<GLColorRenderTarget>(width, height, 3, true);
+            light_pass_render_target = std::make_shared<GLColorRenderTarget>(width, height, 1, false);
             projection = glm::perspective(glm::radians(45.f), width/float(height), z_near, z_far);
         }
         
@@ -59,6 +64,7 @@ namespace gle {
         
         void draw(const GLScene& scene)
         {
+            input = std::make_shared<DrawPassInput>(position, glm::vec2(width, height), view, projection);
             deferred_pass(scene);
             forward_pass(scene);
             
@@ -72,7 +78,7 @@ namespace gle {
             glEnable(GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
-            post_effect.apply(*geometry_pass_render_target, position, view, projection);
+            post_effect.apply(*input);
         }
         
         const glm::vec3& get_position() const
@@ -105,7 +111,7 @@ namespace gle {
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
             // Draw the scene
-            scene.draw(DrawPassInput(FORWARD, position, glm::vec2(width, height), view, projection, geometry_pass_render_target.get()));
+            scene.draw(FORWARD, *input);
         }
         
         void deferred_pass(const GLScene& scene)
@@ -116,13 +122,26 @@ namespace gle {
             
             glDisable(GL_BLEND);
             
-            scene.draw(DrawPassInput(DEFERRED, position, glm::vec2(width, height), view, projection));
+            scene.draw(DEFERRED, *input);
+            
+            input->color_texture = geometry_pass_render_target->get_color_texture_at(0);
+            input->position_texture = geometry_pass_render_target->get_color_texture_at(1);
+            input->normal_texture = geometry_pass_render_target->get_color_texture_at(2);
+            input->depth_texture = geometry_pass_render_target->get_depth_texture();
             
             // Light pass
+            light_pass_render_target->use();
+            light_pass_render_target->clear();
+            
+            scene.shine_light(DEFERRED, *input, *light_pass_render_target);
+            
+            input->shaded_color_texture = light_pass_render_target->get_color_texture_at(0);
+            
+            // Copy to screen render target
             screen_render_target->use();
             screen_render_target->clear();
             
-            scene.shine_light(position, direction, *geometry_pass_render_target, *screen_render_target);
+            copy_effect.apply(*input);
         }
     };
 }

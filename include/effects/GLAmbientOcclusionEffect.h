@@ -34,15 +34,18 @@ namespace gle
             blue_noise_texture3 = std::unique_ptr<GLTexture2D>(new GLTexture2D("../GLEngine/HDR_L_3.png"));
         }
         
-        void apply(const GLColorRenderTarget& source_render_target, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection) const
+        void apply(const DrawPassInput& input) const
         {
+            GLState::depth_write(false);
+            GLState::depth_test(false);
+            
             noise_texture->use(0);
             GLUniform::use(shader, "noiseTexture", 0);
             
-            source_render_target.bind_color_texture_for_reading(1, 1);
+            input.position_texture->use(1);
             GLUniform::use(shader, "positionMap", 1);
             
-            source_render_target.bind_color_texture_for_reading(2, 2);
+            input.normal_texture->use(2);
             GLUniform::use(shader, "normalMap", 2);
             
             blue_noise_texture0->use(3);
@@ -58,11 +61,11 @@ namespace gle
             GLUniform::use(shader, "sampleSize", sample_size);
             GLUniform::use(shader, "noiseSize", noise_size);
             
-            GLUniform::use(shader, "VPBMatrix", bias_matrix * projection * view);
-            GLUniform::use(shader, "eyePosition", camera_position);
+            GLUniform::use(shader, "VPBMatrix", bias_matrix * input.projection * input.view);
+            GLUniform::use(shader, "eyePosition", input.camera_position);
             GLUniform::use(shader, "radius", radius);
             
-            draw();
+            GLObject::draw_full_screen_quad(shader);
         }
         
     private:

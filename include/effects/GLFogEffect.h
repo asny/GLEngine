@@ -23,21 +23,24 @@ namespace gle
             
         }
         
-        void apply(const GLColorRenderTarget& source_render_target, const glm::vec3& camera_position, const glm::mat4& view, const glm::mat4& projection) const
+        void apply(const DrawPassInput& input) const
         {
+            GLState::depth_write(false);
+            GLState::depth_test(false);
+            
             noise_texture->use(0);
             GLUniform::use(shader, "noiseTexture", 0);
             
-            source_render_target.bind_color_texture_for_reading(1, 1);
+            input.position_texture->use(1);
             GLUniform::use(shader, "positionMap", 1);
             
             GLUniform::use(shader, "fogColor", color);
             GLUniform::use(shader, "fogDensity", density);
             GLUniform::use(shader, "noFogHeight", no_fog_height);
             GLUniform::use(shader, "time", time());
-            GLUniform::use(shader, "eyePosition", camera_position);
+            GLUniform::use(shader, "eyePosition", input.camera_position);
             
-            draw();
+            GLObject::draw_full_screen_quad(shader);
         }
     };
 }
