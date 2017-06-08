@@ -22,6 +22,9 @@ namespace gle
         
         void apply(const DrawPassInput& input) const
         {
+            GLState::depth_write(false);
+            GLState::depth_test(false);
+            
             input.color_texture->use(0);
             GLUniform::use(shader, "colorMap", 0);
             
@@ -36,7 +39,7 @@ namespace gle
             
             GLUniform::use(shader, "type", type);
             
-            draw();
+            GLObject::draw_full_screen_quad(shader);
         }
     };
 }

@@ -25,13 +25,5 @@ namespace gle
         
     protected:
         std::shared_ptr<GLShader> shader;
-        
-        void draw() const
-        {
-            GLState::depth_write(false);
-            GLState::depth_test(false);
-            
-            GLObject::draw_full_screen_quad(shader);
-        }
     };
 }

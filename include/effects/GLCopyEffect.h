@@ -20,14 +20,14 @@ namespace gle
         
         void apply(const DrawPassInput& input) const
         {
+            GLState::depth_write(true);
+            GLState::depth_test(true);
+            
             input.shaded_color_texture->use(0);
             GLUniform::use(shader, "colorMap", 0);
             
             input.depth_texture->use(1);
             GLUniform::use(shader, "depthMap", 1);
-            
-            GLState::depth_write(true);
-            GLState::depth_test(true);
             
             GLObject::draw_full_screen_quad(shader);
         }

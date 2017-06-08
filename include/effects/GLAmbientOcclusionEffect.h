@@ -36,6 +36,9 @@ namespace gle
         
         void apply(const DrawPassInput& input) const
         {
+            GLState::depth_write(false);
+            GLState::depth_test(false);
+            
             noise_texture->use(0);
             GLUniform::use(shader, "noiseTexture", 0);
             
@@ -62,7 +65,7 @@ namespace gle
             GLUniform::use(shader, "eyePosition", input.camera_position);
             GLUniform::use(shader, "radius", radius);
             
-            draw();
+            GLObject::draw_full_screen_quad(shader);
         }
         
     private:
