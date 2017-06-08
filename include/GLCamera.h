@@ -48,7 +48,7 @@ namespace gle {
             height = _height;
             screen_render_target = std::make_shared<GLScreenRenderTarget>(width, height);
             geometry_pass_render_target = std::make_shared<GLColorRenderTarget>(width, height, 3, true);
-            light_pass_render_target = std::make_shared<GLColorRenderTarget>(width, height, 1, true);
+            light_pass_render_target = std::make_shared<GLColorRenderTarget>(width, height, 1, false);
             projection = glm::perspective(glm::radians(45.f), width/float(height), z_near, z_far);
         }
         

@@ -28,8 +28,8 @@ namespace gle
         
         void shine(const DrawPassInput& input)
         {
-            GLState::depth_write(true);
-            GLState::depth_test(true);
+            GLState::depth_write(false);
+            GLState::depth_test(false);
             GLState::cull_back_faces(true);
             glDepthFunc(GL_LEQUAL);
             
