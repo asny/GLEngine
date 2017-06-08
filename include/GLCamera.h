@@ -31,6 +31,7 @@ namespace gle {
         std::shared_ptr<GLColorRenderTarget> light_pass_render_target;
         
         GLCopyEffect copy_effect = GLCopyEffect();
+        std::shared_ptr<DrawPassInput> input;
     public:
         
         GLCamera(int screen_width, int screen_height)
@@ -63,9 +64,9 @@ namespace gle {
         
         void draw(const GLScene& scene)
         {
-            auto input = DrawPassInput(position, glm::vec2(width, height), view, projection);
-            deferred_pass(scene, input);
-            forward_pass(scene, input);
+            input = std::make_shared<DrawPassInput>(position, glm::vec2(width, height), view, projection);
+            deferred_pass(scene);
+            forward_pass(scene);
             
             check_gl_error();
         }
@@ -77,15 +78,7 @@ namespace gle {
             glEnable(GL_BLEND);
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
-            auto input = DrawPassInput(position, glm::vec2(width, height), view, projection);
-            
-            input.color_texture = geometry_pass_render_target->get_color_texture_at(0);
-            input.position_texture = geometry_pass_render_target->get_color_texture_at(1);
-            input.normal_texture = geometry_pass_render_target->get_color_texture_at(2);
-            input.depth_texture = geometry_pass_render_target->get_depth_texture();
-            input.shaded_color_texture = light_pass_render_target->get_color_texture_at(0);
-            
-            post_effect.apply(input);
+            post_effect.apply(*input);
         }
         
         const glm::vec3& get_position() const
@@ -109,7 +102,7 @@ namespace gle {
         }
         
     private:
-        void forward_pass(const GLScene& scene, DrawPassInput& input)
+        void forward_pass(const GLScene& scene)
         {
             screen_render_target->use();
             
@@ -118,10 +111,10 @@ namespace gle {
             glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             
             // Draw the scene
-            scene.draw(FORWARD, input);
+            scene.draw(FORWARD, *input);
         }
         
-        void deferred_pass(const GLScene& scene, DrawPassInput& input)
+        void deferred_pass(const GLScene& scene)
         {
             // Geometry pass
             geometry_pass_render_target->use();
@@ -129,26 +122,26 @@ namespace gle {
             
             glDisable(GL_BLEND);
             
-            scene.draw(DEFERRED, input);
+            scene.draw(DEFERRED, *input);
             
-            input.color_texture = geometry_pass_render_target->get_color_texture_at(0);
-            input.position_texture = geometry_pass_render_target->get_color_texture_at(1);
-            input.normal_texture = geometry_pass_render_target->get_color_texture_at(2);
-            input.depth_texture = geometry_pass_render_target->get_depth_texture();
+            input->color_texture = geometry_pass_render_target->get_color_texture_at(0);
+            input->position_texture = geometry_pass_render_target->get_color_texture_at(1);
+            input->normal_texture = geometry_pass_render_target->get_color_texture_at(2);
+            input->depth_texture = geometry_pass_render_target->get_depth_texture();
             
             // Light pass
             light_pass_render_target->use();
             light_pass_render_target->clear();
             
-            scene.shine_light(DEFERRED, input, *light_pass_render_target);
+            scene.shine_light(DEFERRED, *input, *light_pass_render_target);
             
-            input.shaded_color_texture = light_pass_render_target->get_color_texture_at(0);
+            input->shaded_color_texture = light_pass_render_target->get_color_texture_at(0);
             
             // Copy to screen render target
             screen_render_target->use();
             screen_render_target->clear();
             
-            copy_effect.apply(input);
+            copy_effect.apply(*input);
         }
     };
 }
