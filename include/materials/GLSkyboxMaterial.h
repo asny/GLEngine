@@ -24,6 +24,7 @@ namespace gle
         
         void pre_draw(const DrawPassInput& input, const glm::mat4& model)
         {
+            auto shader = get_shader();
             GLState::depth_test(true);
             GLState::depth_write(true);
             GLState::cull_back_faces(true);

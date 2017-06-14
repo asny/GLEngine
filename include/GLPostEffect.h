@@ -15,15 +15,20 @@ namespace gle
 {
     class GLPostEffect
     {
-    public:
-        GLPostEffect(const std::string& vertex_shader, const std::string& fragment_shader)
+        std::string vertex_shader_name;
+        std::string fragment_shader_name;
+    protected:
+        std::shared_ptr<GLShader> get_shader() const
         {
-            shader = GLShader::create_or_get(vertex_shader, fragment_shader);
+            return GLShader::create_or_get(vertex_shader_name, fragment_shader_name);
         }
         
-        virtual void apply(const DrawPassInput& input)  const = 0;
+    public:
+        GLPostEffect(const std::string& _vertex_shader_name, const std::string& _fragment_shader_name) : vertex_shader_name(_vertex_shader_name),fragment_shader_name(_fragment_shader_name)
+        {
+            
+        }
         
-    protected:
-        std::shared_ptr<GLShader> shader;
+        virtual void apply(const DrawPassInput& input) const = 0;
     };
 }

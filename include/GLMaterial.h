@@ -37,12 +37,19 @@ namespace gle
     class GLMaterial
     {
         DrawPassMode mode = DEFERRED;
+        std::string vertex_shader_name;
+        std::string fragment_shader_name;
+        std::string geometry_shader_name;
     protected:
-        const std::shared_ptr<GLShader> shader;
         
-        GLMaterial(DrawPassMode _mode, const std::string& vertex_shader_name, const std::string& fragment_shader_name, const std::string& geometry_shader_name = "") : mode(_mode), shader(GLShader::create_or_get(vertex_shader_name, fragment_shader_name, geometry_shader_name))
+        GLMaterial(DrawPassMode _mode, const std::string& _vertex_shader_name, const std::string& _fragment_shader_name, const std::string& _geometry_shader_name = "") : mode(_mode), vertex_shader_name(_vertex_shader_name), fragment_shader_name(_fragment_shader_name), geometry_shader_name(_geometry_shader_name)
         {
             
+        }
+        
+        std::shared_ptr<GLShader> get_shader()
+        {
+            return GLShader::create_or_get(vertex_shader_name, fragment_shader_name, geometry_shader_name);
         }
         
     public:
@@ -64,7 +71,7 @@ namespace gle
         
         virtual void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vertex_attributes)
         {
-            vertex_attributes.push_back(shader->create_attribute("position", geometry->position()));
+            vertex_attributes.push_back(get_shader()->create_attribute("position", geometry->position()));
         }
         
         virtual void pre_draw(const DrawPassInput& input, const glm::mat4& model) = 0;
