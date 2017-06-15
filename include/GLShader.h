@@ -6,7 +6,6 @@
 #pragma once
 
 #include "GLUtility.h"
-#include "GLVertexAttribute.h"
 
 namespace gle {
     /**
@@ -37,10 +36,21 @@ namespace gle {
             return name;
         }
         
+        static void reload_shaders()
+        {
+            create_or_get("", "");
+        }
+        
         static std::shared_ptr<GLShader> create_or_get(std::string vertexShaderFilename, std::string fragmentShaderFilename, std::string geometryShaderFilename = "")
         {
-            static std::map<std::string, std::shared_ptr<GLShader>> dictionary = std::map<std::string, std::shared_ptr<GLShader>>();
+            static auto dictionary = std::map<std::string, std::shared_ptr<GLShader>>();
             auto key = vertexShaderFilename + fragmentShaderFilename + geometryShaderFilename;
+            if(key.length() == 0)
+            {
+                dictionary.clear();
+                return nullptr;
+            }
+            
             auto iterator = dictionary.find(key);
             if (iterator == dictionary.end())
             {
@@ -72,21 +82,6 @@ namespace gle {
             return attributeLocation;
         }
         
-        template<class ValueType>
-        std::shared_ptr<GLVertexAttribute<ValueType>> create_attribute(std::string name, std::shared_ptr<mesh::Attribute<mesh::VertexID, ValueType>> attribute)
-        {
-            auto glAttribute = std::make_shared<GLVertexAttribute<ValueType>>(attribute);
-            
-            // Initialize attribute
-            auto size = static_cast<int>(sizeof(ValueType) / sizeof(float));
-            auto location = get_attribute_location(name);
-            glEnableVertexAttribArray(location);
-            glVertexAttribPointer(location, size, GL_FLOAT, GL_FALSE, size * sizeof(float), (const GLvoid *)(0));
-            check_gl_error();
-            
-            return glAttribute;
-        }
-        
         // ****** Uniform variable functionality ********
         
         GLuint get_uniform_location(std::string variable_name)
@@ -94,7 +89,7 @@ namespace gle {
             use();
             GLuint uniformLocation = glGetUniformLocation(shader_id, &variable_name[0]);
             if (uniformLocation == NULL_LOCATION) {
-                std::cerr << "Shader did not contain the '" << variable_name << "' uniform variable."<<std::endl;
+                std::cerr << "The shader " + name + "\n did not contain the '" << variable_name << "' uniform variable."<<std::endl;
             }
             return uniformLocation;
         }

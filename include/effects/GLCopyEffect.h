@@ -20,6 +20,7 @@ namespace gle
         
         void apply(const DrawPassInput& input) const
         {
+            auto shader = get_shader();
             GLState::depth_write(true);
             GLState::depth_test(true);
             

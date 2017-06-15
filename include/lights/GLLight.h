@@ -14,20 +14,20 @@ namespace gle
     class GLLight
     {
     protected:
-        std::shared_ptr<GLShader> shader;
         glm::mat4 bias_matrix = glm::mat4(
                              0.5, 0.0, 0.0, 0.0,
                              0.0, 0.5, 0.0, 0.0,
                              0.0, 0.0, 0.5, 0.0,
                              0.5, 0.5, 0.5, 1.0);
         
-        GLLight()
+        std::shared_ptr<GLShader> get_shader()
         {
-            shader = GLShader::create_or_get("../GLEngine/shaders/light_pass.vert",  "../GLEngine/shaders/light_pass.frag");
+            return GLShader::create_or_get("../GLEngine/shaders/light_pass.vert",  "../GLEngine/shaders/light_pass.frag");
         }
         
         void shine(const DrawPassInput& input)
         {
+            auto shader = get_shader();
             GLState::depth_write(false);
             GLState::depth_test(false);
             GLState::cull_back_faces(true);
@@ -72,6 +72,7 @@ namespace gle
         
         void shine(const DrawPassInput& input, const GLShadowRenderTarget& shadow_render_target)
         {
+            auto shader = get_shader();
             shadow_render_target.bind_texture_for_reading(4);
             GLUniform::use(shader, "shadowMap", 4);
             GLUniform::use(shader, "shadowCubeMap", 5);
@@ -120,6 +121,7 @@ namespace gle
         
         void shine(const DrawPassInput& input, const GLShadowCubeRenderTarget& shadow_render_target)
         {
+            auto shader = get_shader();
             GLUniform::use(shader, "shadowMap", 4);
             shadow_render_target.bind_texture_for_reading(5);
             GLUniform::use(shader, "shadowCubeMap", 5);

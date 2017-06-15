@@ -28,15 +28,17 @@ namespace gle
         
         void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vertex_attributes)
         {
+            auto shader = get_shader();
             GLMaterial::create_attributes(geometry, vertex_attributes);
             if(normals)
-                vertex_attributes.push_back(shader->create_attribute("normal", normals));
+                vertex_attributes.push_back(GLVertexAttribute<glm::vec3>::use(*shader, "normal", normals));
             else
-                vertex_attributes.push_back(shader->create_attribute("normal", geometry->normal()));
+                vertex_attributes.push_back(GLVertexAttribute<glm::vec3>::use(*shader, "normal", geometry->normal()));
         }
         
         void pre_draw(const DrawPassInput& input, const glm::mat4& model)
         {
+            auto shader = get_shader();
             GLState::depth_test(true);
             GLState::depth_write(true);
             GLState::cull_back_faces(true);
