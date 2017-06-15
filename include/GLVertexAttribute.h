@@ -6,6 +6,7 @@
 #pragma once
 
 #include "GLUtility.h"
+#include "GLShader.h"
 #include "Mesh.h"
 
 namespace gle
@@ -14,6 +15,20 @@ namespace gle
     class GLVertexAttribute
     {
     public:
+        static std::shared_ptr<GLVertexAttribute<ValueType>> use(GLShader& shader, std::string name, std::shared_ptr<mesh::Attribute<mesh::VertexID, ValueType>> attribute)
+        {
+            auto glAttribute = std::make_shared<GLVertexAttribute<ValueType>>(attribute);
+            
+            // Initialize attribute
+            auto size = static_cast<int>(sizeof(ValueType) / sizeof(float));
+            auto location = shader.get_attribute_location(name);
+            glEnableVertexAttribArray(location);
+            glVertexAttribPointer(location, size, GL_FLOAT, GL_FALSE, size * sizeof(float), (const GLvoid *)(0));
+            check_gl_error();
+            
+            return glAttribute;
+        }
+        
         GLVertexAttribute(std::shared_ptr<mesh::Attribute<mesh::VertexID, ValueType>> _attribute) : attribute(_attribute)
         {
             // Generate and bind buffer

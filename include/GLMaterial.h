@@ -9,6 +9,7 @@
 #include "GLUniform.h"
 #include "GLState.h"
 #include "GLRenderTarget.h"
+#include "GLVertexAttribute.h"
 
 namespace gle
 {
@@ -71,7 +72,7 @@ namespace gle
         
         virtual void create_attributes(std::shared_ptr<mesh::Mesh> geometry, std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>>& vertex_attributes)
         {
-            vertex_attributes.push_back(get_shader()->create_attribute("position", geometry->position()));
+            vertex_attributes.push_back(GLVertexAttribute<glm::vec3>::use(*get_shader(), "position", geometry->position()));
         }
         
         virtual void pre_draw(const DrawPassInput& input, const glm::mat4& model) = 0;

@@ -65,10 +65,10 @@ namespace gle
                 auto mesh = MeshCreator::create_quad(uv_coordinates);
                 
                 // Create attribute and send data.
-                auto position = shader->create_attribute("position", mesh->position());
+                auto position = GLVertexAttribute<glm::vec3>::use(*shader, "position", mesh->position());
                 update_attribute(mesh, position);
                 
-                auto uv = shader->create_attribute("uv_coordinates", uv_coordinates);
+                auto uv = GLVertexAttribute<glm::vec2>::use(*shader, "uv_coordinates", uv_coordinates);
                 update_attribute(mesh, uv);
             }
             glBindVertexArray(array_id);
