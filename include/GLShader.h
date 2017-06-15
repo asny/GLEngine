@@ -37,10 +37,21 @@ namespace gle {
             return name;
         }
         
+        static void reload_shaders()
+        {
+            create_or_get("", "");
+        }
+        
         static std::shared_ptr<GLShader> create_or_get(std::string vertexShaderFilename, std::string fragmentShaderFilename, std::string geometryShaderFilename = "")
         {
-            static std::map<std::string, std::shared_ptr<GLShader>> dictionary = std::map<std::string, std::shared_ptr<GLShader>>();
+            static auto dictionary = std::map<std::string, std::shared_ptr<GLShader>>();
             auto key = vertexShaderFilename + fragmentShaderFilename + geometryShaderFilename;
+            if(key.length() == 0)
+            {
+                dictionary.clear();
+                return nullptr;
+            }
+            
             auto iterator = dictionary.find(key);
             if (iterator == dictionary.end())
             {
