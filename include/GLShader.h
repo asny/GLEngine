@@ -105,7 +105,7 @@ namespace gle {
             use();
             GLuint uniformLocation = glGetUniformLocation(shader_id, &variable_name[0]);
             if (uniformLocation == NULL_LOCATION) {
-                std::cerr << "Shader did not contain the '" << variable_name << "' uniform variable."<<std::endl;
+                std::cerr << "The shader " + name + "\n did not contain the '" << variable_name << "' uniform variable."<<std::endl;
             }
             return uniformLocation;
         }
