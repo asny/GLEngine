@@ -17,6 +17,7 @@ namespace gle
         std::shared_ptr<GLTexture> texture;
         std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> uv_coordinates;
     public:
+        bool cull_back_faces = true;
         
         GLTextureMaterial(std::shared_ptr<GLTexture> _texture, std::shared_ptr<mesh::Attribute<mesh::VertexID, glm::vec2>> _uv_coordinates) : GLMaterial(DEFERRED, "../GLEngine/shaders/texture.vert",  "../GLEngine/shaders/texture.frag"), texture(_texture), uv_coordinates(_uv_coordinates)
         {
@@ -42,7 +43,7 @@ namespace gle
             auto shader = get_shader();
             GLState::depth_test(true);
             GLState::depth_write(true);
-            GLState::cull_back_faces(true);
+            GLState::cull_back_faces(cull_back_faces);
             
             texture->use(0);
             GLUniform::use(shader, "texture0", 0);
