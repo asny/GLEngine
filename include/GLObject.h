@@ -153,6 +153,7 @@ namespace gle
         template<class T>
         static void update_attribute(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLVertexAttribute<T>> attribute)
         {
+            attribute->clear();
             if(geometry->get_no_faces() > 0)
             {
                 for(auto face = geometry->faces_begin(); face != geometry->faces_end(); face = face->next())

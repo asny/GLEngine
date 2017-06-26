@@ -46,6 +46,11 @@ namespace gle
             return up_to_date;
         }
         
+        void clear()
+        {
+            data.clear();
+        }
+        
         void add_data_at(const mesh::VertexID& id)
         {
             add_data_at(id, attribute->at(id));
