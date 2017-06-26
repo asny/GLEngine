@@ -64,18 +64,18 @@ namespace gle
         
     private:
         
-        void add_data_at(const mesh::VertexID& id, float value)
+        void add_data_at(const mesh::VertexID& id, const float& value)
         {
             data.push_back(value);
         }
         
-        void add_data_at(const mesh::VertexID& id, glm::vec2 value)
+        void add_data_at(const mesh::VertexID& id, const glm::vec2& value)
         {
             data.push_back(value[0]);
             data.push_back(value[1]);
         }
         
-        void add_data_at(const mesh::VertexID& id, glm::vec3 value)
+        void add_data_at(const mesh::VertexID& id, const glm::vec3& value)
         {
             data.push_back(value[0]);
             data.push_back(value[1]);

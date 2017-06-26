@@ -62,7 +62,7 @@ namespace gle {
             view = lookAt(position, position + direction, glm::vec3(0., 1., 0.));
         }
         
-        void draw(const GLScene& scene)
+        void draw(GLScene& scene)
         {
             input = std::make_shared<DrawPassInput>(position, glm::vec2(width, height), view, projection);
             deferred_pass(scene);
@@ -102,7 +102,7 @@ namespace gle {
         }
         
     private:
-        void forward_pass(const GLScene& scene)
+        void forward_pass(GLScene& scene)
         {
             screen_render_target->use();
             
@@ -114,7 +114,7 @@ namespace gle {
             scene.draw(FORWARD, *input);
         }
         
-        void deferred_pass(const GLScene& scene)
+        void deferred_pass(GLScene& scene)
         {
             // Geometry pass
             geometry_pass_render_target->use();

@@ -14,10 +14,12 @@ namespace gle
     class GLNode
     {
     public:
-        void add_leaf(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLMaterial> material)
+        GLObject* add_leaf(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLMaterial> material)
         {
-            auto object = GLObject(geometry, material);
+            auto object = std::make_shared<GLObject>(geometry, material);
             objects.push_back(object);
+            object->update_buffers();
+            return object.get();
         }
         
         std::shared_ptr<GLNode> add_child(std::shared_ptr<GLNode> node)
@@ -35,23 +37,23 @@ namespace gle
         }
         
     protected:
-        virtual void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model) const
+        virtual void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model)
         {
-            for (const GLObject& object : objects)
+            for (auto object : objects)
             {
-                if(object.should_draw_when(mode))
+                if(object->should_draw_when(mode))
                 {
-                    object.draw(input, model);
+                    object->draw(input, model);
                 }
             }
-            for (std::shared_ptr<const GLNode> child : children)
+            for (std::shared_ptr<GLNode> child : children)
             {
                 child->draw(mode, input, model);
             }
         }
         
     private:
-        std::vector<const GLObject> objects = std::vector<const GLObject>();
+        std::vector<std::shared_ptr<GLObject>> objects = std::vector<std::shared_ptr<GLObject>>();
         std::vector<std::shared_ptr<GLNode>> children = std::vector<std::shared_ptr<GLNode>>();
     };
     
@@ -85,12 +87,12 @@ namespace gle
             directional_lights.push_back(light);
         }
         
-        void draw(DrawPassMode mode, const DrawPassInput& input) const
+        void draw(DrawPassMode mode, const DrawPassInput& input)
         {
             GLNode::draw(mode, input, glm::mat4(1.));
         }
         
-        void shine_light(DrawPassMode mode, const DrawPassInput& input, const GLRenderTarget& render_target) const
+        void shine_light(DrawPassMode mode, const DrawPassInput& input, const GLRenderTarget& render_target)
         {
             // Set up blending
             glEnable(GL_BLEND);
@@ -137,7 +139,7 @@ namespace gle
     private:
         std::shared_ptr<bool> enabled;
         
-        void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model) const
+        void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model)
         {
             if(*enabled)
             {
@@ -162,7 +164,7 @@ namespace gle
     private:
         std::shared_ptr<const glm::mat4> transformation;
         
-        void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model) const
+        void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model)
         {
             GLNode::draw(mode, input, model * (*transformation));
         }
@@ -185,7 +187,7 @@ namespace gle
         glm::vec3 axis;
         std::shared_ptr<float> angle;
         
-        void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model) const
+        void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model)
         {
             GLNode::draw(mode, input, model * glm::rotate(glm::mat4(1.f), *angle, axis));
         }
@@ -207,7 +209,7 @@ namespace gle
     private:
         std::shared_ptr<glm::vec3> translation;
         
-        void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model) const
+        void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model)
         {
             GLNode::draw(mode, input, model * glm::translate(glm::mat4(1.f), *translation));
         }
@@ -234,7 +236,7 @@ namespace gle
     private:
         std::shared_ptr<glm::vec3> scale;
         
-        void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model) const
+        void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model)
         {
             GLNode::draw(mode, input, model * glm::scale(glm::mat4(1.f), *scale));
         }
