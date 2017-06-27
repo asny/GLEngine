@@ -18,14 +18,6 @@ namespace gle
      */
     class GLObject
     {
-        std::shared_ptr<mesh::Mesh> geometry;
-        std::shared_ptr<GLMaterial> material;
-        
-        GLuint array_id;
-        std::vector<std::shared_ptr<GLVertexAttribute<float>>> float_vertex_attributes;
-        std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>> vec2_vertex_attributes;
-        std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>> vec3_vertex_attributes;
-        
     public:
         
         GLObject(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLMaterial> material) : material(material), geometry(geometry)
@@ -44,11 +36,28 @@ namespace gle
             return material->should_draw(mode);
         }
         
-        void draw(const DrawPassInput& input, const glm::mat4& model) const
+        void draw(const DrawPassInput& input, const glm::mat4& model)
         {
+            // Infer draw mode and number of vertices
+            auto drawmode = get_drawmode();
+            auto no_vertices = get_number_of_vertices();
+            if(no_vertices == 0)
+                return;
+            
+            // Update buffers if needed
+            if(should_update_buffers)
+            {
+                update_buffers();
+            }
+            
             // Use material specific uniforms and states
             material->pre_draw(input, model);
-            draw();
+            
+            // Bind vertex array and draw
+            glBindVertexArray(array_id);
+            glDrawArrays(drawmode, 0, no_vertices);
+            
+            check_gl_error();
         }
         
         static void draw_full_screen_quad(std::shared_ptr<GLShader> shader)
@@ -67,42 +76,21 @@ namespace gle
                 // Create attribute and send data.
                 auto position = GLVertexAttribute<glm::vec3>::use(*shader, "position", mesh->position());
                 update_attribute(mesh, position);
+                position->send_data();
                 
                 auto uv = GLVertexAttribute<glm::vec2>::use(*shader, "uv_coordinates", uv_coordinates);
                 update_attribute(mesh, uv);
+                uv->send_data();
             }
             glBindVertexArray(array_id);
             glDrawArrays(GL_TRIANGLES, 0, 6);
         }
         
-    private:
-        
-        void draw() const
+        void invalidate(std::shared_ptr<mesh::Mesh> mesh)
         {
-            // Infer draw mode
-            GLenum drawmode;
-            int no_vertices;
-            if(geometry->get_no_faces() > 0)
-            {
-                drawmode = GL_TRIANGLES;
-                no_vertices = geometry->get_no_faces() * 3;
-            }
-            else if(geometry->get_no_edges() > 0)
-            {
-                drawmode = GL_LINES;
-                no_vertices = geometry->get_no_edges() * 2;
-            }
-            else if(geometry->get_no_vertices() > 0)
-            {
-                drawmode = GL_POINTS;
-                no_vertices = geometry->get_no_vertices();
-            }
-            else
-            {
+            if(mesh != geometry)
                 return;
-            }
             
-            // Update buffers if necessary
             for (auto glAttribute : float_vertex_attributes)
             {
                 update_attribute(geometry, glAttribute);
@@ -117,19 +105,64 @@ namespace gle
             {
                 update_attribute(geometry, glAttribute);
             }
+            should_update_buffers = true;
+        }
+        
+    private:
+        
+        void update_buffers()
+        {
+            for (auto glAttribute : float_vertex_attributes)
+            {
+                glAttribute->send_data();
+            }
             
-            // Bind vertex array and draw
-            glBindVertexArray(array_id);
-            glDrawArrays(drawmode, 0, no_vertices);
+            for (auto glAttribute : vec2_vertex_attributes)
+            {
+                glAttribute->send_data();
+            }
             
-            check_gl_error();
+            for (auto glAttribute : vec3_vertex_attributes)
+            {
+                glAttribute->send_data();
+            }
+            should_update_buffers = false;
+        }
+        
+        GLenum get_drawmode()
+        {
+            if(geometry->get_no_faces() > 0)
+            {
+                return GL_TRIANGLES;
+            }
+            if(geometry->get_no_edges() > 0)
+            {
+                return GL_LINES;
+            }
+            return GL_POINTS;
+        }
+        
+        unsigned int get_number_of_vertices()
+        {
+            if(geometry->get_no_faces() > 0)
+            {
+                return geometry->get_no_faces() * 3;
+            }
+            else if(geometry->get_no_edges() > 0)
+            {
+                return geometry->get_no_edges() * 2;
+            }
+            else if(geometry->get_no_vertices() > 0)
+            {
+                return geometry->get_no_vertices();
+            }
+            return 0;
         }
         
         template<class T>
         static void update_attribute(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLVertexAttribute<T>> attribute)
         {
-            if(attribute->is_up_to_date())
-                return;
+            attribute->clear();
             if(geometry->get_no_faces() > 0)
             {
                 for(auto face = geometry->faces_begin(); face != geometry->faces_end(); face = face->next())
@@ -154,7 +187,15 @@ namespace gle
                     attribute->add_data_at(*vertex);
                 }
             }
-            attribute->send_data();
         }
+        
+        const std::shared_ptr<mesh::Mesh> geometry;
+        const std::shared_ptr<GLMaterial> material;
+        
+        GLuint array_id;
+        std::vector<std::shared_ptr<GLVertexAttribute<float>>> float_vertex_attributes;
+        std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>> vec2_vertex_attributes;
+        std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>> vec3_vertex_attributes;
+        bool should_update_buffers = false;
     };
 }
