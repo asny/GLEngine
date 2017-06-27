@@ -86,11 +86,11 @@ namespace gle
             glDrawArrays(GL_TRIANGLES, 0, 6);
         }
         
-        /**
-         Mark that the geometry and/or the vertex attributes have changed and hence the buffers should be updated on next draw call.
-         */
-        void invalidate()
+        void invalidate(std::shared_ptr<mesh::Mesh> mesh)
         {
+            if(mesh != geometry)
+                return;
+            
             for (auto glAttribute : float_vertex_attributes)
             {
                 update_attribute(geometry, glAttribute);

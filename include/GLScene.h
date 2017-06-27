@@ -14,12 +14,11 @@ namespace gle
     class GLNode
     {
     public:
-        GLObject* add_leaf(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLMaterial> material)
+        void add_leaf(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLMaterial> material)
         {
             auto object = std::make_shared<GLObject>(geometry, material);
             objects.push_back(object);
-            object->invalidate();
-            return object.get();
+            object->invalidate(geometry);
         }
         
         GLNode* add_child(std::shared_ptr<GLNode> node)
@@ -36,6 +35,18 @@ namespace gle
             children.erase(pointer);
         }
         
+        void invalidate(std::shared_ptr<mesh::Mesh> mesh)
+        {
+            for (auto object : objects)
+            {
+                object->invalidate(mesh);
+            }
+            for (auto child : children)
+            {
+                child->invalidate(mesh);
+            }
+        }
+        
     protected:
         virtual void draw(DrawPassMode mode, const DrawPassInput& input, const glm::mat4& model)
         {
@@ -46,7 +57,7 @@ namespace gle
                     object->draw(input, model);
                 }
             }
-            for (std::shared_ptr<GLNode> child : children)
+            for (auto child : children)
             {
                 child->draw(mode, input, model);
             }
