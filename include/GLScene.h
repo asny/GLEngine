@@ -22,10 +22,10 @@ namespace gle
             return object.get();
         }
         
-        std::shared_ptr<GLNode> add_child(std::shared_ptr<GLNode> node)
+        GLNode* add_child(std::shared_ptr<GLNode> node)
         {
             children.push_back(node);
-            return node;
+            return node.get();
         }
         
         void remove_child(std::shared_ptr<GLNode> node)
