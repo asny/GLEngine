@@ -77,7 +77,7 @@ namespace gle
             glDrawArrays(GL_TRIANGLES, 0, 6);
         }
         
-        void update_buffers()
+        void invalidate()
         {
             // Update buffers if necessary
             for (auto glAttribute : float_vertex_attributes)

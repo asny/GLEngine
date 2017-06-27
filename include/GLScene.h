@@ -18,7 +18,7 @@ namespace gle
         {
             auto object = std::make_shared<GLObject>(geometry, material);
             objects.push_back(object);
-            object->update_buffers();
+            object->invalidate();
             return object.get();
         }
         
