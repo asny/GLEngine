@@ -18,14 +18,6 @@ namespace gle
      */
     class GLObject
     {
-        std::shared_ptr<mesh::Mesh> geometry;
-        std::shared_ptr<GLMaterial> material;
-        
-        GLuint array_id;
-        std::vector<std::shared_ptr<GLVertexAttribute<float>>> float_vertex_attributes;
-        std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>> vec2_vertex_attributes;
-        std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>> vec3_vertex_attributes;
-        
     public:
         
         GLObject(std::shared_ptr<mesh::Mesh> geometry, std::shared_ptr<GLMaterial> material) : material(material), geometry(geometry)
@@ -197,6 +189,13 @@ namespace gle
             }
         }
         
+        const std::shared_ptr<mesh::Mesh> geometry;
+        const std::shared_ptr<GLMaterial> material;
+        
+        GLuint array_id;
+        std::vector<std::shared_ptr<GLVertexAttribute<float>>> float_vertex_attributes;
+        std::vector<std::shared_ptr<GLVertexAttribute<glm::vec2>>> vec2_vertex_attributes;
+        std::vector<std::shared_ptr<GLVertexAttribute<glm::vec3>>> vec3_vertex_attributes;
         bool should_update_buffers = false;
     };
 }
