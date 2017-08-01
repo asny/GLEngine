@@ -6,6 +6,7 @@ uniform float time;
 uniform float fogDensity;
 uniform vec3 fogColor;
 uniform float noFogHeight;
+uniform float animation;
 uniform vec3 eyePosition;
 
 in vec2 uv;
@@ -143,7 +144,7 @@ void main()
     
     // Noise
     float n = snoise(0.05 * pos.xyz);
-    factor *=  (1. + 0.1 * n * cos(time));
+    factor *=  (1. + animation * n * cos(time));
     factor = clamp(factor, 0., 1.);
     
     // Output
