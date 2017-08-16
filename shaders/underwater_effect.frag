@@ -4,7 +4,7 @@ uniform sampler2D positionMap;
 
 uniform float time;
 uniform float fogDensity;
-uniform vec3 fogColor;
+uniform vec3 waterColor;
 uniform float noFogHeight;
 uniform float animation;
 uniform vec3 eyePosition;
@@ -148,5 +148,5 @@ void main()
     factor = clamp(factor, 0., 1.);
     
     // Output
-    color = vec4(fogColor, factor);
+    color = vec4(waterColor, factor);
 }

@@ -9,16 +9,16 @@
 
 namespace gle
 {
-    class GLFogEffect : public GLPostEffect
+    class GLUnderwaterEffect : public GLPostEffect
     {
     public:
-        glm::vec3 color = glm::vec3(0.8, 0.8, 0.8);
+        glm::vec3 color = glm::vec3(0.5, 0.5, 0.8);
         float density = 0.2;
         float no_fog_height = 3;
         float animation = 0.1;
         
-        GLFogEffect()
-        : GLPostEffect("../GLEngine/shaders/effect.vert",  "../GLEngine/shaders/fog_effect.frag")
+        GLUnderwaterEffect()
+        : GLPostEffect("../GLEngine/shaders/effect.vert",  "../GLEngine/shaders/underwater_effect.frag")
         {
             
         }
@@ -32,7 +32,7 @@ namespace gle
             input.position_texture->use(0);
             GLUniform::use(shader, "positionMap", 0);
             
-            GLUniform::use(shader, "fogColor", color);
+            GLUniform::use(shader, "waterColor", color);
             GLUniform::use(shader, "fogDensity", density);
             GLUniform::use(shader, "noFogHeight", no_fog_height);
             GLUniform::use(shader, "animation", animation);

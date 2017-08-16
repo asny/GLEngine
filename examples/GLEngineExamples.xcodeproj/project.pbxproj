@@ -96,6 +96,8 @@
 		49A616CB1EC637E400025A1E /* sand.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = sand.frag; path = ../shaders/sand.frag; sourceTree = "<group>"; };
 		49A616CC1EC637E400025A1E /* sand.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = sand.vert; path = ../shaders/sand.vert; sourceTree = "<group>"; };
 		49A616CE1EC7945C00025A1E /* SurfaceMeasures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SurfaceMeasures.h; path = ../../Mesh/include/SurfaceMeasures.h; sourceTree = "<group>"; };
+		49AD69BA1F4342CE001BF4F9 /* GLUnderwaterEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GLUnderwaterEffect.h; path = ../include/effects/GLUnderwaterEffect.h; sourceTree = "<group>"; };
+		49AD69BB1F434341001BF4F9 /* underwater_effect.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = underwater_effect.frag; path = ../shaders/underwater_effect.frag; sourceTree = "<group>"; };
 		49CC18771EAFD373007EB9AA /* Search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Search.h; path = ../../Mesh/include/Search.h; sourceTree = "<group>"; };
 		49EBFAED1E4382F000503199 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		49EBFAEF1E43870000503199 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 		4900D18E1E0C57A600F92EBD /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				49AD69BB1F434341001BF4F9 /* underwater_effect.frag */,
 				49A616CB1EC637E400025A1E /* sand.frag */,
 				49A616CC1EC637E400025A1E /* sand.vert */,
 				49A616C51EB72C8600025A1E /* wireframe.frag */,
@@ -205,6 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				493E30911E5F5DA4001924E5 /* GLFogEffect.h */,
+				49AD69BA1F4342CE001BF4F9 /* GLUnderwaterEffect.h */,
 				495DABC91E621AF700AD5816 /* GLAmbientOcclusionEffect.h */,
 				491E99E61E82533B0007A627 /* GLDebugEffect.h */,
 				499B40D51EE8460D00BD5CCA /* GLCopyEffect.h */,
