@@ -37,6 +37,12 @@ namespace gle {
         GLCamera(int screen_width, int screen_height)
         {
             set_screen_size(screen_width, screen_height);
+            input = std::make_shared<DrawPassInput>(position, glm::vec2(width, height), view, projection,
+                                                    geometry_pass_render_target->get_color_texture_at(0),
+                                                    light_pass_render_target->get_color_texture_at(0),
+                                                    geometry_pass_render_target->get_color_texture_at(1),
+                                                    geometry_pass_render_target->get_color_texture_at(2),
+                                                    geometry_pass_render_target->get_depth_texture());
         }
         
         /**
@@ -64,7 +70,6 @@ namespace gle {
         
         void draw(GLScene& scene)
         {
-            input = std::make_shared<DrawPassInput>(position, glm::vec2(width, height), view, projection);
             deferred_pass(scene);
             forward_pass(scene);
             
@@ -101,9 +106,16 @@ namespace gle {
             return glm::normalize(glm::vec3(ray_world.x, ray_world.y, ray_world.z));
         }
         
-    private:
         void forward_pass(GLScene& scene)
         {
+            // Weird that this initialization at the start of a pass is necessary!
+            input = std::make_shared<DrawPassInput>(position, glm::vec2(width, height), view, projection,
+                                                    geometry_pass_render_target->get_color_texture_at(0),
+                                                    light_pass_render_target->get_color_texture_at(0),
+                                                    geometry_pass_render_target->get_color_texture_at(1),
+                                                    geometry_pass_render_target->get_color_texture_at(2),
+                                                    geometry_pass_render_target->get_depth_texture());
+            
             screen_render_target->use();
             
             // Set up default blending
@@ -116,6 +128,14 @@ namespace gle {
         
         void deferred_pass(GLScene& scene)
         {
+            // Weird that this initialization at the start of a pass is necessary!
+            input = std::make_shared<DrawPassInput>(position, glm::vec2(width, height), view, projection,
+                                                    geometry_pass_render_target->get_color_texture_at(0),
+                                                    light_pass_render_target->get_color_texture_at(0),
+                                                    geometry_pass_render_target->get_color_texture_at(1),
+                                                    geometry_pass_render_target->get_color_texture_at(2),
+                                                    geometry_pass_render_target->get_depth_texture());
+            
             // Geometry pass
             geometry_pass_render_target->use();
             geometry_pass_render_target->clear();
@@ -124,18 +144,11 @@ namespace gle {
             
             scene.draw(DEFERRED, *input);
             
-            input->color_texture = geometry_pass_render_target->get_color_texture_at(0);
-            input->position_texture = geometry_pass_render_target->get_color_texture_at(1);
-            input->normal_texture = geometry_pass_render_target->get_color_texture_at(2);
-            input->depth_texture = geometry_pass_render_target->get_depth_texture();
-            
             // Light pass
             light_pass_render_target->use();
             light_pass_render_target->clear();
             
             scene.shine_light(DEFERRED, *input, *light_pass_render_target);
-            
-            input->shaded_color_texture = light_pass_render_target->get_color_texture_at(0);
             
             // Copy to screen render target
             screen_render_target->use();

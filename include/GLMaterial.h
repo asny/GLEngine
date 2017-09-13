@@ -28,8 +28,8 @@ namespace gle
         const GLTexture *normal_texture = nullptr;
         const GLTexture *depth_texture = nullptr;
         
-        DrawPassInput(const glm::vec3& _camera_position, const glm::vec2& _screen_size, const glm::mat4& _view, const glm::mat4& _projection, const GLColorRenderTarget *_geometry_pass_render_target = nullptr, const GLColorRenderTarget *_light_pass_render_target = nullptr)
-            : camera_position(_camera_position), screen_size(_screen_size), view(_view), projection(_projection)
+        DrawPassInput(const glm::vec3& _camera_position, const glm::vec2& _screen_size, const glm::mat4& _view, const glm::mat4& _projection, const GLTexture *_color_texture = nullptr, const GLTexture *_shaded_color_texture = nullptr, const GLTexture *_position_texture = nullptr, const GLTexture *_normal_texture = nullptr, const GLTexture *_depth_texture = nullptr)
+            : camera_position(_camera_position), screen_size(_screen_size), view(_view), projection(_projection), color_texture(_color_texture), shaded_color_texture(_shaded_color_texture), position_texture(_position_texture), normal_texture(_normal_texture), depth_texture(_depth_texture)
         {
             
         }
