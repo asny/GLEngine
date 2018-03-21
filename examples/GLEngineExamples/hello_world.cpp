@@ -12,7 +12,6 @@
 #include "gtx/rotate_vector.hpp"
 
 #define SDL_MAIN_HANDLED
-#include "SDL.h"
 
 using namespace std;
 using namespace glm;
